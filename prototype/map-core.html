@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MapCore 原型 · 明史网站</title>
+<link rel="stylesheet" href="vendor/leaflet.css">
+<style>
+:root{
+  --c-paper:#F7F3E8; --c-ink:#2B2620; --c-ink-2:#5C5346;
+  --c-vermilion:#A02C2C; --c-zhehuang:#C6A664; --c-qinghua:#2E5A88;
+  --map-fill-province:rgba(198,166,100,.22); --map-line-province:#8A6D3B;
+  --map-garrison:#A02C2C; --map-station:#2E5A88;
+  --map-route-major:#6B4E2E; --map-route-minor:rgba(107,78,46,.4);
+  --font-display:"Noto Serif SC","Songti SC",serif;
+  --font-body:"Noto Sans SC","PingFang SC",sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;font-family:var(--font-body);color:var(--c-ink);background:var(--c-paper)}
+#map{position:absolute;inset:0;background:#F2ECDD /* 无瓦片时的绢底色 */;z-index:0}
+
+/* 顶栏 */
+.topbar{position:absolute;top:0;left:0;right:0;z-index:900;display:flex;align-items:center;gap:12px;
+  padding:10px 16px;background:linear-gradient(rgba(247,243,232,.96),rgba(247,243,232,.88));border-bottom:1px solid rgba(138,109,59,.25)}
+.seal{width:38px;height:38px;background:var(--c-vermilion);color:#F7F3E8;display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-display);font-size:22px;border-radius:4px;box-shadow:0 1px 3px rgba(43,38,32,.3);flex:none}
+.topbar h1{font-family:var(--font-display);font-size:18px;font-weight:600;letter-spacing:.05em}
+.topbar .sub{font-size:12px;color:var(--c-ink-2)}
+.topbar .spacer{flex:1}
+.btn{border:1px solid var(--map-line-province);background:#fff0;border-radius:4px;padding:6px 12px;font-size:13px;
+  color:var(--c-ink);cursor:pointer;font-family:var(--font-body)}
+.btn:hover{background:rgba(198,166,100,.25)}
+.btn[aria-pressed="true"]{background:var(--c-zhehuang);color:#fff;border-color:var(--c-zhehuang)}
+
+/* 图层面板 */
+.layers{position:absolute;top:64px;right:12px;z-index:900;width:210px;background:rgba(247,243,232,.95);
+  border:1px solid rgba(138,109,59,.35);border-radius:8px;padding:12px;box-shadow:0 4px 16px rgba(43,38,32,.15)}
+.layers h3{font-size:13px;color:var(--c-ink-2);margin-bottom:8px;letter-spacing:.1em}
+.layers label{display:flex;align-items:center;gap:8px;font-size:14px;padding:6px 4px;border-radius:4px;cursor:pointer}
+.layers label:hover{background:rgba(198,166,100,.15)}
+.layers input{accent-color:var(--c-vermilion);width:16px;height:16px}
+.legend{margin-top:10px;padding-top:8px;border-top:1px dashed rgba(138,109,59,.4);font-size:12px;color:var(--c-ink-2)}
+.legend .row{display:flex;align-items:center;gap:6px;margin-top:4px}
+.dot{width:10px;height:10px;border-radius:50%;flex:none}
+.sq{width:12px;height:8px;flex:none;border-radius:1px}
+.line{width:14px;height:0;border-top:2px solid;flex:none}
+
+/* 信息卡（政区点击） */
+.infocard{position:absolute;top:64px;left:12px;z-index:900;width:250px;background:rgba(247,243,232,.97);
+  border:1px solid rgba(138,109,59,.35);border-left:3px solid var(--c-vermilion);border-radius:8px;padding:14px;
+  box-shadow:0 4px 16px rgba(43,38,32,.15);display:none}
+.infocard h2{font-family:var(--font-display);font-size:19px;margin-bottom:2px}
+.infocard .alt{font-size:12px;color:var(--c-disputed,#B3541E)}
+.infocard .meta{font-size:13px;color:var(--c-ink-2);margin-top:6px;line-height:1.6}
+.infocard .close{position:absolute;top:8px;right:10px;cursor:pointer;color:var(--c-ink-2);font-size:14px}
+
+/* 时间滑杆（底部通栏） */
+.timeline{position:absolute;left:0;right:0;bottom:0;z-index:900;background:linear-gradient(rgba(247,243,232,0),rgba(247,243,232,.97) 40%);
+  padding:26px 18px 16px;display:flex;align-items:center;gap:14px}
+.era-readout{font-family:var(--font-display);font-size:20px;min-width:150px;flex:none}
+.era-readout small{display:block;font-size:12px;color:var(--c-ink-2);font-family:var(--font-body)}
+.slider-wrap{flex:1;position:relative;height:44px /* 触控热区 */;display:flex;align-items:center}
+input[type=range]{width:100%;appearance:none;-webkit-appearance:none;height:4px;border-radius:2px;
+  background:linear-gradient(90deg,var(--c-vermilion),var(--c-zhehuang),var(--c-qinghua));outline:none;cursor:pointer}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:28px;height:28px;border-radius:50%;
+  background:var(--c-vermilion);border:3px solid #F7F3E8;box-shadow:0 1px 4px rgba(0,0,0,.35);cursor:grab}
+.ticks{position:absolute;left:0;right:0;top:100%;display:flex;justify-content:space-between;font-size:10px;color:var(--c-ink-2);margin-top:2px}
+.count{font-size:12px;color:var(--c-ink-2);flex:none;min-width:88px;text-align:right}
+.count b{color:var(--c-vermilion);font-size:15px}
+
+/* 署名 */
+.attrib{position:absolute;left:12px;bottom:96px;z-index:800;font-size:10px;color:var(--c-ink-2);max-width:330px;
+  background:rgba(247,243,232,.85);padding:6px 8px;border-radius:4px;line-height:1.5}
+.attrib a{color:var(--c-qinghua)}
+
+/* 事件脉冲演示标记 */
+.pulse{width:10px;height:10px;border-radius:50%;background:var(--map-garrison);position:relative}
+.pulse::after{content:"";position:absolute;inset:-6px;border-radius:50%;border:2px solid var(--c-vermilion,#B3541E);
+  animation:pulse 1.8s ease-out infinite}
+@keyframes pulse{from{transform:scale(.5);opacity:1}to{transform:scale(2.4);opacity:0}}
+
+/* 移动端：图层面板收成按钮，滑杆加大 */
+@media (max-width:720px){
+  .layers{display:none}
+  .layers.open{display:block;top:60px;right:8px;left:8px;width:auto}
+  .layers-toggle{display:inline-flex!important}
+  .era-readout{min-width:110px;font-size:16px}
+  .infocard{left:8px;right:8px;width:auto;top:auto;bottom:118px}
+  .attrib{display:none}
+}
+.layers-toggle{display:none}
+.leaflet-tooltip.seal-tip{font-family:var(--font-body);font-size:12px;padding:3px 7px;border-radius:4px;
+  border:1px solid rgba(138,109,59,.4);background:rgba(247,243,232,.95);color:var(--c-ink);box-shadow:0 1px 4px rgba(0,0,0,.15)}
+</style>
+</head>
+<body>
+<div id="map"></div>
+
+<header class="topbar">
+  <div class="seal">明</div>
+  <div>
+    <h1>明朝疆域与卫所 · MapCore 交互原型</h1>
+    <div class="sub">D6 高保真原型 · 数据：Hartwell 1391 / 明代卫所 / 驿站驿路（本仓 src/geojson）</div>
+  </div>
+  <div class="spacer"></div>
+  <button class="btn layers-toggle" id="layersToggle">图层</button>
+  <button class="btn" id="fullscreenBtn">⛶ 全屏</button>
+</header>
+
+<aside class="layers" id="layersPanel">
+  <h3>图 层</h3>
+  <label><input type="checkbox" id="lyProv" checked> 布政司政区（1391）</label>
+  <label><input type="checkbox" id="lyGarr" checked> 卫所（随年份显隐）</label>
+  <label><input type="checkbox" id="lyStat"> 驿站（缩放 ≥6 显示）</label>
+  <label><input type="checkbox" id="lyRoute"> 驿路</label>
+  <label><input type="checkbox" id="lyModern"> 今省界对照 <span id="modernState" style="font-size:11px;color:#999">加载中</span></label>
+  <div style="margin-top:8px;font-size:12px;color:var(--c-ink-2)">古今对照不透明度</div>
+  <input type="range" id="modernOpacity" min="0" max="100" value="70" style="width:100%">
+  <div class="legend">
+    <div class="row"><span class="sq" style="background:var(--map-fill-province);border:1px solid var(--map-line-province)"></span>政区（Hartwell 1391）</div>
+    <div class="row"><span class="dot" style="background:var(--map-garrison)"></span>卫所 · <span class="dot" style="background:var(--map-station)"></span>驿站</div>
+    <div class="row"><span class="line" style="border-color:var(--map-route-major)"></span>驿路</div>
+    <div class="row"><span class="line" style="border-color:#4A78B4;border-top-style:dashed"></span>今省界</div>
+  </div>
+</aside>
+
+<aside class="infocard" id="infocard">
+  <span class="close" id="infocardClose">✕</span>
+  <h2 id="icName"></h2>
+  <div class="alt" id="icAlt"></div>
+  <div class="meta" id="icMeta"></div>
+</aside>
+
+<div class="timeline">
+  <div class="era-readout" id="eraReadout">洪武元年<small id="eraYear">1368</small></div>
+  <div class="slider-wrap">
+    <input type="range" id="yearSlider" min="1368" max="1644" value="1391">
+    <div class="ticks"><span>1368</span><span>1402</span><span>1449</span><span>1490</span><span>1550</span><span>1600</span><span>1644</span></div>
+  </div>
+  <div class="count">当期卫所 <b id="garrCount">0</b> 座</div>
+</div>
+
+<div class="attrib">
+  政区：Hartwell China HGIS v5（CHGIS, 2010, CC BY-NC-SA, DOI:10.7910/DVN/29302）；
+  卫所/驿站/驿路：CHGIS Ming Garrisons & Courier（DOI:10.7910/DVN/5RUXK8 · 10.7910/DVN/SB8ZTM）。
+  命名考据：research/R10（1391 切片含晚明省名，展示层已覆盖）。
+</div>
+
+<script src="vendor/leaflet.js"></script>
+<script>
+/* ============ MapCore 原型（对应 06 文档规范 ①②③④⑦⑧⑩）============ */
+const $ = id => document.getElementById(id);
+
+/* ① 年号换算（数据源 emperors.json eraStart 的内联版） */
+const ERAS = [["洪武",1368],["建文",1399],["永乐",1403],["洪熙",1425],["宣德",1426],["正统",1436],
+  ["景泰",1450],["天顺",1457],["成化",1465],["弘治",1488],["正德",1506],["嘉靖",1522],
+  ["隆庆",1567],["万历",1573],["泰昌",1620],["天启",1621],["崇祯",1628]];
+function eraOf(y){
+  let i=0; ERAS.forEach((e,k)=>{ if(e[1]<=y) i=k; });
+  const [n,s]=ERAS[i]; const num=y-s+1;
+  return { text:`${n}${num===1?"元年":num+"年"}`, note: n==="永乐"&&y===1402?"（革除建文，称洪武三十五年）":"" };
+}
+
+/* ⑩ URL hash 状态 */
+function readHash(){
+  const h=new URLSearchParams(location.hash.slice(1));
+  return {y:+(h.get("y")||1391), c:h.get("c")?.split(",").map(Number), z:+(h.get("z")||4)};
+}
+const st=readHash();
+function writeHash(){
+  const c=map.getCenter(), p=new URLSearchParams({y:year, z:map.getZoom(), c:c.lat.toFixed(2)+","+c.lng.toFixed(2)});
+  history.replaceState(null,"","#"+p.toString());
+}
+
+/* 底图：浅色现代瓦片（不可达时保持绢底色，政区层照常） */
+const map=L.map("map",{preferCanvas:true, attributionControl:false, worldCopyJump:false})
+  .setView(st.c||[36,110], st.z||4);
+L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:12,
+  crossOrigin:true, attribution:"© OpenStreetMap contributors"}).addTo(map);
+
+/* 派发数据 */
+const DATA="../src/geojson/";
+let provinces, garrisons, stations, routes;
+
+/* 政区（display_name 覆盖表：research/R10） */
+const DISP={"京师":"北平布政司","南京":"京师（应天）","中都":"中都（凤阳）",
+  "贵州":"贵州（建司前·卫所期）","奴儿干":"奴儿干（都司设置前）","关西诸卫·外邦":"关西诸卫与外邦"};
+
+fetch(DATA+"ming_provinces_1391.json").then(r=>r.json()).then(d=>{
+  provinces=L.geoJSON(d,{
+    style:{color:"#8A6D3B",weight:1.2,fillColor:"#C6A664",fillOpacity:.22},
+    onEachFeature:(f,lyr)=>{
+      const p=f.properties, disp=DISP[p.name_ch];
+      lyr.bindTooltip(disp?`${p.name_ch} → ${disp}`:p.name_ch,{sticky:true,className:"seal-tip"});
+      lyr.on("click",()=>{  /* ④ 政区点击 → 信息卡 */
+        $("icName").textContent=p.name_ch;
+        $("icAlt").textContent=disp?`考据覆盖名：${disp}（1391 切片用了晚明省名）`:"";
+        $("icMeta").innerHTML=`府级单位 ${p.units} 个 · 切片年份 ${p.year}<br>原名（繁）${p.name_cht}`;
+        $("infocard").style.display="block";
+        map.fitBounds(lyr.getBounds().pad(.15));
+      });
+    }
+  }).addTo(map);
+});
+$("infocardClose").onclick=()=>$("infocard").style.display="none";
+
+/* ② 图层：卫所（①时间过滤）/驿站/驿路 */
+let garrLayer=L.layerGroup(), statLayer=L.layerGroup(), routeLayer=L.layerGroup(), modernLayer=L.layerGroup();
+let garrData=[];
+let year=st.y;
+
+fetch(DATA+"ming_garrisons.json").then(r=>r.json()).then(d=>{
+  garrData=d.features;
+  garrLayer=L.geoJSON(d,{
+    pointToLayer:(f,latlng)=>L.circleMarker(latlng,{radius:3.4,color:"#7A1F1F",weight:.6,fillColor:"#A02C2C",fillOpacity:.85}),
+    onEachFeature:(f,lyr)=>lyr.bindTooltip(
+      `${f.properties.name_ch}<br><span style="color:#5C5346">${f.properties.type} · 建置 ${f.properties.beg_yr||"?"} 年</span>`,
+      {className:"seal-tip"})
+  });
+  applyYear();
+});
+fetch(DATA+"ming_courier_stations.json").then(r=>r.json()).then(d=>{
+  statLayer=L.geoJSON(d,{pointToLayer:(f,ll)=>L.circleMarker(ll,{radius:2.2,color:"#1E4066",weight:.5,fillColor:"#2E5A88",fillOpacity:.8}),
+    onEachFeature:(f,lyr)=>lyr.bindTooltip(`${f.properties.name_ch}<br><span style="color:#5C5346">今：${f.properties.county_2010||"?"}</span>`,{className:"seal-tip"})});
+});
+fetch(DATA+"ming_courier_routes.json").then(r=>r.json()).then(d=>{
+  routeLayer=L.geoJSON(d,{style:f=>({color:"#6B4E2E",weight:f.properties.major?1.6:.8,opacity:f.properties.major?.85:.4})});
+});
+
+/* ③ 今省界对照（阿里 DataV；不可达则禁用开关） */
+fetch("https://geo.datav.aliyun.com/areas_v3/bound/100000_full.json")
+ .then(r=>r.json()).then(d=>{
+   modernLayer=L.geoJSON(d,{style:{color:"#4A78B4",weight:1,dashArray:"4 3",fill:false}});
+   $("modernState").textContent="";
+ }).catch(()=>{ $("modernState").textContent="（源不可达）"; $("lyModern").disabled=true; });
+
+/* ① 时间滑杆：卫所随年份显隐 */
+function applyYear(){
+  if(garrLayer.getLayers) garrLayer.clearLayers && garrLayer.clearLayers();
+  const g=garrData.filter(f=>{
+    const b=+f.properties.beg_yr||0, e=+f.properties.end_yr||1644;
+    return b<=year && e>=year;
+  });
+  if(garrLayer instanceof L.GeoJSON) garrLayer.addData({type:"FeatureCollection",features:g});
+  $("garrCount").textContent=g.length;
+  const {text,note}=eraOf(year);
+  $("eraReadout").firstChild.textContent=text+note;
+  $("eraYear").textContent=year;
+  writeHash();
+}
+$("yearSlider").value=st.y;
+$("yearSlider").addEventListener("input",e=>{year=+e.target.value;applyYear();});
+
+/* ⑦ LOD：驿站/驿路仅高层缩放（手动开关时也受 zoom 约束提示） */
+function lod(){
+  const z=map.getZoom();
+  if($("lyStat").checked){ z>=6 ? statLayer.addTo(map) : map.removeLayer(statLayer); }
+  if($("lyRoute").checked){ z>=5 ? routeLayer.addTo(map) : map.removeLayer(routeLayer); }
+}
+map.on("zoomend moveend",()=>{lod();writeHash();});
+
+/* ② 开关 */
+$("lyProv").onchange=e=>e.target.checked?provinces.addTo(map):map.removeLayer(provinces);
+$("lyGarr").onchange=e=>e.target.checked?garrLayer.addTo(map):map.removeLayer(garrLayer);
+$("lyStat").onchange=e=>{lod()};
+$("lyRoute").onchange=e=>{lod()};
+$("lyModern").onchange=e=>e.target.checked?modernLayer.addTo(map):map.removeLayer(modernLayer);
+$("modernOpacity").oninput=e=>{ /* ③ 不透明度滑杆同时作用于今界与瓦片底 */
+  const v=e.target.value/100;
+  modernLayer.setStyle?.({opacity:v});
+  document.querySelectorAll(".leaflet-tile").forEach(t=>t.style.opacity=1-v*.9);
+};
+$("layersToggle").onclick=()=>$("layersPanel").classList.toggle("open");
+$("fullscreenBtn").onclick=()=>{ /* ⑧ 全屏 */
+  document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen();
+};
+garrLayer.addTo(map);
+applyYear();
+</script>
+</body>
+</html>

@@ -1,0 +1,39 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import EraStrip from "../../components/EraStrip.astro";
+import { emperors, portraitOf } from "../../lib/data.js";
+---
+<BaseLayout title="十六帝 · 皇帝" crumbs={[["/", "首页"], ["", "皇帝"]]}>
+  <div class="wrap">
+    <div class="page-head">
+      <h1>帝王世系</h1>
+      <p class="lede">十六帝 276 年。点击进入各帝详情：当朝权力格局、大事、首辅序列与存世画像。</p>
+    </div>
+    <EraStrip />
+    <p style="margin-top:10px"><a class="card" href="/emperors/tree" style="display:inline-block;padding:6px 16px;font-size:14px">🌳 查看世系树与在位时间轴（V5）→</a></p>
+    <div class="grid" style="margin-top:24px">
+      {emperors.emperors.map((e) => {
+        const p = portraitOf(e.id);
+        return (
+          <a class="card" href={`/emperors/${e.id}`} style="display:flex;gap:14px">
+            {p
+              ? <img src={`/images/${p.file}`} alt={e.name} loading="lazy" style="width:64px;height:88px;object-fit:cover;object-position:top;border-radius:4px;flex:none" />
+              : <div style="width:64px;height:88px;flex:none;display:flex;align-items:center;justify-content:center;background:rgba(138,109,59,.1);border-radius:4px;font-size:11px;color:var(--c-ink-2)">无存世像</div>}
+            <div>
+              <strong style="font-family:var(--font-display);font-size:17px">{e.templeName} · {e.name}</strong>
+              <div style="font-size:13px;color:var(--c-ink-2)">{e.era}{e.eras ? "（两段年号）" : ""} · {e.reignStart}–{e.reignEnd}</div>
+              <div style="font-size:13px;margin-top:4px">{e.brief}</div>
+            </div>
+          </a>
+        );
+      })}
+    </div>
+    <h2 style="margin-top:40px">南明简编（1644–1662）</h2>
+    <table class="data" style="max-width:760px">
+      <tr><th>政权</th><th>帝/监国</th><th>时间</th><th>结局</th></tr>
+      {emperors.southernMing.rulers.map((r) => (
+        <tr><td>{r.title}</td><td>{r.name}</td><td>{r.reign}</td><td>{r.end}</td></tr>
+      ))}
+    </table>
+  </div>
+</BaseLayout>

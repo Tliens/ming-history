@@ -1,0 +1,41 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import MapHero from "../components/MapHero.astro";
+import { emperors, events, figures, glossary, portraitOf } from "../lib/data.js";
+---
+<BaseLayout title="明史 · 1368–1644 — 一张地图读懂大明王朝">
+  <MapHero mode="hero" />
+
+  <div class="wrap">
+    <section style="display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));margin:32px 0">
+      <a class="card" href="/learn"><h3 style="margin:0 0 6px">第一次来？</h3><p style="margin:0;font-size:14px;color:var(--c-ink-2)">十步学习线：从版图到权力结构，循序渐进读懂明朝。</p></a>
+      <a class="card" href="/power"><h3 style="margin:0 0 6px">按主题深挖</h3><p style="margin:0;font-size:14px;color:var(--c-ink-2)">权力结构与演变是主线：皇帝、内阁、司礼监如何博弈 276 年。</p></a>
+      <a class="card" href="/creators"><h3 style="margin:0 0 6px">写小说？直取素材</h3><p style="margin:0;font-size:14px;color:var(--c-ink-2)">称谓、官品、科举、物价速查与常见误区清单。</p></a>
+    </section>
+
+    <h2 style="font-size:22px;border-bottom:1px solid rgba(138,109,59,.3);padding-bottom:8px">十六帝快览</h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:14px;margin:16px 0">
+      {emperors.emperors.map((e) => {
+        const p = portraitOf(e.id);
+        return (
+          <a class="card" href={`/emperors/${e.id}`} style="text-align:center;padding:12px">
+            {p
+              ? <img src={`/images/${p.file}`} alt={e.name} loading="lazy" style="width:84px;height:112px;object-fit:cover;object-position:top;border-radius:4px" />
+              : <div style="width:84px;height:112px;margin:0 auto;display:flex;align-items:center;justify-content:center;background:rgba(138,109,59,.1);border-radius:4px;color:var(--c-ink-2);font-size:12px">无存世像</div>}
+            <div style="font-family:var(--font-display);font-size:16px;margin-top:8px">{e.templeName}·{e.era}</div>
+            <div style="font-size:12px;color:var(--c-ink-2)">{e.name} {e.reignStart}–{e.reignEnd}</div>
+          </a>
+        );
+      })}
+    </div>
+
+    <h2 style="font-size:22px;border-bottom:1px solid rgba(138,109,59,.3);padding-bottom:8px">大事纵览</h2>
+    <p style="color:var(--c-ink-2);font-size:14px">已收录 {events.events.length} 条骨干大事 · 人物 {figures.figures.length} 位 · 术语 {glossary.terms.length} 条。</p>
+    <ol style="line-height:2;columns:2;column-gap:48px;font-size:14px">
+      {events.events.slice(0, 14).map((ev) => (
+        <li><a href={`/events/${ev.id}`}>{ev.year} · {ev.title}</a></li>
+      ))}
+    </ol>
+    <p><a href="/events">查看全部大事 →</a></p>
+  </div>
+</BaseLayout>

@@ -1,0 +1,57 @@
+/* 明史网站设计 Token（与 docs/design/D1-tokens.md 同步维护） */
+
+:root {
+  /* 基础色 */
+  --c-paper: #F7F3E8;
+  --c-ink: #2B2620;
+  --c-ink-2: #5C5346;
+  --c-vermilion: #A02C2C;
+  --c-zhehuang: #C6A664;
+  --c-qinghua: #2E5A88;
+
+  /* 语义 */
+  --c-source-1: #2E5A88;
+  --c-source-2: #3E7C59;
+  --c-source-3: #8A6D3B;
+  --c-source-4: #9E5B3C;
+  --c-disputed: #B3541E;
+
+  /* 地图专色 */
+  --map-fill-province: rgba(198, 166, 100, 0.22);
+  --map-line-province: #8A6D3B;
+  --map-garrison: #A02C2C;
+  --map-station: #2E5A88;
+  --map-route-major: #6B4E2E;
+  --map-route-minor: rgba(107, 78, 46, 0.4);
+  --map-modern: #4A78B4;
+  --map-event-pulse: #B3541E;
+
+  /* 图表分类色 */
+  --chart-1: #A02C2C; --chart-2: #2E5A88; --chart-3: #3E7C59; --chart-4: #C6A664;
+  --chart-5: #8A6D3B; --chart-6: #9E5B3C; --chart-7: #5A4A6E; --chart-8: #4E6E5D;
+  --chart-9: #B08D57; --chart-10: #6E5C4E;
+
+  /* 字体 */
+  --font-display: "Noto Serif SC", "Songti SC", "SimSun", serif;
+  --font-body: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --fs-xs: 12px; --fs-sm: 14px; --fs-base: 16px; --fs-md: 18px;
+  --fs-lg: 22px; --fs-xl: 28px; --fs-2xl: 40px;
+  --lh-body: 1.75; --lh-tight: 1.3;
+
+  /* 间距 / 圆角 / 阴影 / 层级 */
+  --sp-1: 4px; --sp-2: 8px; --sp-3: 12px; --sp-4: 16px;
+  --sp-5: 24px; --sp-6: 32px; --sp-7: 48px; --sp-8: 64px;
+  --r-s: 4px; --r-m: 8px; --r-l: 16px;
+  --shadow-1: 0 1px 3px rgba(43, 38, 32, 0.12);
+  --shadow-2: 0 4px 16px rgba(43, 38, 32, 0.18);
+  --z-map: 0; --z-panel: 500; --z-nav: 900; --z-modal: 1000; --z-toast: 1100;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --c-paper: #1C1A17;
+    --c-ink: #E8E2D0;
+    --c-ink-2: #B5AC98;
+    --map-fill-province: rgba(198, 166, 100, 0.15);
+  }
+}

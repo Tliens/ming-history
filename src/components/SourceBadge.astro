@@ -1,0 +1,5 @@
+---
+import { SOURCE_LEVELS } from "../lib/data.js";
+const { level } = Astro.props;
+---
+<span class={`sb sb${level}`} title={SOURCE_LEVELS[level]}>{level}</span>

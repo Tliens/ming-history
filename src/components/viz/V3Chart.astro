@@ -1,0 +1,92 @@
+---
+// V3 权力消长时间轴（全站招牌图）· 皇帝色带 + 四力量曲线 + 事件散点
+import events from "../../data/events/events.json";
+const eventCount = events.events.length;
+---
+<div id="v3chart" style="height:560px" aria-label="权力消长时间轴图表"></div>
+<p style="font-size:12px;color:var(--c-ink-2);margin-top:8px">
+  ⚠ 四条曲线为<strong>叙事示意</strong>（依学界共识定性判断的相对强弱，0–10），非量化数据——方法与出处见下节。
+  顶部色带＝十六帝在位（点击跳皇帝页）；散点＝本站 {eventCount} 条骨干大事（点击跳事件页）。①③
+</p>
+<script>
+  import * as echarts from "echarts";
+  import { MING_THEME, ERAS_BAND } from "../../lib/echarts-theme.js";
+  import { POWER_CURVES } from "../../data/power-curves.js";
+  import events from "../../data/events/events.json";
+
+  const chart = echarts.init(document.getElementById("v3chart"), MING_THEME);
+
+  const bandSeries = {
+    name: "皇帝在位", type: "custom", xAxisIndex: 0, yAxisIndex: 0,
+    renderItem: (params, api) => {
+      const e = ERAS_BAND[params.dataIndex];
+      const x1 = api.coord([e[1], 0]), x2 = api.coord([e[2] + 1, 1]);
+      return {
+        type: "rect", shape: { x: x1[0], y: x2[1], width: x2[0] - x1[0], height: api.size([0, 1])[1] },
+        style: { fill: e[3], opacity: 0.92 },
+        transition: [],
+      };
+    },
+    data: ERAS_BAND.map((e) => ({ value: [e[1], e[2]], name: e[0], eid: e[4] })),
+    encode: { x: [0, 1], y: [0, 1] }, cursor: "pointer", z: 3, silent: false,
+    label: { show: true, position: "inside", color: "#fff", fontSize: 10, overflow: "truncate", width: 26 },
+    labelLayout: { hideOverlap: true },
+  };
+
+  const eventScatter = {
+    name: "大事", type: "scatter", xAxisIndex: 1, yAxisIndex: 1,
+    data: events.events.map((ev) => ({ value: [ev.year, 0.4], title: ev.title, id: ev.id, layers: ev.layers })),
+    symbolSize: (v, p) => 7,
+    itemStyle: { color: "#6B4E2E", opacity: 0.75 },
+    z: 4,
+  };
+
+  chart.setOption({
+    animationDuration: 600,
+    axisPointer: { link: [{ xAxisIndex: "all" }] },
+    grid: [
+      { left: 56, right: 24, top: 34, height: 34 },          // 皇帝色带
+      { left: 56, right: 24, top: 92, bottom: 88 },          // 力量曲线
+      { left: 56, right: 24, bottom: 34, height: 34 },       // 事件带
+    ],
+    xAxis: [
+      { type: "value", min: 1368, max: 1645, gridIndex: 0, axisLabel: { show: false }, splitLine: { show: false }, axisLine: { show: false }, axisTick: { show: false } },
+      { type: "value", min: 1368, max: 1645, gridIndex: 1, axisLabel: { show: false }, splitLine: { show: false }, axisLine: { show: false }, axisTick: { show: false } },
+      { type: "value", min: 1368, max: 1645, gridIndex: 2, name: "年", nameGap: 3, splitLine: { show: false }, axisLine: { lineStyle: { color: "#8A6D3B" } }, axisTick: { show: false }, axisLabel: { fontSize: 11, color: "#5C5346" } },
+    ],
+    yAxis: [
+      { type: "value", min: 0, max: 1, gridIndex: 0, show: false },
+      { type: "value", min: 0, max: 10, gridIndex: 1, name: "相对强度（示意）", nameTextStyle: { fontSize: 11, color: "#5C5346" }, splitLine: { lineStyle: { color: "rgba(138,109,59,.15)" } }, axisLabel: { fontSize: 11, color: "#5C5346" } },
+      { type: "value", min: 0, max: 1, gridIndex: 2, show: false },
+    ],
+    legend: { data: POWER_CURVES.map((c) => c.name), top: 76, right: 20, orient: "vertical", align: "left", itemGap: 6 },
+    tooltip: {
+      formatter: (p) => {
+        if (p.seriesName === "皇帝在位") {
+          const e = ERAS_BAND[p.dataIndex];
+          const emp = e[4] === "yingzong" ? "英宗（两度在位）" : e[0];
+          return `<b>${e[0]}</b>（${e[1]}–${e[2]}）<br/>点击查看皇帝页`;
+        }
+        if (p.seriesName === "大事") {
+          const d = p.data;
+          return `<b>${d.value[0]}</b> · ${d.title}<br/><span style="color:#5C5346">点击查看事件详情</span>`;
+        }
+        return `${p.marker} ${p.seriesName}<br/>${p.value[0]} 年 · 强度 ≈ ${p.value[1]}（示意）<br/><span style="color:#5C5346;font-size:11px">${POWER_CURVES.find((c) => c.name === p.seriesName)?.note ?? ""}</span>`;
+      },
+    },
+    series: [
+      bandSeries,
+      eventScatter,
+      ...POWER_CURVES.map((c) => ({
+        name: c.name, type: "line", xAxisIndex: 1, yAxisIndex: 1,
+        data: c.points, smooth: 0.4, symbol: "none", lineStyle: { width: 2.2, color: c.color }, itemStyle: { color: c.color }, z: 2,
+      })),
+    ],
+  });
+
+  chart.on("click", (p) => {
+    if (p.seriesName === "皇帝在位") location.href = `/emperors/${p.data.eid}`;
+    if (p.seriesName === "大事") location.href = `/events/${p.data.id}`;
+  });
+  window.addEventListener("resize", () => chart.resize());
+</script>

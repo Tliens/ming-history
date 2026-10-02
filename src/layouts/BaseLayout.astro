@@ -1,0 +1,68 @@
+---
+const { crumbs = [], title = "明史 · 1368–1644" } = Astro.props;
+const NAV = [
+  ["/maps", "地图"], ["/power", "权力"], ["/emperors", "皇帝"], ["/harem", "后宫"],
+  ["/events", "大事"], ["/figures", "人物"], ["/topics", "专题"], ["/creators", "创作者"],
+];
+const path = Astro.url.pathname;
+const current = (href) => path === href || (href !== "/" && path.startsWith(href + "/"));
+---
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{title}</title>
+  <meta name="description" content="面向学生、明史爱好者与小说创作者的明代历史知识网站：交互地图、权力结构、十六帝、大事年表与人物库。" />
+  <link rel="stylesheet" href="/styles/global.css" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%23A02C2C'/%3E%3Ctext x='16' y='23' font-size='20' text-anchor='middle' fill='%23F7F3E8' font-family='serif'%3E明%3C/text%3E%3C/svg%3E" />
+</head>
+<body>
+  <header class="topnav">
+    <a class="brand" href="/"><span class="mh-seal">明</span><span>明史</span></a>
+    <nav aria-label="主导航">
+      {NAV.map(([href, label]) => (
+        <a href={href} aria-current={current(href) ? "page" : undefined}>{label}</a>
+      ))}
+      <a href="/glossary">术语</a>
+      <a href="/sources">资料库</a>
+    </nav>
+  </header>
+
+  {crumbs.length > 0 && (
+    <div class="wrap">
+      <nav class="crumbs" aria-label="面包屑">
+        {crumbs.map(([href, label], i) =>
+          i === crumbs.length - 1
+            ? <span aria-current="page">{label}</span>
+            : <><a href={href}>{label}</a> › </>
+        )}
+      </nav>
+    </div>
+  )}
+
+  <main><slot /></main>
+
+  <footer class="site-footer">
+    <div class="wrap cols">
+      <div>
+        <strong>关于史料标注</strong><br />
+        <span class="sb sb1">①</span>正史官修 · <span class="sb sb2">②</span>当时人著述 ·
+        <span class="sb sb3">③</span>现代研究 · <span class="sb sb4">④</span>传闻野史<br />
+        ④级内容只入「误区辨析」与「当代接受」框，不作正文叙述。
+      </div>
+      <div>
+        <strong>数据与图像来源</strong><br />
+        政区/卫所/驿路：<a href="https://doi.org/10.7910/DVN/29302">CHGIS · Hartwell</a>、
+        <a href="https://doi.org/10.7910/DVN/5RUXK8">Ming Garrisons</a>（学术使用）<br />
+        帝后画像等：Wikimedia Commons（公有领域/CC，逐图署名）
+      </div>
+      <div>
+        <strong>反馈</strong><br />
+        发现史实或链接错误？<a href="mailto:feedback@ming-history.example">写信告知</a><br />
+        本站为非商业教育项目 · © 2026 明史
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

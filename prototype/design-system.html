@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>明史网站 · 设计系统实况页</title>
+<link rel="stylesheet" href="../src/styles/tokens.css">
+<style>
+body{font-family:var(--font-body);background:var(--c-paper);color:var(--c-ink);margin:0;padding:40px 24px;line-height:var(--lh-body)}
+.wrap{max-width:860px;margin:0 auto}
+h1{font-family:var(--font-display);font-size:var(--fs-2xl);letter-spacing:.04em}
+h1 small{display:block;font-size:var(--fs-sm);color:var(--c-ink-2);font-family:var(--font-body);margin-top:6px;letter-spacing:0}
+h2{font-family:var(--font-display);font-size:var(--fs-lg);margin:48px 0 16px;border-bottom:1px solid rgba(138,109,59,.3);padding-bottom:8px}
+code{background:rgba(138,109,59,.12);padding:1px 6px;border-radius:4px;font-size:.9em}
+
+/* C11 印章 */
+.seal-lg{width:38px;height:38px;background:var(--c-vermilion);color:var(--c-paper);display:inline-flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:22px;border-radius:4px;box-shadow:var(--shadow-1)}
+.seal-row{display:flex;gap:12px;align-items:flex-end}
+
+/* C1 三层阅读 */
+.tldr{border-left:3px solid var(--c-zhehuang);background:rgba(198,166,100,.1);padding:12px 16px;border-radius:0 var(--r-m) var(--r-m) 0;font-size:var(--fs-md)}
+.tldr b{color:var(--c-vermilion)}
+.reading p{margin:16px 0}
+details.deep{margin-top:16px;border:1px solid rgba(138,109,59,.3);border-radius:var(--r-m);padding:12px 16px;background:rgba(247,243,232,.6)}
+details.deep summary{cursor:pointer;color:var(--c-ink-2);font-size:var(--fs-sm);user-select:none}
+
+/* C2 术语 */
+.term{border-bottom:1px dashed var(--c-qinghua);cursor:pointer;color:var(--c-qinghua)}
+.term-pop{position:absolute;z-index:var(--z-modal);width:280px;background:#FFFEF9;border:1px solid rgba(138,109,59,.4);border-radius:var(--r-m);box-shadow:var(--shadow-2);padding:14px;font-size:var(--fs-sm)}
+.term-pop h4{margin:0 0 6px;font-family:var(--font-display);font-size:var(--fs-base)}
+.term-pop .cat{font-size:var(--fs-xs);color:var(--c-paper);background:var(--c-zhehuang);border-radius:3px;padding:1px 6px;margin-left:6px;vertical-align:2px}
+.term-pop .more{color:var(--c-qinghua);font-size:var(--fs-xs);margin-top:8px;display:block}
+
+/* C3 史料标 */
+.sb{display:inline-block;width:16px;height:16px;line-height:16px;text-align:center;border-radius:3px;color:#fff;font-size:11px;font-weight:700;vertical-align:-3px;margin:0 2px}
+.sb1{background:var(--c-source-1)} .sb2{background:var(--c-source-2)} .sb3{background:var(--c-source-3)} .sb4{background:var(--c-source-4)}
+.sb-tip{font-size:var(--fs-xs);color:var(--c-ink-2);margin-top:10px}
+
+/* C5 误区框 / C6 考据框 */
+.box{border-radius:var(--r-m);padding:14px 16px;margin:14px 0;background:rgba(158,91,60,.07);border-left:3px solid var(--c-source-4)}
+.box.disputed{background:rgba(179,84,30,.07);border-left-color:var(--c-disputed)}
+.box h4{margin:0 0 8px;font-size:var(--fs-sm);letter-spacing:.1em;color:var(--c-ink-2)}
+.box .icn{margin-right:6px}
+
+/* C7 时间锚 */
+.era-strip{display:flex;height:34px;border-radius:var(--r-s);overflow:hidden;font-size:12px;color:#fff;text-align:center;cursor:pointer}
+.era-strip div{flex:1;display:flex;align-items:center;justify-content:center;white-space:nowrap;overflow:hidden}
+.era-strip .cur{outline:2px solid var(--c-vermilion);outline-offset:-2px;font-weight:700}
+.era-note{font-size:var(--fs-xs);color:var(--c-ink-2);margin-top:6px}
+
+/* C10 图注卡 */
+.figcard{max-width:320px;border:1px solid rgba(138,109,59,.35);border-radius:var(--r-m);overflow:hidden;background:#FFFEF9;box-shadow:var(--shadow-1)}
+.figcard img{width:100%;display:block}
+.figcard figcaption{padding:10px 12px;font-size:var(--fs-xs);color:var(--c-ink-2);line-height:1.6}
+.figcard .t{color:var(--c-ink);font-size:var(--fs-sm);font-weight:600}
+.figcard .lic{display:inline-block;border:1px solid var(--c-source-2);color:var(--c-source-2);border-radius:3px;padding:0 5px;font-size:10px;margin-left:4px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="seal-row"><span class="seal-lg">明</span>
+    <h1 style="margin:0">明史网站 · 设计系统
+      <small>D1 tokens × D3 组件 · 实况渲染（数据均为真实内容）</small>
+    </h1>
+  </div>
+
+  <h2>C7 时间锚（定位模式：你在这里 · 永乐）</h2>
+  <div class="era-strip" id="eraStrip"></div>
+  <div class="era-note">十六朝按 B1–B9 阶段色带着色；点击即跳转该朝模块视图（列表页为筛选模式）</div>
+
+  <h2>C1 三层阅读 + C2 术语 + C3 史料标</h2>
+  <div class="tldr">一句话结论：废丞相后，明代中枢决策形成「内阁<span style="color:var(--c-vermilion)">票拟</span>—司礼监<span style="color:var(--c-vermilion)">批红</span>」的双轨制，皇帝理论上只需画圈。<span class="sb sb1">①</span></div>
+  <div class="reading">
+    <p>永乐初设内阁时，它只是皇帝的顾问班子；到宣德、正统年间，<span class="term" data-term="piaoni">票拟</span>制度化，内阁取得了代拟批答的权力；与此同时宣宗设<span class="term" data-term="neishutang">内书堂</span>教小宦官读书，为日后司礼监代行<span class="term" data-term="pihong">批红</span>埋下伏笔<span class="sb sb1">①</span><span class="sb sb3">③</span>。</p>
+    <p>从此，章奏先由内阁拟出处理意见贴在票签上，再由皇帝（或其代理者）朱笔照批或改驳。谁控制了这两个环节，谁就控制了朝政——刘瑾、张居正、魏忠贤的权势，本质上都是对这两个环节的占用。<span class="sb sb1">①</span></p>
+  </div>
+  <details class="deep" open>
+    <summary>深读与考据（3 条）</summary>
+    <p style="font-size:var(--fs-sm)">① 票拟的确切形成时间诸说不一（宣德说/正统说），本站取「宣德—正统间制度化」表述<span class="sb sb3">③</span>；② 「批红」在永乐朝已有宦官代笔实例，但制度化在内书堂之后<span class="sb sb2">②</span>；③ 王天有对票拟—批红流程的复原详见《明代国家机构研究》<span class="sb sb3">③</span>。</p>
+  </details>
+  <div id="termPop" class="term-pop" style="display:none"></div>
+
+  <h2>C3 史料等级标</h2>
+  <div>
+    <span class="sb sb1">①</span> 正史官修 · <span class="sb sb2">②</span> 当时人著述 · <span class="sb sb3">③</span> 现代研究 · <span class="sb sb4">④</span> 传闻野史
+    <div class="sb-tip">四级标为全站史实的信任链标识；④级内容只进「误区辨析」与「当代接受」框，不入正文叙述。</div>
+  </div>
+
+  <h2>C5 误区辨析框 / C6 考据框</h2>
+  <div class="box">
+    <h4><span class="icn">⚠</span>常见误传</h4>
+    「土木堡之变明军五十万大军覆没」——<b>五十万为号称</b>，学界通行估计实约二十余万；阵亡文武大臣数十员的说法依据《明史》本纪与私史互证。<span class="sb sb1">①</span><span class="sb sb3">③</span>
+  </div>
+  <div class="box disputed">
+    <h4><span class="icn">🔍</span>考据 · 诸说并列</h4>
+    <b>建文帝下落</b>：①焚死说——《明史·恭闵帝纪》「宫中火起，帝不知所终」官修存疑笔法<span class="sb sb1">①</span>；②出亡说——《明史纪事本末》载逊国诸臣随行，万历间张居正对神宗亦言之<span class="sb sb2">②</span>。本站并存两说，不作独断；详见皇帝页专考。
+  </div>
+
+  <h2>C10 图注卡（manifest 驱动）</h2>
+  <figure class="figcard" style="float:right;margin:0 0 12px 20px">
+    <img src="../assets/images/emperor-hongwu.jpg" alt="明太祖坐像">
+    <figcaption>
+      <span class="t">明太祖坐像（正形）</span><span class="lic">Public Domain</span><br>
+      台北故宫博物院藏 · via Wikimedia Commons<br>
+      图像库 id: emperor-hongwu · 署名数据源 assets/images/manifest.json
+    </figcaption>
+  </figure>
+  <p style="font-size:var(--fs-sm);color:var(--c-ink-2)">每张站内配图由 manifest.json 自动生成图注：题名、藏地、许可徽标、来源链接。PD 图标藏地，CC 图标作者与许可链接，自绘图标「本站绘制」。缺像帝王（建文、景泰）显示线描占位与「无存世官方像」说明，不用近似像顶替。</p>
+  <div style="clear:both"></div>
+
+  <h2>暗色模式</h2>
+  <p style="font-size:var(--fs-sm);color:var(--c-ink-2)">本页已挂 tokens.css：跟随系统 <code>prefers-color-scheme</code> 自动切换墨色模式（token 语义变量驱动，无组件写死色值）。</p>
+</div>
+
+<script>
+/* C7 时间锚渲染（十六朝，阶段色） */
+const ERAS=[["洪武",31,"#A02C2C"],["建文",4,"#8A6D3B"],["永乐",22,"#8A6D3B"],["洪熙",1,"#C6A664"],["宣德",10,"#C6A664"],["正统",14,"#9E5B3C"],["景泰",8,"#9E5B3C"],["天顺",8,"#9E5B3C"],["成化",23,"#3E7C59"],["弘治",18,"#3E7C59"],["正德",16,"#5A4A6E"],["嘉靖",45,"#5A4A6E"],["隆庆",6,"#2E5A88"],["万历",48,"#2E5A88"],["泰昌",1,"#2B2620"],["天启",7,"#2B2620"],["崇祯",17,"#2B2620"]];
+const es=document.getElementById("eraStrip");
+ERAS.forEach(([n,y,c])=>{const d=document.createElement("div");d.style.background=c;d.style.flexGrow=Math.max(y,3);d.textContent=n+(y>=8?"":"·");if(n==="永乐")d.className="cur";d.title=`${n} ${y}年`;es.appendChild(d);});
+
+/* C2 术语弹窗（数据取自 src/content/glossary.json 同源片段） */
+const GLOSS={piaoni:{t:"票拟",c:"中枢",d:"内阁代皇帝将拟批答意见写在票签上呈览的制度，正统后成为决策常规",r:["pihong","neige"]},
+ pihong:{t:"批红",c:"中枢",d:"皇帝（或司礼监代笔）用朱笔在票拟上批示的环节；宦官专权的枢纽",r:["silijian"]},
+ neishutang:{t:"内书堂",c:"宦官",d:"宣德设、教小宦官读书的机构，宦官干政的技术前提",r:[]}};
+const pop=document.getElementById("termPop");
+document.querySelectorAll(".term").forEach(el=>{
+  el.addEventListener("click",e=>{
+    const g=GLOSS[el.dataset.term]; if(!g) return;
+    pop.innerHTML=`<h4>${g.t}<span class="cat">${g.c}</span></h4>${g.d}<span class="more">查看术语表 → glossary.json #${el.dataset.term}</span>`;
+    const r=el.getBoundingClientRect();
+    pop.style.left=Math.min(r.left,innerWidth-300)+"px";
+    pop.style.top=(r.bottom+8+scrollY)+"px";
+    pop.style.display="block"; e.stopPropagation();
+  });
+});
+document.addEventListener("click",()=>pop.style.display="none");
+</script>
+</body>
+</html>

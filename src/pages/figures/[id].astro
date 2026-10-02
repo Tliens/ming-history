@@ -1,0 +1,48 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { figuresById, relationsOf, emperorById } from "../../lib/data.js";
+
+export function getStaticPaths() {
+  return Object.values(figuresById).map((f) => ({ params: { id: f.id }, props: { fig: f } }));
+}
+const { fig } = Astro.props;
+const rels = relationsOf(fig.id);
+const relName = (id) => figuresById[id]?.name ?? emperorById(id)?.templeName + emperorById(id)?.era ?? id;
+const REL_LABEL = { 信任: "受其信任", 清洗: "遭其清洗", 提携: "提携", 师承: "师承", 同盟: "同盟", 敌对: "敌对", 亲缘: "亲缘", 搭档: "搭档", 构陷: "构陷", 阵前: "阵前对手" };
+---
+<BaseLayout title={`${fig.name} · 人物`} crumbs={[["/", "首页"], ["/figures", "人物"], ["", fig.name]]}>
+  <div class="wrap prose" style="padding-top:24px">
+    <h1 style="margin-bottom:2px">{fig.name}{fig.zi && <span style="font-size:18px;color:var(--c-ink-2)">（{fig.zi}）</span>}</h1>
+    <p style="color:var(--c-ink-2)">{fig.birth ?? "?"}–{fig.death ?? "?"} · {fig.origin} · {fig.category}</p>
+    <div class="tldr">{fig.evaluation}</div>
+
+    <table class="data">
+      <tr><th style="width:90px">出身</th><td>{fig.path}</td></tr>
+      <tr><th>仕历</th><td>{fig.career}</td></tr>
+      <tr><th>结局</th><td>{fig.fate} <span style="font-size:12px;color:var(--c-ink-2)">（{fig.fateType}）</span></td></tr>
+    </table>
+
+    <h2 style="font-size:19px">主要事迹</h2>
+    <p>{fig.deeds}</p>
+
+    {rels.length > 0 && (
+      <>
+        <h2 style="font-size:19px">关系（V14 网络切片）</h2>
+        <ul style="font-size:14px;line-height:2">
+          {rels.slice(0, 12).map((r) => (
+            <li>
+              {REL_LABEL[r.type] ?? r.type}：
+              {figuresById[r.other] ? <a href={`/figures/${r.other}`}>{relName(r.other)}</a> : <span>{relName(r.other)}</span>}
+              {emperorById(r.other) && <a href={`/emperors/${r.other}`} style="margin-left:4px">（皇帝页）</a>}
+            </li>
+          ))}
+        </ul>
+        <p style="font-size:12px;color:var(--c-ink-2)">完整关系网络图（V14）于 Phase 6 上线；此处为数据切片。</p>
+      </>
+    )}
+
+    {fig.disputed && (
+      <aside class="mh-disputed"><h4>🔍 考据</h4>{fig.disputed.join("；")}——诸说并列，详见考据笔记。</aside>
+    )}
+  </div>
+</BaseLayout>

@@ -1,0 +1,12 @@
+---
+const { items = [], title = "常见误传", kind = "myth" } = Astro.props;
+// items: string[] —— 误区（kind=myth）或诸说并列（kind=disputed）
+---
+{items.length > 0 && (
+  <aside class={kind === "myth" ? "mh-myth" : "mh-disputed"}>
+    <h4>{kind === "myth" ? "⚠ " : "🔍 "}{title}</h4>
+    <ul style="margin:0;padding-left:1.2em">
+      {items.map((t) => <li set:html={t} />)}
+    </ul>
+  </aside>
+)}
