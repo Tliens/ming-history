@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://ming-history.kuige.me/sitemap-index.xml
