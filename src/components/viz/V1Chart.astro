@@ -6,21 +6,21 @@ const periods = offices.periods.map((p) => ({ id: p.id, label: p.label }));
 <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px" role="tablist" aria-label="时期切换">
   {periods.map((p, i) => (
     <button class="v1-btn" data-period={p.id} aria-pressed={i === periods.length - 1}
-      style="border:1px solid rgba(138,109,59,.4);background:none;border-radius:14px;padding:4px 14px;font-size:13px;cursor:pointer">{p.label}</button>
+      style="border:1px solid var(--c-line);background:none;border-radius:14px;padding:4px 14px;font-size:13px;cursor:pointer">{p.label}</button>
   ))}
 </div>
 <div style="display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:16px" class="v1-wrap">
-  <div id="v1chart" style="height:620px;border:1px solid rgba(138,109,59,.2);border-radius:8px" aria-label="权力结构组织图"></div>
+  <div id="v1chart" style="height:620px;border:1px solid var(--c-line);border-radius:8px" aria-label="权力结构组织图"></div>
   <aside class="card" id="v1panel" style="font-size:13px;align-self:start">
     <h3 id="v1p-title" style="margin:0 0 6px;font-size:15px"></h3>
     <p id="v1p-base" style="color:var(--c-ink-2);margin:0 0 8px"></p>
     <ul id="v1p-diffs" style="margin:0;padding-left:1.2em;line-height:1.7"></ul>
-    <p id="v1node" style="margin-top:10px;border-top:1px dashed rgba(138,109,59,.3);padding-top:8px;color:var(--c-ink-2)"></p>
+    <p id="v1node" style="margin-top:10px;border-top:1px dashed var(--c-line);padding-top:8px;color:var(--c-ink-2)"></p>
   </aside>
 </div>
 <script>
   import * as echarts from "echarts";
-  import { MING_THEME } from "../../lib/echarts-theme.js";
+  import { chartTheme, onThemeChange } from "../../lib/echarts-theme.js";
   import offices from "../../data/offices.json";
 
   const NODES = Object.fromEntries(offices.nodes.map((n) => [n.id, n]));
@@ -29,10 +29,14 @@ const periods = offices.periods.map((p) => ({ id: p.id, label: p.label }));
     const n = NODES[id];
     return { name: n.name, id: n.id, value: n.type, itemStyle: {}, children: childrenOf(id).map((c) => toTree(c.id)) };
   };
-  const chart = echarts.init(document.getElementById("v1chart"), MING_THEME);
+  const el = document.getElementById("v1chart");
+  let chart = echarts.init(el, chartTheme());
+  let curPeriod = "wanli";
 
   function setPeriod(pid) {
+    curPeriod = pid;
     const period = offices.periods.find((p) => p.id === pid);
+    const t = chartTheme();
     const diffMap = {};
     for (const d of period.diffs) diffMap[d.nodeId] = d;
     const tree = toTree("emperor");
@@ -49,9 +53,9 @@ const periods = offices.periods.map((p) => ({ id: p.id, label: p.label }));
       series: [{
         type: "tree", data: [tree], orient: "TB", roam: true, top: "4%", bottom: "8%", left: "4%", right: "4%",
         symbol: "circle", symbolSize: 13, expandAndCollapse: true, initialTreeDepth: 2,
-        label: { position: "bottom", rotate: 40, fontSize: 11, color: "#2B2620" },
+        label: { position: "bottom", rotate: 40, fontSize: 11, color: t.ink },
         leaves: { label: { rotate: 40 } },
-        lineStyle: { color: "#8A6D3B", width: 1 },
+        lineStyle: { color: t.axis, width: 1 },
         emphasis: { focus: "ancestor" },
       }],
     });
@@ -68,6 +72,7 @@ const periods = offices.periods.map((p) => ({ id: p.id, label: p.label }));
   });
   document.querySelectorAll(".v1-btn").forEach((b) => b.addEventListener("click", () => setPeriod(b.dataset.period)));
   setPeriod("wanli");
+  onThemeChange(() => { chart.dispose(); chart = echarts.init(el, chartTheme()); setPeriod(curPeriod); });
   window.addEventListener("resize", () => chart.resize());
 </script>
 <style>@media (max-width: 900px) { .v1-wrap { grid-template-columns: 1fr !important; } }</style>

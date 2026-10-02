@@ -1,10 +1,11 @@
 ---
+import "../styles/global.css";
 const { crumbs = [], title = "明史 · 1368–1644" } = Astro.props;
+const path = Astro.url.pathname;
 const NAV = [
   ["/maps", "地图"], ["/power", "权力"], ["/emperors", "皇帝"], ["/harem", "后宫"],
   ["/events", "大事"], ["/figures", "人物"], ["/topics", "专题"], ["/creators", "创作者"],
 ];
-const path = Astro.url.pathname;
 const current = (href) => path === href || (href !== "/" && path.startsWith(href + "/"));
 ---
 <!doctype html>
@@ -13,6 +14,14 @@ const current = (href) => path === href || (href !== "/" && path.startsWith(href
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{title}</title>
+  <script is:inline>
+    /* 主题预读：localStorage(mh-theme: auto|light|dark) → 系统偏好；在首帧前设置 data-theme 防闪烁 */
+    (() => {
+      const t = localStorage.getItem("mh-theme") || "auto";
+      const dark = t === "dark" || (t === "auto" && matchMedia("(prefers-color-scheme: dark)").matches);
+      document.documentElement.dataset.theme = dark ? "dark" : "light";
+    })();
+  </script>
   <meta name="description" content="面向学生、明史爱好者与小说创作者的明代历史知识网站：交互地图、权力结构、十六帝、大事年表与人物库。" />
   <link rel="canonical" href={`https://ming-history.kuige.me${path === "/" ? "/" : path}`} />
   <meta property="og:type" content="website" />
@@ -20,7 +29,6 @@ const current = (href) => path === href || (href !== "/" && path.startsWith(href
   <meta property="og:title" content={title} />
   <meta property="og:url" content={`https://ming-history.kuige.me${path === "/" ? "/" : path}`} />
   <meta name="twitter:card" content="summary" />
-  <link rel="stylesheet" href="/styles/global.css" />
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%23A02C2C'/%3E%3Ctext x='16' y='23' font-size='20' text-anchor='middle' fill='%23F7F3E8' font-family='serif'%3E明%3C/text%3E%3C/svg%3E" />
 </head>
 <body>
@@ -33,6 +41,7 @@ const current = (href) => path === href || (href !== "/" && path.startsWith(href
       <a href="/glossary">术语</a>
       <a href="/sources">资料库</a>
       <a class="kuige-entry" href="https://kuige.me/" target="_blank" rel="noopener" title="kuige.me" style="text-decoration:none">魁歌 · 独立开发者</a>
+      <button id="themeToggle" class="tbtn" type="button" aria-label="切换主题">🌓</button>
     </nav>
   </header>
 
@@ -71,6 +80,34 @@ const current = (href) => path === href || (href !== "/" && path.startsWith(href
       </div>
     </div>
   </footer>
+  <script is:inline>
+    /* 主题三态切换：auto → light → dark；广播 themechange 供图表重渲染 */
+    (() => {
+      const KEY = "mh-theme";
+      const sys = () => matchMedia("(prefers-color-scheme: dark)").matches;
+      const apply = (t) => {
+        const dark = t === "dark" || (t === "auto" && sys());
+        document.documentElement.dataset.theme = dark ? "dark" : "light";
+        const b = document.getElementById("themeToggle");
+        if (b) {
+          b.textContent = t === "auto" ? "🌓" : dark ? "🌙" : "☀️";
+          b.title = "主题：" + (t === "auto" ? "跟随系统" : dark ? "深色" : "浅色") + "（点击切换）";
+        }
+      };
+      const cur = () => localStorage.getItem(KEY) || "auto";
+      apply(cur());
+      const b = document.getElementById("themeToggle");
+      b?.addEventListener("click", () => {
+        const t = { auto: "light", light: "dark", dark: "auto" }[cur()];
+        localStorage.setItem(KEY, t);
+        apply(t);
+        dispatchEvent(new CustomEvent("themechange"));
+      });
+      matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => {
+        if (cur() === "auto") { apply("auto"); dispatchEvent(new CustomEvent("themechange")); }
+      });
+    })();
+  </script>
   <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "948f2535a9dd4775a436c677b3c950e4"}'></script>
 </body>
 </html>

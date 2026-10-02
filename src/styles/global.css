@@ -2,7 +2,9 @@
 
 /* ===== 基础 ===== */
 * { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; color-scheme: light dark; }
+:root[data-theme="dark"] { color-scheme: dark; }
+:root[data-theme="light"] { color-scheme: light; }
 body {
   margin: 0;
   font-family: var(--font-body);
@@ -20,6 +22,14 @@ img { max-width: 100%; }
 .prose { max-width: 720px; }
 :focus-visible { outline: 2px solid var(--c-vermilion); outline-offset: 2px; }
 
+/* 表单控件走主题变量 */
+input, select, textarea, button { font-family: var(--font-body); }
+input:not([type="checkbox"]):not([type="radio"]), select, textarea {
+  background: var(--c-surface);
+  color: var(--c-ink);
+  border: 1px solid var(--c-line);
+}
+
 /* ===== 顶栏 ===== */
 .topnav {
   position: sticky; top: 0; z-index: var(--z-nav);
@@ -27,13 +37,18 @@ img { max-width: 100%; }
   padding: 0 var(--sp-5); height: 64px;
   background: color-mix(in srgb, var(--c-paper) 92%, transparent);
   backdrop-filter: blur(8px);
-  border-bottom: 1px solid rgba(138, 109, 59, 0.25);
+  border-bottom: 1px solid var(--c-line);
 }
 .topnav .brand { display: flex; align-items: center; gap: 10px; font-family: var(--font-display); font-weight: 600; }
-.topnav nav { display: flex; gap: 2px; margin-left: auto; }
+.topnav nav { display: flex; gap: 2px; margin-left: auto; align-items: center; }
 .topnav nav a { padding: 8px 12px; border-radius: var(--r-s); color: var(--c-ink); font-size: var(--fs-sm); }
 .topnav nav a:hover { background: rgba(198, 166, 100, 0.18); color: var(--c-vermilion); }
 .topnav nav a[aria-current] { color: var(--c-vermilion); box-shadow: inset 0 -2px 0 var(--c-vermilion); border-radius: 0; }
+.tbtn {
+  border: 1px solid var(--c-line); background: transparent; color: var(--c-ink);
+  border-radius: var(--r-s); padding: 6px 10px; font-size: 15px; cursor: pointer;
+}
+.tbtn:hover { background: rgba(198, 166, 100, 0.18); }
 
 /* 印章 */
 .mh-seal {
@@ -79,8 +94,8 @@ img { max-width: 100%; }
   font-size: var(--fs-md); margin: var(--sp-4) 0;
 }
 details.deep {
-  border: 1px solid rgba(138, 109, 59, 0.3); border-radius: var(--r-m);
-  padding: var(--sp-3) var(--sp-4); margin: var(--sp-4) 0; background: rgba(138, 109, 59, 0.06);
+  border: 1px solid var(--c-line); border-radius: var(--r-m);
+  padding: var(--sp-3) var(--sp-4); margin: var(--sp-4) 0; background: rgba(138, 109, 59, 0.07);
 }
 details.deep summary { cursor: pointer; color: var(--c-ink-2); font-size: var(--fs-sm); }
 
@@ -89,14 +104,14 @@ details.deep summary { cursor: pointer; color: var(--c-ink-2); font-size: var(--
   border-radius: var(--r-m); padding: var(--sp-3) var(--sp-4); margin: var(--sp-4) 0;
   font-size: var(--fs-sm);
 }
-.mh-myth { background: rgba(158, 91, 60, 0.08); border-left: 3px solid var(--c-source-4); }
-.mh-disputed { background: rgba(179, 84, 30, 0.08); border-left: 3px solid var(--c-disputed); }
+.mh-myth { background: rgba(158, 91, 60, 0.1); border-left: 3px solid var(--c-source-4); }
+.mh-disputed { background: rgba(179, 84, 30, 0.1); border-left: 3px solid var(--c-disputed); }
 .mh-myth h4, .mh-disputed h4 { margin: 0 0 6px; font-size: var(--fs-sm); letter-spacing: 0.12em; color: var(--c-ink-2); font-family: var(--font-body); }
 
 /* ===== 卡片 ===== */
 .card {
-  background: color-mix(in srgb, var(--c-paper) 70%, white);
-  border: 1px solid rgba(138, 109, 59, 0.3);
+  background: var(--c-surface);
+  border: 1px solid var(--c-line);
   border-radius: var(--r-m); box-shadow: var(--shadow-1);
   padding: var(--sp-4); transition: box-shadow 0.15s, transform 0.15s;
 }
@@ -106,7 +121,7 @@ a.card:hover { box-shadow: var(--shadow-2); transform: translateY(-2px); color: 
 /* 图注卡 */
 figure.figcard {
   margin: 0; max-width: 340px; overflow: hidden;
-  border: 1px solid rgba(138, 109, 59, 0.35); border-radius: var(--r-m); background: #FFFEF9;
+  border: 1px solid var(--c-line); border-radius: var(--r-m); background: var(--c-surface);
 }
 figure.figcard img { display: block; width: 100%; }
 figure.figcard figcaption { padding: 10px 12px; font-size: var(--fs-xs); color: var(--c-ink-2); line-height: 1.6; }
@@ -114,12 +129,12 @@ figure.figcard figcaption { padding: 10px 12px; font-size: var(--fs-xs); color: 
 
 /* ===== 表格 ===== */
 table.data { width: 100%; border-collapse: collapse; font-size: var(--fs-sm); }
-table.data th, table.data td { border-bottom: 1px solid rgba(138, 109, 59, 0.2); padding: 8px 10px; text-align: left; }
-table.data th { color: var(--c-ink-2); font-weight: 600; background: rgba(138, 109, 59, 0.06); }
+table.data th, table.data td { border-bottom: 1px solid var(--c-line-soft); padding: 8px 10px; text-align: left; }
+table.data th { color: var(--c-ink-2); font-weight: 600; background: var(--c-th-bg); }
 
 /* ===== 页脚 ===== */
 .site-footer {
-  margin-top: var(--sp-8); border-top: 1px solid rgba(138, 109, 59, 0.3);
+  margin-top: var(--sp-8); border-top: 1px solid var(--c-line);
   padding: var(--sp-6) 0; font-size: var(--fs-xs); color: var(--c-ink-2);
 }
 .site-footer .cols { display: flex; gap: var(--sp-7); flex-wrap: wrap; }
@@ -129,6 +144,20 @@ table.data th { color: var(--c-ink-2); font-weight: 600; background: rgba(138, 1
 .page-head { padding: var(--sp-5) 0 var(--sp-2); }
 .page-head h1 { font-size: var(--fs-xl); margin: 4px 0; }
 .page-head .lede { color: var(--c-ink-2); max-width: 720px; }
+
+/* ===== Leaflet 暗色适配 ===== */
+.leaflet-container { background: var(--c-paper); }
+:root[data-theme="dark"] .leaflet-tile { filter: var(--c-tile-filter); }
+.leaflet-tooltip {
+  background: var(--c-surface); color: var(--c-ink);
+  border: 1px solid var(--c-line); border-radius: 4px;
+  box-shadow: var(--shadow-1); font-size: 12px; padding: 3px 8px;
+}
+.leaflet-tooltip-top:before { border-top-color: var(--c-surface); }
+.leaflet-tooltip-bottom:before { border-bottom-color: var(--c-surface); }
+.leaflet-tooltip-left:before { border-left-color: var(--c-surface); }
+.leaflet-tooltip-right:before { border-right-color: var(--c-surface); }
+.leaflet-bar a { background: var(--c-surface); color: var(--c-ink); border-color: var(--c-line); }
 
 /* 移动端 */
 @media (max-width: 720px) {

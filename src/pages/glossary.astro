@@ -10,14 +10,14 @@ const cats = [...new Set(glossary.terms.map((t) => t.cat))];
       <p class="lede">全站正文术语弹窗的数据源。输入即时过滤；点击分类标签跳转。</p>
     </div>
     <input id="gq" type="search" placeholder="搜索术语…（如：票拟、卫所、京察）"
-      style="width:100%;max-width:420px;padding:10px 14px;border:1px solid rgba(138,109,59,.4);border-radius:8px;font-size:15px" />
+      style="width:100%;max-width:420px;padding:10px 14px;border:1px solid var(--c-line);border-radius:8px;font-size:15px" />
     <div id="gcat" style="margin:14px 0">
-      {cats.map((c) => <button class="gcat-btn" data-cat={c} style="border:1px solid rgba(138,109,59,.4);background:none;border-radius:14px;padding:3px 12px;font-size:13px;margin:2px;cursor:pointer">{c}</button>)}
+      {cats.map((c) => <button class="gcat-btn" data-cat={c} style="border:1px solid var(--c-line);background:none;border-radius:14px;padding:3px 12px;font-size:13px;margin:2px;cursor:pointer">{c}</button>)}
       <button class="gcat-btn" data-cat="" style="border:1px solid var(--c-vermilion);color:var(--c-vermilion);background:none;border-radius:14px;padding:3px 12px;font-size:13px;margin:2px;cursor:pointer">全部</button>
     </div>
     <dl id="glist" style="max-width:760px">
       {glossary.terms.map((t) => (
-        <div class="gitem" data-cat={t.cat} data-term={t.term} id={t.id} style="padding:10px 0;border-bottom:1px dashed rgba(138,109,59,.25)">
+        <div class="gitem" data-cat={t.cat} data-term={t.term} id={t.id} style="padding:10px 0;border-bottom:1px dashed var(--c-line)">
           <dt style="font-family:var(--font-display);font-size:17px;font-weight:600">{t.term}
             <span style="font-size:11px;color:var(--c-paper);background:var(--c-zhehuang);border-radius:3px;padding:1px 6px;vertical-align:2px;margin-left:6px">{t.cat}</span></dt>
           <dd style="margin:4px 0 0;font-size:14px">{t.def}</dd>

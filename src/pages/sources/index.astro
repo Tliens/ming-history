@@ -36,7 +36,7 @@ const GROUPS = [
     </div>
     {GROUPS.map(([g, items]) => (
       <section style="margin:22px 0">
-        <h2 style="font-size:18px;border-bottom:1px solid rgba(138,109,59,.3);padding-bottom:6px">{g}</h2>
+        <h2 style="font-size:18px;border-bottom:1px solid var(--c-line);padding-bottom:6px">{g}</h2>
         <table class="data" style="margin-top:8px">
           {items.map(([t, a, d]) => (
             <tr><td style="width:220px"><strong>{t}</strong><br /><span style="font-size:12px;color:var(--c-ink-2)">{a}</span></td><td style="font-size:13px">{d}</td></tr>
@@ -45,7 +45,7 @@ const GROUPS = [
       </section>
     ))}
     <section style="margin:22px 0">
-      <h2 style="font-size:18px;border-bottom:1px solid rgba(138,109,59,.3);padding-bottom:6px">地图与图像数据</h2>
+      <h2 style="font-size:18px;border-bottom:1px solid var(--c-line);padding-bottom:6px">地图与图像数据</h2>
       <ul style="font-size:14px;line-height:2">
         <li>政区/卫所/驿路：<a href="https://doi.org/10.7910/DVN/29302">Hartwell China HGIS</a>（CC BY-NC-SA）、<a href="https://doi.org/10.7910/DVN/5RUXK8">Ming Garrisons</a>、<a href="https://doi.org/10.7910/DVN/SB8ZTM">Ming Courier Routes</a>（CHGIS，学术使用）</li>
         <li>帝后画像等：<a href="https://commons.wikimedia.org/">Wikimedia Commons</a>（PD/CC，逐图署名见 <code>assets/images/manifest.json</code>）</li>

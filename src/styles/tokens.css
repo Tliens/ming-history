@@ -1,6 +1,8 @@
 /* 明史网站设计 Token（与 docs/design/D1-tokens.md 同步维护） */
+/* 暗色由 html[data-theme] 驱动（BaseLayout 头部脚本预读 localStorage/系统偏好，防闪烁） */
 
-:root {
+:root,
+:root[data-theme="light"] {
   /* 基础色 */
   --c-paper: #F7F3E8;
   --c-ink: #2B2620;
@@ -15,6 +17,15 @@
   --c-source-3: #8A6D3B;
   --c-source-4: #9E5B3C;
   --c-disputed: #B3541E;
+
+  /* 表面与线条（暗色适配的关键变量） */
+  --c-surface: #FFFEF9;                 /* 卡片/弹层底 */
+  --c-surface-2: rgba(247, 243, 232, 0.96); /* 地图浮层底 */
+  --c-line: rgba(138, 109, 59, 0.3);    /* 中性边线 */
+  --c-line-soft: rgba(138, 109, 59, 0.18);
+  --c-th-bg: rgba(138, 109, 59, 0.07);
+  --c-tile-filter: none;                /* 地图瓦片滤镜 */
+  --c-shadow-ink: 43, 38, 32;
 
   /* 地图专色 */
   --map-fill-province: rgba(198, 166, 100, 0.22);
@@ -47,11 +58,36 @@
   --z-map: 0; --z-panel: 500; --z-nav: 900; --z-modal: 1000; --z-toast: 1100;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --c-paper: #1C1A17;
-    --c-ink: #E8E2D0;
-    --c-ink-2: #B5AC98;
-    --map-fill-province: rgba(198, 166, 100, 0.15);
-  }
+:root[data-theme="dark"] {
+  --c-paper: #1C1A17;
+  --c-ink: #E8E2D0;
+  --c-ink-2: #B5AC98;
+  --c-vermilion: #C8564F;
+  --c-zhehuang: #D4B578;
+  --c-qinghua: #6C93C4;
+
+  --c-source-1: #7FA3D0;
+  --c-source-2: #7FB894;
+  --c-source-3: #C2A878;
+  --c-source-4: #D08A64;
+  --c-disputed: #D08256;
+
+  --c-surface: #262320;
+  --c-surface-2: rgba(38, 35, 32, 0.96);
+  --c-line: rgba(181, 172, 152, 0.26);
+  --c-line-soft: rgba(181, 172, 152, 0.15);
+  --c-th-bg: rgba(181, 172, 152, 0.08);
+  --c-tile-filter: invert(0.92) hue-rotate(180deg) brightness(0.92) contrast(0.9) saturate(0.7);
+  --c-shadow-ink: 0, 0, 0;
+
+  --map-fill-province: rgba(198, 166, 100, 0.14);
+  --map-route-minor: rgba(160, 130, 90, 0.35);
+  --map-event-pulse: #D08256;
+
+  --chart-1: #C8564F; --chart-2: #6C93C4; --chart-3: #7FB894; --chart-4: #D4B578;
+  --chart-5: #C2A878; --chart-6: #D08A64; --chart-7: #9B8BB5; --chart-8: #86A992;
+  --chart-9: #C9B085; --chart-10: #A3927F;
+
+  --shadow-1: 0 1px 3px rgba(0, 0, 0, 0.4);
+  --shadow-2: 0 4px 16px rgba(0, 0, 0, 0.5);
 }

@@ -13,7 +13,7 @@ import { emperors, events, figures, glossary, portraitOf } from "../lib/data.js"
       <a class="card" href="/creators"><h3 style="margin:0 0 6px">写小说？直取素材</h3><p style="margin:0;font-size:14px;color:var(--c-ink-2)">称谓、官品、科举、物价速查与常见误区清单。</p></a>
     </section>
 
-    <h2 style="font-size:22px;border-bottom:1px solid rgba(138,109,59,.3);padding-bottom:8px">十六帝快览</h2>
+    <h2 style="font-size:22px;border-bottom:1px solid var(--c-line);padding-bottom:8px">十六帝快览</h2>
     <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:14px;margin:16px 0">
       {emperors.emperors.map((e) => {
         const p = portraitOf(e.id);
@@ -29,7 +29,7 @@ import { emperors, events, figures, glossary, portraitOf } from "../lib/data.js"
       })}
     </div>
 
-    <h2 style="font-size:22px;border-bottom:1px solid rgba(138,109,59,.3);padding-bottom:8px">大事纵览</h2>
+    <h2 style="font-size:22px;border-bottom:1px solid var(--c-line);padding-bottom:8px">大事纵览</h2>
     <p style="color:var(--c-ink-2);font-size:14px">已收录 {events.events.length} 条骨干大事 · 人物 {figures.figures.length} 位 · 术语 {glossary.terms.length} 条。</p>
     <ol style="line-height:2;columns:2;column-gap:48px;font-size:14px">
       {events.events.slice(0, 14).map((ev) => (

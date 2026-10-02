@@ -14,7 +14,7 @@ const byCat = (c) => figures.figures.filter((f) => f.category === c);
     <EraStrip />
     {CATS.filter((c) => byCat(c).length > 0).map((c) => (
       <section style="margin-top:28px">
-        <h2 style="font-size:19px;border-bottom:1px solid rgba(138,109,59,.25);padding-bottom:6px">{c}（{byCat(c).length}）</h2>
+        <h2 style="font-size:19px;border-bottom:1px solid var(--c-line);padding-bottom:6px">{c}（{byCat(c).length}）</h2>
         <div class="grid" style="margin-top:12px">
           {byCat(c).map((f) => (
             <a class="card" href={`/figures/${f.id}`}>

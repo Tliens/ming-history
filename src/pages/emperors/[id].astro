@@ -64,7 +64,7 @@ const disputedItems = (emp.disputed ?? []).map((d) => DISPUTED_TEXT[d] ?? d);
 
         {emp.keywords && (
           <p style="margin-top:20px">
-            {emp.keywords.map((k) => <span style="display:inline-block;border:1px solid rgba(138,109,59,.4);border-radius:12px;padding:1px 10px;font-size:12px;margin:2px">{k}</span>)}
+            {emp.keywords.map((k) => <span style="display:inline-block;border:1px solid var(--c-line);border-radius:12px;padding:1px 10px;font-size:12px;margin:2px">{k}</span>)}
           </p>
         )}
 

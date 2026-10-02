@@ -12,7 +12,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
     <div class="card" style="margin:20px 0">
       <h3 style="margin:0 0 8px;font-size:15px">公元 → 年号</h3>
       <div style="display:flex;gap:8px;align-items:center">
-        <input id="inYear" type="number" min="1368" max="1644" value="1584" style="width:110px;padding:8px;border:1px solid rgba(138,109,59,.4);border-radius:6px;font-size:15px" />
+        <input id="inYear" type="number" min="1368" max="1644" value="1584" style="width:110px;padding:8px;border:1px solid var(--c-line);border-radius:6px;font-size:15px" />
         <button id="btnY" class="btn" style="border:1px solid var(--c-vermilion);color:var(--c-vermilion);background:none;border-radius:6px;padding:8px 14px;cursor:pointer">换算</button>
         <output id="outY" style="font-family:var(--font-display);font-size:18px"></output>
       </div>
@@ -21,8 +21,8 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
     <div class="card" style="margin:20px 0">
       <h3 style="margin:0 0 8px;font-size:15px">年号 + 年数 → 公元</h3>
       <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
-        <select id="selEra" style="padding:8px;border:1px solid rgba(138,109,59,.4);border-radius:6px;font-size:15px"></select>
-        <input id="inNum" type="number" min="1" max="60" value="12" style="width:90px;padding:8px;border:1px solid rgba(138,109,59,.4);border-radius:6px;font-size:15px" />
+        <select id="selEra" style="padding:8px;border:1px solid var(--c-line);border-radius:6px;font-size:15px"></select>
+        <input id="inNum" type="number" min="1" max="60" value="12" style="width:90px;padding:8px;border:1px solid var(--c-line);border-radius:6px;font-size:15px" />
         <span style="font-size:14px">年</span>
         <button id="btnE" class="btn" style="border:1px solid var(--c-vermilion);color:var(--c-vermilion);background:none;border-radius:6px;padding:8px 14px;cursor:pointer">换算</button>
         <output id="outE" style="font-family:var(--font-display);font-size:18px"></output>

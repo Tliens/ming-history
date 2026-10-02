@@ -19,7 +19,7 @@ import { emperors, ERAS } from "../../lib/data.js";
 
 <script>
   import * as echarts from "echarts";
-  import { MING_THEME } from "../../lib/echarts-theme.js";
+  import { chartTheme, onThemeChange, ERAS_BAND } from "../../lib/echarts-theme.js";
 
   // 帝系传承：id, 简名, 传承方式
   const E = {
@@ -51,44 +51,56 @@ import { emperors, ERAS } from "../../lib/data.js";
     ] })
   );
 
-  const tree = echarts.init(document.getElementById("v5tree"), MING_THEME);
-  tree.setOption({
-    series: [{
-      type: "tree", data: [TREE], orient: "LR", roam: true,
-      top: "4%", bottom: "4%", left: "6%", right: "14%",
-      symbol: "circle", symbolSize: 30, expandAndCollapse: false, initialTreeDepth: -1,
-      label: { position: "top", distance: 6, fontSize: 11, lineHeight: 14, color: "#2B2620", align: "center" },
-      leaves: { label: { position: "right" } },
-      lineStyle: { color: "#8A6D3B", width: 1.6, curveness: 0.5 },
-      emphasis: { focus: "descendant" },
-    }],
-    tooltip: { show: false },
-  });
-  tree.on("click", (p) => { if (p.data?.link) location.href = p.data.link; });
+  const treeEl = document.getElementById("v5tree");
+  const ganttEl = document.getElementById("v5gantt");
+  let tree = echarts.init(treeEl, chartTheme());
+  function treeOption() {
+    return {
+      series: [{
+        type: "tree", data: [TREE], orient: "LR", roam: true,
+        top: "4%", bottom: "4%", left: "6%", right: "14%",
+        symbol: "circle", symbolSize: 30, expandAndCollapse: false, initialTreeDepth: -1,
+        label: { position: "top", distance: 6, fontSize: 11, lineHeight: 14, color: chartTheme().ink, align: "center" },
+        leaves: { label: { position: "right" } },
+        lineStyle: { color: chartTheme().axis, width: 1.6, curveness: 0.5 },
+        emphasis: { focus: "descendant" },
+      }],
+      tooltip: { show: false },
+    };
+  }
+  function bindTree() { tree.on("click", (p) => { if (p.data?.link) location.href = p.data.link; }); }
+  tree.setOption(treeOption()); bindTree();
 
   // 在位甘特：单列 x=年份
   import emperorsData from "../../data/emperors/emperors.json";
-  import { ERAS_BAND } from "../../lib/echarts-theme.js";
   const EMPERORS = emperorsData.emperors;
   const COLOR = Object.fromEntries(ERAS_BAND.map((e) => [e[4], e[3]]));
-  const gantt = echarts.init(document.getElementById("v5gantt"), MING_THEME);
-  const EX = { jianwen: "靖难废位", yingtai: "", jingtai: "夺门废位", chongzhen: "国亡" };
-  gantt.setOption({
-    grid: { left: 90, right: 30, top: 16, bottom: 34 },
-    xAxis: { type: "value", min: 1366, max: 1646, axisLabel: { fontSize: 11, color: "#5C5346" }, splitLine: { lineStyle: { color: "rgba(138,109,59,.12)" } } },
-    yAxis: { type: "category", inverse: true, data: EMPERORS.map((e) => e.templeName + "·" + e.name), axisLabel: { fontSize: 11, color: "#2B2620" }, axisTick: { show: false }, axisLine: { show: false } },
-    tooltip: { formatter: (p) => { const e = EMPERORS[p.dataIndex]; return `<b>${e.templeName} ${e.name}</b>（${e.reignStart}–${e.reignEnd}）<br/><span style="font-size:12px">${e.era}${e.eras ? "／" + e.eras.map((x) => x.era).join("、") : ""}</span>`; } },
-    series: [{
-      type: "custom", renderItem: (params, api) => {
-        const emp = EMPERORS[params.dataIndex];
-        const a = api.coord([emp.reignStart, params.dataIndex]), b = api.coord([emp.reignEnd + 1, params.dataIndex]);
-        const h = api.size([0, 1])[1] * 0.62;
-        return { type: "rect", transition: [], shape: { x: a[0], y: a[1] - h / 2, width: b[0] - a[0], height: h },
-          style: { fill: COLOR[emp.id] ?? "#2E5A88", opacity: 0.85, stroke: "rgba(247,243,232,.7)", lineWidth: 0.5 } };
-      },
-      data: EMPERORS.map((e) => 1), encode: { x: [0, 1], y: 0 },
-    }],
-  });
-  gantt.on("click", (p) => { location.href = `/emperors/${EMPERORS[p.dataIndex].id}`; });
+  let gantt = echarts.init(ganttEl, chartTheme());
+  function ganttOption() {
+    const t = chartTheme();
+    return {
+      grid: { left: 90, right: 30, top: 16, bottom: 34 },
+      xAxis: { type: "value", min: 1366, max: 1646, axisLabel: { fontSize: 11, color: t.sub }, splitLine: { lineStyle: { color: t.split } } },
+      yAxis: { type: "category", inverse: true, data: EMPERORS.map((e) => e.templeName + "·" + e.name), axisLabel: { fontSize: 11, color: t.ink }, axisTick: { show: false }, axisLine: { show: false } },
+      tooltip: { ...t.tooltip, formatter: (p) => { const e = EMPERORS[p.dataIndex]; return `<b>${e.templeName} ${e.name}</b>（${e.reignStart}–${e.reignEnd}）<br/><span style="font-size:12px">${e.era}${e.eras ? "／" + e.eras.map((x) => x.era).join("、") : ""}</span>`; } },
+      series: [{
+        type: "custom", renderItem: (params, api) => {
+          const emp = EMPERORS[params.dataIndex];
+          const a = api.coord([emp.reignStart, params.dataIndex]), b = api.coord([emp.reignEnd + 1, params.dataIndex]);
+          const h = api.size([0, 1])[1] * 0.62;
+          return { type: "rect", transition: [], shape: { x: a[0], y: a[1] - h / 2, width: b[0] - a[0], height: h },
+            style: { fill: COLOR[emp.id] ?? "#2E5A88", opacity: 0.85, stroke: "rgba(247,243,232,.5)", lineWidth: 0.5 } };
+        },
+        data: EMPERORS.map((e) => 1), encode: { x: [0, 1], y: 0 },
+      }],
+    };
+  }
+  function bindGantt() { gantt.on("click", (p) => { location.href = `/emperors/${EMPERORS[p.dataIndex].id}`; }); }
+  gantt.setOption(ganttOption()); bindGantt();
+  function rerender() {
+    tree.dispose(); tree = echarts.init(treeEl, chartTheme()); tree.setOption(treeOption()); bindTree();
+    gantt.dispose(); gantt = echarts.init(ganttEl, chartTheme()); gantt.setOption(ganttOption()); bindGantt();
+  }
+  onThemeChange(rerender);
   window.addEventListener("resize", () => { tree.resize(); gantt.resize(); });
 </script>

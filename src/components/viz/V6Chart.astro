@@ -9,27 +9,32 @@ const layers = [...new Set(events.events.flatMap((e) => e.layers))];
 </p>
 <script>
   import * as echarts from "echarts";
-  import { MING_THEME } from "../../lib/echarts-theme.js";
+  import { chartTheme, onThemeChange } from "../../lib/echarts-theme.js";
   import events from "../../data/events/events.json";
 
   const LAYER_COLORS = { 政治: "#A02C2C", 军事: "#9E5B3C", 制度: "#5A4A6E", 经济: "#C6A664", 对外: "#2E5A88", 文化: "#3E7C59", 后宫: "#B3541E" };
   const layers = [...new Set(events.events.flatMap((e) => e.layers))];
-  const chart = echarts.init(document.getElementById("v6chart"), MING_THEME);
+  const el = document.getElementById("v6chart");
+  let chart = echarts.init(el, chartTheme());
 
-  chart.setOption({
-    grid: { left: 70, right: 24, top: 40, bottom: 56 },
-    xAxis: { type: "value", min: 1366, max: 1647, splitLine: { lineStyle: { color: "rgba(138,109,59,.15)" } }, axisLabel: { fontSize: 11, color: "#5C5346" } },
-    yAxis: { type: "category", data: layers, axisTick: { show: false }, splitLine: { lineStyle: { color: "rgba(138,109,59,.12)" } }, axisLabel: { fontSize: 12, color: "#2B2620" } },
-    legend: { show: false },
-    tooltip: {
-      formatter: (p) => `<b>${p.data.value[0]}</b> · ${p.data.title}<br/><span style="color:#5C5346">${p.data.date ?? ""}　点击查看详情</span>`,
-    },
-    series: layers.map((ly) => ({
-      name: ly, type: "scatter", symbolSize: 9,
-      itemStyle: { color: LAYER_COLORS[ly] ?? "#6B4E2E", opacity: 0.85 },
-      data: events.events.filter((e) => e.layers.includes(ly)).map((e) => ({ value: [e.year, ly], title: e.title, id: e.id })),
-    })),
-  });
-  chart.on("click", (p) => { if (p.data?.id) location.href = `/events/${p.data.id}`; });
+  function buildOption() {
+    const t = chartTheme();
+    return {
+      grid: { left: 70, right: 24, top: 40, bottom: 56 },
+      xAxis: { type: "value", min: 1366, max: 1647, splitLine: { lineStyle: { color: t.split } }, axisLabel: { fontSize: 11, color: t.sub } },
+      yAxis: { type: "category", data: layers, axisTick: { show: false }, splitLine: { lineStyle: { color: t.split } }, axisLabel: { fontSize: 12, color: t.ink } },
+      legend: { show: false },
+      tooltip: { ...t.tooltip, formatter: (p) => `<b>${p.data.value[0]}</b> · ${p.data.title}<br/><span style="color:#8a8578">${p.data.date ?? ""}　点击查看详情</span>` },
+      series: layers.map((ly) => ({
+        name: ly, type: "scatter", symbolSize: 9,
+        itemStyle: { color: LAYER_COLORS[ly] ?? "#6B4E2E", opacity: 0.85 },
+        data: events.events.filter((e) => e.layers.includes(ly)).map((e) => ({ value: [e.year, ly], title: e.title, id: e.id })),
+      })),
+    };
+  }
+  function render() { chart.setOption(buildOption()); }
+  function bind() { chart.on("click", (p) => { if (p.data?.id) location.href = `/events/${p.data.id}`; }); }
+  render(); bind();
+  onThemeChange(() => { chart.dispose(); chart = echarts.init(el, chartTheme()); render(); bind(); });
   window.addEventListener("resize", () => chart.resize());
 </script>
