@@ -14,6 +14,12 @@ const current = (href) => path === href || (href !== "/" && path.startsWith(href
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{title}</title>
   <meta name="description" content="面向学生、明史爱好者与小说创作者的明代历史知识网站：交互地图、权力结构、十六帝、大事年表与人物库。" />
+  <link rel="canonical" href={`https://ming-history.kuige.me${path === "/" ? "/" : path}`} />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="明史" />
+  <meta property="og:title" content={title} />
+  <meta property="og:url" content={`https://ming-history.kuige.me${path === "/" ? "/" : path}`} />
+  <meta name="twitter:card" content="summary" />
   <link rel="stylesheet" href="/styles/global.css" />
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%23A02C2C'/%3E%3Ctext x='16' y='23' font-size='20' text-anchor='middle' fill='%23F7F3E8' font-family='serif'%3E明%3C/text%3E%3C/svg%3E" />
 </head>
@@ -26,6 +32,7 @@ const current = (href) => path === href || (href !== "/" && path.startsWith(href
       ))}
       <a href="/glossary">术语</a>
       <a href="/sources">资料库</a>
+      <a class="kuige-entry" href="https://kuige.me/" target="_blank" rel="noopener" title="kuige.me" style="text-decoration:none">魁歌 · 独立开发者</a>
     </nav>
   </header>
 
@@ -64,5 +71,6 @@ const current = (href) => path === href || (href !== "/" && path.startsWith(href
       </div>
     </div>
   </footer>
+  <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "948f2535a9dd4775a436c677b3c950e4"}'></script>
 </body>
 </html>
