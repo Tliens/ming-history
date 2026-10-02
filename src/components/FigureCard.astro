@@ -1,0 +1,26 @@
+---
+import { manifest } from "../lib/data.js";
+const { id, alt = "" } = Astro.props;
+const img = manifest.images.find((i) => i.id === id);
+const missing = manifest.knownMissing?.find((m) => m.id === id);
+---
+{img ? (
+  <figure class="figcard">
+    <img src={`/images/${img.file}`} alt={alt || img.subject || img.id} loading="lazy" />
+    <figcaption>
+      <strong>{img.subject || img.commonsTitle.replace("File:", "")}</strong>
+      <span class="lic">{img.license}</span><br />
+      {img.credit ? <span set:html={img.credit.replace(/<[^>]+>/g, "").slice(0, 80) + "<br/>"} /> : null}
+      来源：<a href={img.source} rel="license">Wikimedia Commons</a>
+    </figcaption>
+  </figure>
+) : missing ? (
+  <figure class="figcard">
+    <div style="aspect-ratio:3/4;display:flex;align-items:center;justify-content:center;background:rgba(138,109,59,.08);color:var(--c-ink-2);font-size:13px;text-align:center;padding:12px">
+      无存世官方像<br />（{missing.reason}）
+    </div>
+    <figcaption>本站不以后出传闻像顶替；将配自绘线描并标注「想象图」。</figcaption>
+  </figure>
+) : (
+  <figure class="figcard"><figcaption>图像暂缺（{id}）</figcaption></figure>
+)}

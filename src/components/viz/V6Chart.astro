@@ -1,0 +1,35 @@
+---
+// V6 大事时间轴（七轨散点：政治/军事/制度/经济/对外/文化/后宫）
+import events from "../../data/events/events.json";
+const layers = [...new Set(events.events.flatMap((e) => e.layers))];
+---
+<div id="v6chart" style="height:480px" aria-label="大事时间轴图表"></div>
+<p style="font-size:12px;color:var(--c-ink-2);margin-top:8px">
+  纵轴为事件分层（点图例可隐藏/显示轨道），横轴为年份；<strong>点击散点直达事件详情页</strong>。共 {events.events.length} 条。
+</p>
+<script>
+  import * as echarts from "echarts";
+  import { MING_THEME } from "../../lib/echarts-theme.js";
+  import events from "../../data/events/events.json";
+
+  const LAYER_COLORS = { 政治: "#A02C2C", 军事: "#9E5B3C", 制度: "#5A4A6E", 经济: "#C6A664", 对外: "#2E5A88", 文化: "#3E7C59", 后宫: "#B3541E" };
+  const layers = [...new Set(events.events.flatMap((e) => e.layers))];
+  const chart = echarts.init(document.getElementById("v6chart"), MING_THEME);
+
+  chart.setOption({
+    grid: { left: 70, right: 24, top: 40, bottom: 56 },
+    xAxis: { type: "value", min: 1366, max: 1647, splitLine: { lineStyle: { color: "rgba(138,109,59,.15)" } }, axisLabel: { fontSize: 11, color: "#5C5346" } },
+    yAxis: { type: "category", data: layers, axisTick: { show: false }, splitLine: { lineStyle: { color: "rgba(138,109,59,.12)" } }, axisLabel: { fontSize: 12, color: "#2B2620" } },
+    legend: { show: false },
+    tooltip: {
+      formatter: (p) => `<b>${p.data.value[0]}</b> · ${p.data.title}<br/><span style="color:#5C5346">${p.data.date ?? ""}　点击查看详情</span>`,
+    },
+    series: layers.map((ly) => ({
+      name: ly, type: "scatter", symbolSize: 9,
+      itemStyle: { color: LAYER_COLORS[ly] ?? "#6B4E2E", opacity: 0.85 },
+      data: events.events.filter((e) => e.layers.includes(ly)).map((e) => ({ value: [e.year, ly], title: e.title, id: e.id })),
+    })),
+  });
+  chart.on("click", (p) => { if (p.data?.id) location.href = `/events/${p.data.id}`; });
+  window.addEventListener("resize", () => chart.resize());
+</script>

@@ -1,0 +1,30 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import EraStrip from "../../components/EraStrip.astro";
+import V6Chart from "../../components/viz/V6Chart.astro";
+import { events, eraOf } from "../../lib/data.js";
+const sorted = [...events.events].sort((a, b) => a.year - b.year);
+---
+<BaseLayout title="大事年表" crumbs={[["/", "首页"], ["", "大事"]]}>
+  <div class="wrap">
+    <div class="page-head">
+      <h1>大事年表</h1>
+      <p class="lede">骨干大事 {events.events.length} 条，覆盖九个阶段至南明。每条含起因—经过—结果—影响四段与分级出处。</p>
+    </div>
+    <EraStrip />
+    <div class="card" style="padding:16px 12px 8px;margin:20px 0"><V6Chart /></div>
+    <div style="display:grid;gap:10px">
+      {sorted.map((ev) => {
+        const { text } = eraOf(ev.year);
+        return (
+          <a class="card" href={`/events/${ev.id}`} style="display:flex;gap:14px;align-items:baseline;padding:12px 16px">
+            <strong style="font-family:var(--font-display);font-size:17px;min-width:52px">{ev.year}</strong>
+            <span style="font-size:11px;color:var(--c-ink-2);min-width:76px">{text}</span>
+            <strong>{ev.title}</strong>
+            <span style="margin-left:auto;font-size:11px;color:var(--c-ink-2)">{ev.layers.join(" · ")}</span>
+          </a>
+        );
+      })}
+    </div>
+  </div>
+</BaseLayout>

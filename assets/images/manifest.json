@@ -1,0 +1,231 @@
+{
+  "meta": {
+    "fetched": "2026-10-02",
+    "policy": "仅收录 PD/CC 内容；来源与许可逐图记录"
+  },
+  "images": [
+    {
+      "id": "emperor-hongwu",
+      "file": "emperor-hongwu.jpg",
+      "commonsTitle": "File:A Seated Portrait of Ming Emperor Taizu.jpg",
+      "artist": "國立故宮博物院",
+      "license": "CC0",
+      "credit": "<a rel=\"nofollow\" class=\"external free\" href=\"https://digitalarchive.npm.gov.tw/Collection/Detail/1846?dep=P\">https://digitalarchive.npm.gov.tw/Collection/Detail/1846?dep=P</a>",
+      "source": "https://commons.wikimedia.org/wiki/File:%E6%98%8E%E5%A4%AA%E7%A5%96%E5%9D%90%E5%83%8F%EF%BC%88%E4%B8%80%EF%BC%89_%E8%BB%B8.jpg",
+      "downloadedKB": 248,
+      "subject": "明太祖官方正形坐像（翼善冠团龙常服）",
+      "note": "2026-10-02 目检甄别：Commons「明太祖坐像（一）軸」为民间异相本，已降级为 legend 素材"
+    },
+    {
+      "id": "emperor-yongle",
+      "file": "emperor-yongle.jpg",
+      "commonsTitle": "File:Anonymous-Ming Chengzu.jpg",
+      "artist": "<div class=\"fn value\">\n<table cellpadding=\"0\" cellspacing=\"0\"><tbody><tr><td>Unknown author<span style=\"display: none;\">Unknown author</span></td><td valign=\"top\"> <span class=\"mw-valign-text-top nopr",
+      "license": "Public domain",
+      "credit": "Zhongguo gu dai shu hua jian ding zu (中国古代书画鑑定组). 2000. Zhongguo hui hua quan ji (中国绘画全集). Zhongguo mei shu fen lei quan ji. Beijing: Wen wu chu ban she. Volume 10.",
+      "source": "https://commons.wikimedia.org/wiki/File:Anonymous-Ming_Chengzu.jpg",
+      "downloadedKB": 504
+    },
+    {
+      "id": "emperor-hongxi",
+      "file": "emperor-hongxi.jpg",
+      "commonsTitle": "File:明仁宗坐像 軸.jpg",
+      "artist": "國立故宮博物院",
+      "license": "CC0",
+      "credit": "<a rel=\"nofollow\" class=\"external free\" href=\"https://digitalarchive.npm.gov.tw/Collection/Detail/1856?dep=P\">https://digitalarchive.npm.gov.tw/Collection/Detail/1856?dep=P</a>",
+      "source": "https://commons.wikimedia.org/wiki/File:%E6%98%8E%E4%BB%81%E5%AE%97%E5%9D%90%E5%83%8F_%E8%BB%B8.jpg",
+      "downloadedKB": 220
+    },
+    {
+      "id": "emperor-xuande",
+      "file": "emperor-xuande.jpg",
+      "commonsTitle": "File:明宣宗坐像（一） 軸.jpg",
+      "artist": "國立故宮博物院",
+      "license": "CC0",
+      "credit": "<a rel=\"nofollow\" class=\"external free\" href=\"https://digitalarchive.npm.gov.tw/Collection/Detail/1875?dep=P\">https://digitalarchive.npm.gov.tw/Collection/Detail/1875?dep=P</a>",
+      "source": "https://commons.wikimedia.org/wiki/File:%E6%98%8E%E5%AE%A3%E5%AE%97%E5%9D%90%E5%83%8F%EF%BC%88%E4%B8%80%EF%BC%89_%E8%BB%B8.jpg",
+      "downloadedKB": 287
+    },
+    {
+      "id": "emperor-yingzong",
+      "file": "emperor-yingzong.jpg",
+      "commonsTitle": "File:明英宗坐像 軸.jpg",
+      "artist": "國立故宮博物院",
+      "license": "CC0",
+      "credit": "<a rel=\"nofollow\" class=\"external free\" href=\"https://digitalarchive.npm.gov.tw/Collection/Detail/1876?dep=P\">https://digitalarchive.npm.gov.tw/Collection/Detail/1876?dep=P</a>",
+      "source": "https://commons.wikimedia.org/wiki/File:%E6%98%8E%E8%8B%B1%E5%AE%97%E5%9D%90%E5%83%8F_%E8%BB%B8.jpg",
+      "downloadedKB": 310
+    },
+    {
+      "id": "emperor-hongzhi",
+      "file": "emperor-hongzhi.jpg",
+      "commonsTitle": "File:Hongzhi1.jpg",
+      "artist": "<div class=\"fn value\">\n<table cellpadding=\"0\" cellspacing=\"0\"><tbody><tr><td>Unknown author<span style=\"display: none;\">Unknown author</span></td><td valign=\"top\"> <span class=\"mw-valign-text-top nopr",
+      "license": "Public domain",
+      "credit": "Digitized by NPM; image is directly from <a rel=\"nofollow\" class=\"external text\" href=\"https://new.shuge.org/view/li_dai_di_hou_xiang_zhou/\">Shuge</a>",
+      "source": "https://commons.wikimedia.org/wiki/File:Hongzhi1.jpg",
+      "downloadedKB": 454
+    },
+    {
+      "id": "emperor-zhengde",
+      "file": "emperor-zhengde.jpg",
+      "commonsTitle": "File:Ming Wuzong.jpg",
+      "artist": "<div class=\"fn value\">\n<table cellpadding=\"0\" cellspacing=\"0\"><tbody><tr><td>Unknown author<span style=\"display: none;\">Unknown author</span></td><td valign=\"top\"> <span class=\"mw-valign-text-top nopr",
+      "license": "Public domain",
+      "credit": "Digitized by NPM; image is directly from <a rel=\"nofollow\" class=\"external text\" href=\"https://new.shuge.org/view/li_dai_di_hou_xiang_zhou/\">Shuge</a>",
+      "source": "https://commons.wikimedia.org/wiki/File:Ming_Wuzong.jpg",
+      "downloadedKB": 470
+    },
+    {
+      "id": "emperor-jiajing",
+      "file": "emperor-jiajing.jpg",
+      "commonsTitle": "File:明世宗坐像.tif",
+      "artist": "",
+      "license": "Public domain",
+      "credit": "<a rel=\"nofollow\" class=\"external text\" href=\"https://theme.npm.edu.tw/opendata/DigitImageSets.aspx?sNo=04012184\">明世宗坐像　軸</a>. National Palace Museum Open Data. Taipei: National Palace Museum.",
+      "source": "https://commons.wikimedia.org/wiki/File:%E6%98%8E%E4%B8%96%E5%AE%97%E5%9D%90%E5%83%8F.tif",
+      "downloadedKB": 397
+    },
+    {
+      "id": "emperor-longqing",
+      "file": "emperor-longqing.jpg",
+      "commonsTitle": "File:明穆宗画像.jpg",
+      "artist": "",
+      "license": "Public domain",
+      "credit": "<a rel=\"nofollow\" class=\"external free\" href=\"https://www.shuge.org/view/li_dai_di_hou_ban_shen_xiang_ce/\">https://www.shuge.org/view/li_dai_di_hou_ban_shen_xiang_ce/</a>",
+      "source": "https://commons.wikimedia.org/wiki/File:%E6%98%8E%E7%A9%86%E5%AE%97%E7%94%BB%E5%83%8F.jpg",
+      "downloadedKB": 351
+    },
+    {
+      "id": "emperor-wanli",
+      "file": "emperor-wanli.jpg",
+      "commonsTitle": "File:MingShenzong1.jpg",
+      "artist": "<div class=\"fn value\">\n<table cellpadding=\"0\" cellspacing=\"0\"><tbody><tr><td>Unknown author<span style=\"display: none;\">Unknown author</span></td><td valign=\"top\"> <span class=\"mw-valign-text-top nopr",
+      "license": "Public domain",
+      "credit": "Digitized by NPM; image is directly from <a rel=\"nofollow\" class=\"external text\" href=\"https://new.shuge.org/view/li_dai_di_hou_xiang_zhou/\">Shuge</a>",
+      "source": "https://commons.wikimedia.org/wiki/File:MingShenzong1.jpg",
+      "downloadedKB": 412
+    },
+    {
+      "id": "emperor-taichang",
+      "file": "emperor-taichang.jpg",
+      "commonsTitle": "File:明光宗皇帝.jpg",
+      "artist": "",
+      "license": "Public domain",
+      "credit": "<a rel=\"nofollow\" class=\"external free\" href=\"https://www.shuge.org/view/li_dai_di_hou_ban_shen_xiang_ce/\">https://www.shuge.org/view/li_dai_di_hou_ban_shen_xiang_ce/</a>",
+      "source": "https://commons.wikimedia.org/wiki/File:%E6%98%8E%E5%85%89%E5%AE%97%E7%9A%87%E5%B8%9D.jpg",
+      "downloadedKB": 462
+    },
+    {
+      "id": "consort-xiaohe",
+      "file": "consort-xiaohe.jpg",
+      "commonsTitle": "File:明代帝后半身像（二） 冊 孝和皇后；孝純皇后.jpg",
+      "artist": "明朝画师",
+      "license": "Public domain",
+      "credit": "<a rel=\"nofollow\" class=\"external free\" href=\"https://theme.npm.edu.tw/opendata/DigitImageSets.aspx?sNo=04021153\">https://theme.npm.edu.tw/opendata/DigitImageSets.aspx?sNo=04021153</a>",
+      "source": "https://commons.wikimedia.org/wiki/File:%E6%98%8E%E4%BB%A3%E5%B8%9D%E5%90%8E%E5%8D%8A%E8%BA%AB%E5%83%8F%EF%BC%88%E4%BA%8C%EF%BC%89_%E5%86%8A_%E5%AD%9D%E5%92%8C%E7%9A%87%E5%90%8E%EF%BC%9B%E5%AD%9D%E7%B4%94%E7%9A%87%E5%90%8E.jpg",
+      "downloadedKB": 199
+    },
+    {
+      "id": "emperor-chenghua",
+      "file": "emperor-chenghua.jpg",
+      "commonsTitle": "File:MingXianzong1.jpg",
+      "artist": "<div class=\"fn value\">\n<table cellpadding=\"0\" cellspacing=\"0\"><tbody><tr><td>Unknown author<span style=\"display: none;\">Unknown author</span></td><td valign=\"top\"> <span class=\"mw-valign-text-top nopr",
+      "license": "Public domain",
+      "credit": "Digitized by NPM; image is directly from <a rel=\"nofollow\" class=\"external text\" href=\"https://new.shuge.org/view/li_dai_di_hou_xiang_zhou/\">Shuge</a>",
+      "source": "https://commons.wikimedia.org/wiki/File:MingXianzong1.jpg",
+      "downloadedKB": 449
+    },
+    {
+      "id": "emperor-tianqi",
+      "file": "emperor-tianqi.jpg",
+      "commonsTitle": "File:明熹宗朱由校像 故00006209.jpg",
+      "artist": "<div class=\"fn value\">\n<table cellpadding=\"0\" cellspacing=\"0\"><tbody><tr><td>Unknown author<span style=\"display: none;\">Unknown author</span></td><td valign=\"top\"> <span class=\"mw-valign-text-top nopr",
+      "license": "Public domain",
+      "credit": "<a rel=\"nofollow\" class=\"external text\" href=\"https://www.flickr.com/people/101561334@N08\">Gary Todd</a>, <a rel=\"nofollow\" class=\"external free\" href=\"https://www.flickr.com/photos/101561334@N08/9863",
+      "source": "https://commons.wikimedia.org/wiki/File:%E6%98%8E%E7%86%B9%E5%AE%97%E6%9C%B1%E7%94%B1%E6%A0%A1%E5%83%8F_%E6%95%8500006209.jpg",
+      "downloadedKB": 531
+    },
+    {
+      "id": "scene-gugong-map",
+      "file": "scene-gugong-map.jpg",
+      "commonsTitle": "File:北京宫城图轴.jpg",
+      "artist": "Zhu Bang 朱邦",
+      "license": "Public domain",
+      "credit": "<a rel=\"nofollow\" class=\"external free\" href=\"https://www.shuge.org/meet/topic/13768/\">https://www.shuge.org/meet/topic/13768/</a>",
+      "source": "https://commons.wikimedia.org/wiki/File:%E5%8C%97%E4%BA%AC%E5%AE%AB%E5%9F%8E%E5%9B%BE%E8%BD%B4.jpg",
+      "downloadedKB": 423
+    },
+    {
+      "id": "scene-taihedian",
+      "file": "scene-taihedian.jpg",
+      "commonsTitle": "File:Hall of Supreme Harmony 2010.jpg",
+      "artist": "<a href=\"//commons.wikimedia.org/wiki/User:Sfu\" title=\"User:Sfu\">Marcin Białek</a>",
+      "license": "CC BY-SA 4.0",
+      "credit": "<span class=\"int-own-work\" lang=\"en\">Own work</span>",
+      "source": "https://commons.wikimedia.org/wiki/File:Hall_of_Supreme_Harmony_2010.jpg",
+      "downloadedKB": 38
+    },
+    {
+      "id": "scene-xiaoling",
+      "file": "scene-xiaoling.jpg",
+      "commonsTitle": "File:明孝陵神道.JPG",
+      "artist": "<a href=\"//commons.wikimedia.org/w/index.php?title=User:Gyhntim&amp;action=edit&amp;redlink=1\" class=\"new\" title=\"User:Gyhntim (page does not exist)\">钟逸骏</a>",
+      "license": "CC BY-SA 3.0",
+      "credit": "<span class=\"int-own-work\" lang=\"en\">Own work</span>",
+      "source": "https://commons.wikimedia.org/wiki/File:%E6%98%8E%E5%AD%9D%E9%99%B5%E7%A5%9E%E9%81%93.JPG",
+      "downloadedKB": 259
+    },
+    {
+      "id": "scene-changling",
+      "file": "scene-changling.jpg",
+      "commonsTitle": "File:明长陵祾恩殿全景.jpg",
+      "artist": "<a href=\"//commons.wikimedia.org/wiki/User:%E5%8E%86%E5%8F%B2%E7%A0%94%E7%A9%B6\" title=\"User:历史研究\">历史研究</a>",
+      "license": "CC BY-SA 4.0",
+      "credit": "<span class=\"int-own-work\" lang=\"en\">Own work</span>",
+      "source": "https://commons.wikimedia.org/wiki/File:%E6%98%8E%E9%95%BF%E9%99%B5%E7%A5%BE%E6%81%A9%E6%AE%BF%E5%85%A8%E6%99%AF.jpg",
+      "downloadedKB": 198
+    },
+    {
+      "id": "scene-wokou",
+      "file": "scene-wokou.jpg",
+      "commonsTitle": "File:Ming soldiers 02.jpg",
+      "artist": "Unknown author<span style=\"display: none;\">Unknown author</span>",
+      "license": "Public domain",
+      "credit": "Original painting 'Wakō-zukan (《倭寇図巻》)', unknown immediate source",
+      "source": "https://commons.wikimedia.org/wiki/File:Ming_soldiers_02.jpg",
+      "downloadedKB": 208,
+      "subject": "《倭寇図巻》明军与倭寇作战段（东京大学藏本）"
+    },
+    {
+      "id": "emperor-hongwu-legend",
+      "file": "emperor-hongwu-legend.jpg",
+      "commonsTitle": "File:明太祖坐像（一） 軸.jpg",
+      "artist": "",
+      "license": "Public domain",
+      "credit": "",
+      "source": "https://commons.wikimedia.org/wiki/File:%E6%98%8E%E5%A4%AA%E7%A5%96%E5%9D%90%E5%83%8F%EF%BC%88%E4%B8%80%EF%BC%89_%E8%BB%B8.jpg",
+      "subject": "明太祖「异相」民间画本（麻脸凸颌）",
+      "downloadedKB": 248,
+      "note": "不作官方肖像；用于「画像与形象建构」专题对比（学界多认为异相系为晚明以来讹传/丑化）"
+    }
+  ],
+  "knownMissing": [
+    {
+      "id": "emperor-jianwen",
+      "reason": "无存世官方像；自绘线描+「想象图」标注"
+    },
+    {
+      "id": "emperor-jingtai",
+      "reason": "代宗无存世官方坐像；自绘线描（或用景泰陵照片代替）"
+    },
+    {
+      "id": "emperor-chongzhen",
+      "reason": "传世画像均为民间本需甄别；二期专项核验"
+    },
+    {
+      "id": "scene-chujing-rubi",
+      "reason": "《出警入跸图》Commons 检索未中；二期从台北故宫开放资料定向获取"
+    }
+  ]
+}

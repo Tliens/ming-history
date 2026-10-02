@@ -1,0 +1,45 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+const STAGES = [
+  ["B1", "皇权奠基", "洪武 1368–1398", "废相、酷烈整肃", "胡惟庸案废丞相、蓝玉案、空印/郭桓案"],
+  ["B2", "削藩与逆转", "建文 1398–1402", "文官改制 + 激进削藩", "靖难之役、方孝孺案"],
+  ["B3", "永乐重构", "永乐 1402–1424", "内阁+东厂双轨、迁都", "设内阁东厂、削藩完成、五征漠北"],
+  ["B4", "仁宣过渡", "洪熙—宣德 1424–1435", "三杨辅政、内阁制度化", "票拟制度化、内书堂、巡抚常态化"],
+  ["B5", "危机与挽回", "正统—天顺 1435–1464", "宦官第一次专权", "土木堡、北京保卫战、夺门"],
+  ["B6", "膨胀与整饬", "成化—弘治 1464–1505", "西厂、传奉官、弘治回调", "汪直与西厂、成化犁庭、弘治中兴"],
+  ["B7", "权相与青词", "正德—隆庆 1505–1572", "皇权怠政→阁权宦权填补", "刘瑾、大礼议、严嵩、隆庆开关"],
+  ["B8", "阁权顶峰与崩解", "万历 1572–1620", "张居正时代→怠政→党争", "考成法、国本之争、三大征、萨尔浒"],
+  ["B9", "阉焰与倾覆", "天启—崇祯 1620–1644", "阉党专权→崇祯翻覆", "魏忠贤、己巳之变、甲申之变"],
+];
+---
+<BaseLayout title="权力结构与演变" crumbs={[["/", "首页"], ["", "权力"]]}>
+  <div class="wrap">
+    <div class="page-head">
+      <h1>权力结构与演变</h1>
+      <p class="lede">全站主线。制度怎么搭起来的（结构），权力如何流转（机制），276 年怎么变的（演变）。</p>
+    </div>
+    <div style="display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));margin:20px 0 36px">
+      <a class="card" href="/power/structure"><h3 style="margin:0 0 6px">🏛 制度解剖（V1）</h3><p style="margin:0;font-size:13px;color:var(--c-ink-2)">四期可切换的组织结构图 + 机构词条。</p></a>
+      <a class="card" href="/power/flow"><h3 style="margin:0 0 6px">📜 一份奏章的旅程（V2）</h3><p style="margin:0;font-size:13px;color:var(--c-ink-2)">票拟—批红—封驳—执行，步进动画看懂决策链。</p></a>
+      <a class="card" href="/power/evolution"><h3 style="margin:0 0 6px">📈 消长长卷（V3）</h3><p style="margin:0;font-size:13px;color:var(--c-ink-2)">全站招牌图：皇权·阁权·宦权·言官 276 年博弈。</p></a>
+      <a class="card" href="/power/secretaries"><h3 style="margin:0 0 6px">👥 首辅序列（V4）</h3><p style="margin:0;font-size:13px;color:var(--c-ink-2)">56 位首辅 64 任任期甘特图，与皇帝对位。</p></a>
+    </div>
+
+    <h2 style="font-size:20px;border-bottom:1px solid rgba(138,109,59,.3);padding-bottom:8px">权力演变九阶段</h2>
+    <table class="data" style="margin-top:14px">
+      <tr><th style="width:44px">阶段</th><th>名称</th><th>时期</th><th>格局关键词</th><th>核心事件</th></tr>
+      {STAGES.map(([id, name, span, key, evts]) => (
+        <tr>
+          <td><strong>{id}</strong></td>
+          <td><a href={`/power/evolution#${id}`}>{name}</a></td>
+          <td style="white-space:nowrap">{span}</td>
+          <td>{key}</td>
+          <td style="font-size:13px;color:var(--c-ink-2)">{evts}</td>
+        </tr>
+      ))}
+    </table>
+    <p style="font-size:13px;color:var(--c-ink-2);margin-top:10px">
+      贯穿专题（票拟与批红的博弈史、言官政治、「不上朝≠不管事」、明代宦官为何不能篡位）随叙事页于 Phase 4 上线。
+    </p>
+  </div>
+</BaseLayout>

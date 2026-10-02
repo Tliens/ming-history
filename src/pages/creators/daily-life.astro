@@ -1,0 +1,36 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+const MONEY = [
+  { t: "宝钞时代（洪武—宣德）", d: "大明宝钞为法定主币，禁金银交易；发行失控后持续贬值。写这段年代：市面用钞与铜钱，银子是违禁品。", src: "①③" },
+  { t: "金花银转折（正统）", d: "江南田赋部分折银征收（「金花银」），白银获得事实上的法币地位。此后白银逐步占领大额交易。", src: "①③" },
+  { t: "白银时代（隆庆后）", d: "1567 隆庆开关后，经马尼拉大帆船与澳门流入的日本、美洲白银成为通货；一条鞭法（1581）把折银制度化。写万历朝：大额用银、小额用钱。", src: "①③" },
+];
+const PRICES = [
+  ["米（万历基准）", "1 两 ≈ 2 石 ≈ 150–190 公斤", "折算参考：1 两 ≈ 600–900 元（购买力粗估）"],
+  ["绢/布", "绢 1 匹约 0.5–0.7 两；棉布 1 匹约 0.1–0.3 两", "地域与时点波动大"],
+  ["雇工", "长工年工资约 2–5 两 + 食宿", "万历年间北京杂役日银约 0.03–0.05 两"],
+  ["宅院（北京小宅）", "数十两至百余两", "豪宅另论"],
+  ["战马", "20–50 两（边镇市价）", "战时暴涨"],
+];
+---
+<BaseLayout title="钱与物 · 创作者" crumbs={[["/", "首页"], ["/creators", "创作者"], ["", "钱与物"]]}>
+  <div class="wrap prose">
+    <div class="page-head">
+      <h1>钱与物：货币与物价基准</h1>
+      <p class="lede">写对「钱」是历史感的底座。三段货币史 + 一张物价基准表。</p>
+    </div>
+    {MONEY.map((m) => (
+      <section><h2 style="font-size:19px">{m.t}</h2><p>{m.d} <span class="sb sb3">③</span></p></section>
+    ))}
+    <h2 style="font-size:19px">物价基准表（万历朝为主）</h2>
+    <table class="data">
+      <tr><th>品类</th><th>参考价</th><th>备注</th></tr>
+      {PRICES.map((p) => <tr><td><strong>{p[0]}</strong></td><td style="font-size:13px">{p[1]}</td><td style="font-size:12px;color:var(--c-ink-2)">{p[2]}</td></tr>)}
+    </table>
+    <aside class="mh-myth">
+      <h4>⚠ 最大的时代错位</h4>
+      洪武朝的市集上没人用银子——宝钞才是王法。白银通行是正统以后的事，全盛在隆庆开关之后。
+    </aside>
+    <p style="font-size:12px;color:var(--c-ink-2)">依据：《明史·食货志》①；黄仁宇《十六世纪明代中国之财政与税收》③；彭信威《中国货币史》③。</p>
+  </div>
+</BaseLayout>

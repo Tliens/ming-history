@@ -1,0 +1,96 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import EraStrip from "../../components/EraStrip.astro";
+import FigureCard from "../../components/FigureCard.astro";
+import InfoBox from "../../components/InfoBox.astro";
+import SourceBadge from "../../components/SourceBadge.astro";
+import { emperors, eraOf, eventsOfEmperor, secretariesOf, portraitOf } from "../../lib/data.js";
+import { EMPEROR_NARRATIVES } from "../../data/emperor-narratives.js";
+
+export function getStaticPaths() {
+  return emperors.emperors.map((e) => ({ params: { id: e.id }, props: { emp: e } }));
+}
+const { emp } = Astro.props;
+const portrait = portraitOf(emp.id);
+const reignEvents = eventsOfEmperor(emp);
+const secs = secretariesOf(emp);
+const nar = EMPEROR_NARRATIVES[emp.id];
+const eraNames = emp.eras ? emp.eras.map((x) => x.era).join("、") : emp.era;
+const DISPUTED_TEXT = {
+  death: "建文下落：焚死说（《明史》官修存疑笔法）与出亡说（《明史纪事本末》）并存 <span class='sb sb3'>③</span>",
+  mother: `${emp.templeName}生母：官修记载与「碽妃说」等考订并存 <span class="sb sb3">③</span>`,
+};
+const disputedItems = (emp.disputed ?? []).map((d) => DISPUTED_TEXT[d] ?? d);
+---
+<BaseLayout title={`${emp.templeName} ${emp.name}（${emp.era}）· 皇帝`} crumbs={[["/", "首页"], ["/emperors", "皇帝"], ["", emp.templeName]]}>
+  <div class="wrap">
+    <EraStrip current={eraNames.split("、")[0]} />
+    <div style="display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:40px;margin-top:24px" class="detail-grid">
+      <div>
+        <h1 style="margin:0">{emp.templeName} · {emp.name}</h1>
+        <p style="color:var(--c-ink-2);margin:6px 0 0">
+          年号 <strong>{eraNames}</strong>（{emp.eraStart ?? emp.eras?.[0].eraStart}–{emp.eraEnd ?? emp.eras?.at(-1).eraEnd}） ·
+          在位 {emp.reignStart}–{emp.reignEnd} · 享年 {emp.lifespan ?? "不详"}
+        </p>
+        <div class="tldr">{emp.brief}</div>
+
+        {nar && (
+          <>
+            <h2 style="font-size:19px">其人其政</h2>
+            <p>{nar.narrative}</p>
+            <details class="deep">
+              <summary>史评摘录</summary>
+              <p style="font-size:var(--fs-sm)">{nar.review}</p>
+            </details>
+          </>
+        )}
+
+        <h2>生平速览</h2>
+        <table class="data" style="max-width:640px">
+          <tr><th style="width:90px">生卒</th><td>{emp.birth}–{emp.death ?? "？"}</td></tr>
+          <tr><th>陵寝</th><td>{emp.tomb}</td></tr>
+          <tr><th>父</th><td>{emp.father}</td></tr>
+          <tr><th>母</th><td>{emp.mother}{emp.disputed?.includes("mother") ? "（存疑，见下框）" : ""}</td></tr>
+          <tr><th>即位</th><td>{emp.succession}</td></tr>
+        </table>
+
+        <h2>当朝大事（{reignEvents.length}）</h2>
+        <ol style="line-height:2">
+          {reignEvents.map((ev) => (
+            <li><a href={`/events/${ev.id}`}>{ev.year} · {ev.title}</a></li>
+          ))}
+        </ol>
+        {reignEvents.length === 0 && <p style="color:var(--c-ink-2)">本朝骨干大事收录中。</p>}
+
+        {emp.keywords && (
+          <p style="margin-top:20px">
+            {emp.keywords.map((k) => <span style="display:inline-block;border:1px solid rgba(138,109,59,.4);border-radius:12px;padding:1px 10px;font-size:12px;margin:2px">{k}</span>)}
+          </p>
+        )}
+
+        {disputedItems.length > 0 && (
+          <InfoBox kind="disputed" title="考据 · 诸说并列" items={disputedItems} />
+        )}
+        {emp.portraitNote && <InfoBox title="图像说明" items={[emp.portraitNote]} />}
+      </div>
+
+      <aside style="position:sticky;top:80px;align-self:start">
+        <FigureCard id={`emperor-${emp.id}`} alt={`${emp.templeName} ${emp.name} 坐像`} />
+        <div class="card" style="margin-top:16px">
+          <h3 style="margin:0 0 8px;font-size:15px">当朝首辅/阁臣序列</h3>
+          {secs.length ? (
+            <ol style="margin:0;padding-left:1.3em;font-size:13px;line-height:1.9">
+              {secs.slice(0, 8).map((s) => <li>{s.name}（{s.start}–{s.end}）</li>)}
+            </ol>
+          ) : <p style="font-size:13px;color:var(--c-ink-2)">本朝无内阁/首辅记录（洪武朝废相）。</p>}
+        </div>
+        <div class="card" style="margin-top:16px;font-size:13px">
+          <h3 style="margin:0 0 8px;font-size:15px">延伸</h3>
+          <a href={`/maps/empire`}>疆域地图（时间滑杆定位本朝）</a><br />
+          <a href={`/events?era=${emp.id}`}>按朝查看大事</a>
+        </div>
+      </aside>
+    </div>
+  </div>
+  <style>@media (max-width: 900px) { .detail-grid { grid-template-columns: 1fr !important; } }</style>
+</BaseLayout>

@@ -1,0 +1,56 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+const GROUPS = [
+  ["① 正史与官修", [
+    ["《明史》", "张廷玉等，332 卷", "帝王、职官、后妃、列传主干；注意清修政治滤镜，建州与南明叙事须以现代研究校核"],
+    ["《明实录》", "太祖—熹宗十三朝 + 崇祯长编", "逐日编年的一手档案；时间与数字的最终依据"],
+    ["《大明会典》", "弘治本 / 万历重修本", "行政法典总汇；职官、礼制、宫分、科举程式的条文依据"],
+  ]],
+  ["② 当时人著述", [
+    ["《国榷》", "谈迁", "私修编年；建州与革除之际可补《明史》讳处"],
+    ["《明史纪事本末》", "谷应泰", "80 卷本末体，事件叙事骨架"],
+    ["《万历野获编》", "沈德符", "掌故百科：后宫、风俗、对食等词条出处"],
+    ["《嘉靖以来首辅传》", "王世贞", "首辅序列与阁部掌故"],
+    ["《春明梦余录》", "孙承泽", "北京官署与制度运作细节"],
+  ]],
+  ["③ 现代研究", [
+    ["《明史讲义》", "孟森", "断代骨架与分期观"],
+    ["《晚明史》《明史十讲》", "樊树志", "晚明叙事基准"],
+    ["《万历十五年》", "黄仁宇", "大历史观（采用时注明「黄仁宇观点」）"],
+    ["《南明史》《明末农民战争史》", "顾诚", "南明与农民战争的批判性考订"],
+    ["《十六世纪明代中国之财政与税收》", "黄仁宇", "财政技术史"],
+    ["《明代国家机构研究》", "王天有", "职官结构"],
+    ["《明史选举志考论》", "郭培贵", "科举制度细节"],
+  ]],
+  ["④ 传闻与演义（不入正文，仅作辨析）", [
+    ["《明朝那些事儿》", "当年明月", "用于「流行叙事 vs 史实」对照"],
+    ["《明史讲义》以外的民间叙事", "——", "凡④级内容一律进误区框与考据框"],
+  ]],
+];
+---
+<BaseLayout title="资料库" crumbs={[["/", "首页"], ["", "资料库"]]}>
+  <div class="wrap" style="max-width:820px">
+    <div class="page-head">
+      <h1>资料库</h1>
+      <p class="lede">全站内容的史料依据总目。四级标注体系说明见页脚；引用格式：作者《书名·篇卷》（出版信息）。</p>
+    </div>
+    {GROUPS.map(([g, items]) => (
+      <section style="margin:22px 0">
+        <h2 style="font-size:18px;border-bottom:1px solid rgba(138,109,59,.3);padding-bottom:6px">{g}</h2>
+        <table class="data" style="margin-top:8px">
+          {items.map(([t, a, d]) => (
+            <tr><td style="width:220px"><strong>{t}</strong><br /><span style="font-size:12px;color:var(--c-ink-2)">{a}</span></td><td style="font-size:13px">{d}</td></tr>
+          ))}
+        </table>
+      </section>
+    ))}
+    <section style="margin:22px 0">
+      <h2 style="font-size:18px;border-bottom:1px solid rgba(138,109,59,.3);padding-bottom:6px">地图与图像数据</h2>
+      <ul style="font-size:14px;line-height:2">
+        <li>政区/卫所/驿路：<a href="https://doi.org/10.7910/DVN/29302">Hartwell China HGIS</a>（CC BY-NC-SA）、<a href="https://doi.org/10.7910/DVN/5RUXK8">Ming Garrisons</a>、<a href="https://doi.org/10.7910/DVN/SB8ZTM">Ming Courier Routes</a>（CHGIS，学术使用）</li>
+        <li>帝后画像等：<a href="https://commons.wikimedia.org/">Wikimedia Commons</a>（PD/CC，逐图署名见 <code>assets/images/manifest.json</code>）</li>
+        <li>全站数据文件：见仓库 <code>src/data/</code> 与 <code>src/geojson/</code>（含 ATTRIBUTION 署名规范）</li>
+      </ul>
+    </section>
+  </div>
+</BaseLayout>

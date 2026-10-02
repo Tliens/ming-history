@@ -1,0 +1,33 @@
+{
+  "name": "ming-history",
+  "color": ["#A02C2C", "#2E5A88", "#3E7C59", "#C6A664", "#8A6D3B", "#9E5B3C", "#5A4A6E", "#4E6E5D", "#B08D57", "#6E5C4E"],
+  "backgroundColor": "transparent",
+  "textStyle": {
+    "fontFamily": "\"Noto Sans SC\", \"PingFang SC\", sans-serif",
+    "color": "#2B2620"
+  },
+  "title": { "textStyle": { "color": "#2B2620", "fontSize": 18, "fontWeight": 600 }, "subtextStyle": { "color": "#5C5346", "fontSize": 13 } },
+  "legend": { "textStyle": { "color": "#5C5346", "fontSize": 12 }, "icon": "roundRect", "itemWidth": 12, "itemHeight": 8 },
+  "tooltip": {
+    "backgroundColor": "rgba(247,243,232,0.97)",
+    "borderColor": "rgba(138,109,59,0.4)",
+    "borderWidth": 1,
+    "textStyle": { "color": "#2B2620", "fontSize": 13 },
+    "extraCssText": "box-shadow:0 4px 16px rgba(43,38,32,.15);border-radius:8px;"
+  },
+  "categoryAxis": {
+    "axisLine": { "lineStyle": { "color": "#8A6D3B" } },
+    "axisTick": { "lineStyle": { "color": "#8A6D3B" } },
+    "axisLabel": { "color": "#5C5346", "fontSize": 12 },
+    "splitLine": { "lineStyle": { "color": "rgba(138,109,59,0.15)" } }
+  },
+  "valueAxis": {
+    "axisLine": { "show": false },
+    "axisLabel": { "color": "#5C5346", "fontSize": 12 },
+    "splitLine": { "lineStyle": { "color": "rgba(138,109,59,0.15)" } }
+  },
+  "graph": { "color": ["#A02C2C", "#2E5A88", "#3E7C59", "#C6A664", "#8A6D3B", "#9E5B3C", "#5A4A6E", "#4E6E5D"], "label": { "color": "#2B2620", "fontSize": 12 }, "lineStyle": { "color": "source", "curveness": 0.2 } },
+  "timeline": { "lineStyle": { "color": "#8A6D3B" }, "controlStyle": { "color": "#2B2620", "borderColor": "#8A6D3B" }, "checkpointStyle": { "color": "#C6A664", "borderColor": "#A02C2C" } },
+  "visualMap": { "textStyle": { "color": "#5C5346" }, "inRange": { "color": ["#F7F3E8", "#C6A664", "#A02C2C"] } },
+  "dataZoom": { "backgroundColor": "rgba(247,243,232,0.6)", "dataBackgroundColor": "rgba(138,109,59,0.15)", "fillerColor": "rgba(198,166,100,0.25)", "handleColor": "#A02C2C", "textStyle": { "color": "#5C5346" } }
+}

@@ -1,0 +1,7 @@
+---
+import { glossary } from "../lib/data.js";
+const { id } = Astro.props; // 术语 id
+const t = glossary.terms.find((x) => x.id === id);
+---
+{t && <a class="term-link" href={`/glossary#${id}`} title={`${t.term}：${t.def}`}>{t.term}</a>}
+<style>a.term-link { border-bottom: 1px dashed var(--c-qinghua); }</style>

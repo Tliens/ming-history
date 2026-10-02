@@ -1,0 +1,67 @@
+---
+// V2 一份奏章的旅程（HTML/CSS 流程 + 步进播放）
+const STEPS = [
+  { t: "① 呈递", who: "地方/官员", d: "题本（公事，用印）或奏本（私事）写就，投入通政使司；紧急军情可驿传直奏。" },
+  { t: "② 收发登记", who: "通政使司", d: "天下章奏的总门户：登记、校核、呈送御前；「灵活绕过通政司」的密奏渠道亦并存。" },
+  { t: "③ 票拟", who: "内阁", d: "阁臣阅章，拟出处理意见写在小票上，贴于章奏封套呈览——这是内阁权力的本体。" },
+  { t: "④ 批红", who: "皇帝／司礼监", d: "朱笔照批、改批或驳回。皇帝不视朝时，司礼监秉笔太监代批——宦权由此而生。" },
+  { t: "⑤ 封驳·抄发", who: "六科给事中", d: "科官审查：诏旨有失可封还驳正（封驳）；无误则抄发相关衙门执行，并注销督查。" },
+  { t: "⑥ 执行", who: "六部／都察院／地方", d: "六部承办、都察院稽核、督抚落实；重大政务经廷议、会推先行合议。" },
+  { t: "⑦ 反馈", who: "塘报·邸报", d: "执行结果以塘报（军情）、邸报（朝政）回传，形成信息闭环；御史与言官全程伺察。" },
+];
+const BRANCHES = [
+  { t: "留中", d: "皇帝扣下章奏不批发——万历怠政的标志性动作，官僚系统随之空转。" },
+  { t: "下诏狱", d: "章奏获罪：锦衣卫北镇抚司径直逮人，绕开三法司——皇权暴力的暗门。" },
+  { t: "密奏直达", d: "东厂密报、督抚密揭等绕开常规流程的私人信息通道。" },
+];
+---
+<div class="v2">
+  <div class="v2-controls">
+    <button id="v2play" style="border:1px solid var(--c-vermilion);color:var(--c-vermilion);background:none;border-radius:14px;padding:4px 16px;font-size:13px;cursor:pointer">▶ 自动播放</button>
+    <button id="v2next" style="border:1px solid rgba(138,109,59,.4);background:none;border-radius:14px;padding:4px 16px;font-size:13px;cursor:pointer">下一步 →</button>
+    <button id="v2reset" style="border:1px solid rgba(138,109,59,.4);background:none;border-radius:14px;padding:4px 16px;font-size:13px;cursor:pointer">重置</button>
+    <span id="v2readout" style="font-size:13px;color:var(--c-ink-2)"></span>
+  </div>
+  <ol class="v2-steps" style="list-style:none;margin:16px 0;padding:0">
+    {STEPS.map((s, i) => (
+      <li class="v2-step" data-i={i}>
+        <div class="v2-node">
+          <strong style="font-family:var(--font-display);font-size:16px">{s.t}</strong>
+          <span style="font-size:12px;color:var(--c-zhehuang);margin-left:8px">{s.who}</span>
+        </div>
+        <p style="margin:6px 0 0;font-size:14px">{s.d}</p>
+      </li>
+    ))}
+  </ol>
+  <details class="deep"><summary>特殊支线（权力的旁门）</summary>
+    {BRANCHES.map((b) => <p style="margin:8px 0"><strong>{b.t}</strong>：{b.d}</p>)}
+  </details>
+</div>
+<style>
+  .v2-steps { display: grid; gap: 10px; }
+  .v2-step { border: 1px solid rgba(138,109,59,.25); border-left: 3px solid rgba(138,109,59,.3); border-radius: 8px; padding: 12px 16px; transition: all .25s; opacity: .55; }
+  .v2-step.on { opacity: 1; border-left-color: var(--c-vermilion); background: rgba(160,44,44,.05); box-shadow: var(--shadow-1); }
+  .v2-step.on .v2-node::after { content: " ◀ 当前"; color: var(--c-vermilion); font-size: 12px; }
+</style>
+<script>
+  const steps = [...document.querySelectorAll(".v2-step")];
+  let cur = -1, timer = null;
+  const show = (i) => {
+    cur = i;
+    steps.forEach((el, k) => el.classList.toggle("on", k <= i));
+    const s = steps[i];
+    document.getElementById("v2readout").textContent = i >= 0 ? `${s.querySelector("strong").textContent} · ${s.querySelector("span").textContent}` : "";
+  };
+  const stop = () => { if (timer) { clearInterval(timer); timer = null; document.getElementById("v2play").textContent = "▶ 自动播放"; } };
+  document.getElementById("v2next").onclick = () => { stop(); show(Math.min(cur + 1, steps.length - 1)); };
+  document.getElementById("v2reset").onclick = () => { stop(); show(-1); };
+  document.getElementById("v2play").onclick = (e) => {
+    if (timer) return stop();
+    show(cur < 0 ? 0 : Math.min(cur + 1, steps.length - 1));
+    e.target.textContent = "⏸ 暂停";
+    timer = setInterval(() => {
+      if (cur >= steps.length - 1) return stop();
+      show(cur + 1);
+    }, 1600);
+  };
+</script>
