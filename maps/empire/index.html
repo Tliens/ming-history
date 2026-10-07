@@ -5,79 +5,10 @@
       const dark = t === "dark" || (t === "auto" && matchMedia("(prefers-color-scheme: dark)").matches);
       document.documentElement.dataset.theme = dark ? "dark" : "light";
     })();
-  </script><meta name="description" content="面向学生、明史爱好者与小说创作者的明代历史知识网站：交互地图、权力结构、十六帝、大事年表与人物库。"><link rel="canonical" href="https://ming-history.kuige.me/maps/empire/"><meta property="og:type" content="website"><meta property="og:site_name" content="明史"><meta property="og:title" content="明朝疆域与卫所 · 地图"><meta property="og:url" content="https://ming-history.kuige.me/maps/empire/"><meta name="twitter:card" content="summary"><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%23A02C2C'/%3E%3Ctext x='16' y='23' font-size='20' text-anchor='middle' fill='%23F7F3E8' font-family='serif'%3E明%3C/text%3E%3C/svg%3E"><link rel="stylesheet" href="/_astro/index.C9nF_af3.css"></head> <body> <header class="topnav"> <a class="brand" href="/"><span class="mh-seal">明</span><span>明史</span></a> <nav aria-label="主导航"> <a href="/maps" aria-current="page">地图</a><a href="/power">权力</a><a href="/emperors">皇帝</a><a href="/harem">后宫</a><a href="/events">大事</a><a href="/figures">人物</a><a href="/topics">专题</a><a href="/creators">创作者</a> <a href="/glossary">术语</a> <a href="/sources">资料库</a> <a class="kuige-entry" href="https://kuige.me/" target="_blank" rel="noopener" title="kuige.me" style="text-decoration:none">魁歌 · 独立开发者</a> </nav> <button id="themeToggle" class="tbtn" type="button" aria-label="切换主题">🌓</button> <button id="mnavBtn" class="tbtn mnav-toggle" type="button" aria-label="菜单" aria-expanded="false">☰</button> </header> <div class="mnav" id="mnav" aria-hidden="true"> <a href="/maps">地图</a><a href="/power">权力</a><a href="/emperors">皇帝</a><a href="/harem">后宫</a><a href="/events">大事</a><a href="/figures">人物</a><a href="/topics">专题</a><a href="/creators">创作者</a><a href="/glossary">术语</a><a href="/sources">资料库</a><a href="/learn">学习线</a> <a href="https://kuige.me/" target="_blank" rel="noopener">魁歌 · 独立开发者 ↗</a> </div> <div class="wrap"> <nav class="crumbs" aria-label="面包屑"> <a href="/">首页</a> › <a href="/maps">地图</a> › <span aria-current="page">疆域与卫所</span> </nav> </div> <main> <link rel="stylesheet" href="/vendor/leaflet.css"><script src="/vendor/leaflet.js"></script><div class="mapcore full" id="mapcore-full" style="height:calc(100vh - 64px);position:relative;background:var(--c-paper)"> <div class="mc-map" style="position:absolute;inset:0"></div>  <aside class="mc-panel" style="position:absolute;top:12px;right:12px;z-index:500;width:200px;background:var(--c-surface-2);border:1px solid var(--c-line);border-radius:8px;padding:12px;font-size:13px"> <strong style="font-size:12px;letter-spacing:.1em;color:var(--c-ink-2)">图 层</strong> <label style="display:flex;gap:6px;margin-top:6px"><input type="checkbox" data-ly="garr" checked> 卫所（随年份）</label> <label style="display:flex;gap:6px"><input type="checkbox" data-ly="stat"> 驿站（zoom≥6）</label> <label style="display:flex;gap:6px"><input type="checkbox" data-ly="route"> 驿路（zoom≥5）</label> <label style="display:flex;gap:6px"><input type="checkbox" data-ly="modern"> 今省界对照</label> <div style="margin-top:6px;font-size:11px;color:var(--c-ink-2)">点击政区查看考据名</div> </aside> <div class="mc-card" style="display:none;position:absolute;top:12px;left:12px;z-index:500;width:250px;background:var(--c-surface-2);border:1px solid var(--c-line);border-left:3px solid var(--c-vermilion);border-radius:8px;padding:12px;font-size:13px"> <button class="mc-close" style="position:absolute;top:6px;right:8px;border:0;background:none;cursor:pointer;color:var(--c-ink-2)">✕</button> <h3 class="mc-name" style="margin:0;font-size:18px"></h3> <div class="mc-alt" style="color:var(--c-disputed,#B3541E);font-size:12px;margin-top:2px"></div> <div class="mc-meta" style="color:var(--c-ink-2);margin-top:6px;line-height:1.6"></div> </div> <div class="mc-attrib" style="position:absolute;left:10px;bottom:76px;z-index:500;font-size:10px;color:var(--c-ink-2);max-width:340px;background:var(--c-surface-2);padding:5px 8px;border-radius:4px">
-政区：Hartwell 1391（CHGIS, CC BY-NC-SA, DOI:10.7910/DVN/29302）· 卫所/驿站/驿路：CHGIS（DOI:10.7910/DVN/5RUXK8 · SB8ZTM）· 命名考据见站内 research/R10
+  </script><meta name="description" content="面向学生、明史爱好者与小说创作者的明代历史知识网站：交互地图、权力结构、十六帝、大事年表与人物库。"><link rel="canonical" href="https://ming-history.kuige.me/maps/empire/"><meta property="og:type" content="website"><meta property="og:site_name" content="明史"><meta property="og:title" content="明朝疆域与卫所 · 地图"><meta property="og:url" content="https://ming-history.kuige.me/maps/empire/"><meta name="twitter:card" content="summary"><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%23A02C2C'/%3E%3Ctext x='16' y='23' font-size='20' text-anchor='middle' fill='%23F7F3E8' font-family='serif'%3E明%3C/text%3E%3C/svg%3E"><link rel="stylesheet" href="/_astro/index.DLFvlWi4.css"></head> <body> <header class="topnav"> <a class="brand" href="/"><span class="mh-seal">明</span><span>明史</span></a> <nav aria-label="主导航"> <a href="/maps" aria-current="page">地图</a><a href="/power">权力</a><a href="/emperors">皇帝</a><a href="/harem">后宫</a><a href="/events">大事</a><a href="/figures">人物</a><a href="/topics">专题</a><a href="/creators">创作者</a> <a href="/glossary">术语</a> <a href="/sources">资料库</a> <a class="kuige-entry" href="https://kuige.me/" target="_blank" rel="noopener" title="kuige.me" style="text-decoration:none">魁歌 · 独立开发者</a> </nav> <button id="themeToggle" class="tbtn" type="button" aria-label="切换主题">🌓</button> <button id="mnavBtn" class="tbtn mnav-toggle" type="button" aria-label="菜单" aria-expanded="false">☰</button> </header> <div class="mnav" id="mnav" aria-hidden="true"> <a href="/maps">地图</a><a href="/power">权力</a><a href="/emperors">皇帝</a><a href="/harem">后宫</a><a href="/events">大事</a><a href="/figures">人物</a><a href="/topics">专题</a><a href="/creators">创作者</a><a href="/glossary">术语</a><a href="/sources">资料库</a><a href="/learn">学习线</a> <a href="https://kuige.me/" target="_blank" rel="noopener">魁歌 · 独立开发者 ↗</a> </div> <div class="wrap"> <nav class="crumbs" aria-label="面包屑"> <a href="/">首页</a> › <a href="/maps">地图</a> › <span aria-current="page">疆域与卫所</span> </nav> </div> <main> <link rel="stylesheet" href="/vendor/leaflet.css"><script src="/vendor/leaflet.js"></script><div class="mapcore full" id="mapcore-full" style="height:calc(100vh - 64px);position:relative;background:var(--c-paper)"> <div class="mc-map" style="position:absolute;inset:0"></div>  <aside class="mc-panel" style="position:absolute;top:12px;right:12px;z-index:500;width:200px;background:var(--c-surface-2);border:1px solid var(--c-line);border-radius:8px;padding:12px;font-size:13px"> <strong style="font-size:12px;letter-spacing:.1em;color:var(--c-ink-2)">图 层</strong> <label style="display:flex;gap:6px;margin-top:6px"><input type="checkbox" data-ly="garr" checked> 卫所（随年份）</label> <label style="display:flex;gap:6px"><input type="checkbox" data-ly="stat"> 驿站（zoom≥6）</label> <label style="display:flex;gap:6px"><input type="checkbox" data-ly="route"> 驿路（zoom≥5）</label> <label style="display:flex;gap:6px"><input type="checkbox" data-ly="modern"> 今省界对照</label> <label style="display:flex;gap:6px"><input type="checkbox" data-ly="wall"> 长城（明边墙）</label> <div style="margin-top:6px;font-size:11px;color:var(--c-ink-2)">点击政区查看考据名</div> </aside> <div class="mc-card" style="display:none;position:absolute;top:12px;left:12px;z-index:500;width:250px;background:var(--c-surface-2);border:1px solid var(--c-line);border-left:3px solid var(--c-vermilion);border-radius:8px;padding:12px;font-size:13px"> <button class="mc-close" style="position:absolute;top:6px;right:8px;border:0;background:none;cursor:pointer;color:var(--c-ink-2)">✕</button> <h3 class="mc-name" style="margin:0;font-size:18px"></h3> <div class="mc-alt" style="color:var(--c-disputed,#B3541E);font-size:12px;margin-top:2px"></div> <div class="mc-meta" style="color:var(--c-ink-2);margin-top:6px;line-height:1.6"></div> </div> <div class="mc-attrib" style="position:absolute;left:10px;bottom:76px;z-index:500;font-size:10px;color:var(--c-ink-2);max-width:340px;background:var(--c-surface-2);padding:5px 8px;border-radius:4px">
+底图 © OpenStreetMap contributors · 政区：Hartwell 1391（CHGIS, CC BY-NC-SA, DOI:10.7910/DVN/29302）· 卫所/驿站/驿路：CHGIS（DOI:10.7910/DVN/5RUXK8 · SB8ZTM）· 长城：Great Wall geodata（GitHub, 明边墙）· 考据：research/R10
 </div> <div class="mc-timeline" style="position:absolute;left:0;right:0;bottom:0;z-index:500;display:flex;align-items:center;gap:14px;padding:20px 16px 12px;background:linear-gradient(rgba(247,243,232,0),var(--c-surface-2) 45%)"> <div class="mc-era" style="font-family:var(--font-display);font-size:19px;min-width:130px">
-洪武元年<small style="display:block;font-size:11px;color:var(--c-ink-2);font-family:var(--font-body)">1368</small> </div> <input type="range" class="mc-slider" min="1368" max="1644" value="1391" style="flex:1;accent-color:var(--c-vermilion);height:44px;cursor:pointer" aria-label="年份滑杆"> <div style="font-size:12px;color:var(--c-ink-2)">卫所 <b class="mc-count" style="color:var(--c-vermilion);font-size:15px">0</b> 座</div> </div> </div> <script>
-  const L = window.L;
-  const root = document.querySelector(".mapcore");
-  const mode = root.classList.contains("full") ? "full" : "hero";
-  const ERAS = [["洪武",1368],["建文",1399],["永乐",1403],["洪熙",1425],["宣德",1426],["正统",1436],["景泰",1450],["天顺",1457],["成化",1465],["弘治",1488],["正德",1506],["嘉靖",1522],["隆庆",1567],["万历",1573],["泰昌",1620],["天启",1621],["崇祯",1628]];
-  const DISP = { 京师:"北平布政司", 南京:"京师（应天）", 中都:"中都（凤阳）", 贵州:"贵州（建司前·卫所期）", 奴儿干:"奴儿干（都司设置前）", "关西诸卫·外邦":"关西诸卫与外邦" };
-  const eraOf = (y) => { let i=0; ERAS.forEach((e,k)=>{ if(e[1]<=y) i=k; }); const [n,s]=ERAS[i]; return `${n}${y-s+1===1?"元年":y-s+1+"年"}`; };
-
-  const map = L.map(root.querySelector(".mc-map"), { preferCanvas: true, attributionControl: false, zoomControl: mode === "full" })
-    .setView([36, 110], mode === "hero" ? 4 : 5);
-  L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", { maxZoom: 12, crossOrigin: true }).addTo(map);
-
-  let garrData = [], garrLayer = L.layerGroup(), statLayer, routeLayer, modernLayer;
-  const year = { v: 1391 };
-
-  fetch("/geojson/ming_provinces_1391.json").then(r=>r.json()).then(d => {
-    L.geoJSON(d, {
-      style: { color:"#8A6D3B", weight:1.2, fillColor:"#C6A664", fillOpacity:.22 },
-      onEachFeature: (f, lyr) => {
-        lyr.bindTooltip(DISP[f.properties.name_ch] ? `${f.properties.name_ch} → ${DISP[f.properties.name_ch]}` : f.properties.name_ch, { sticky: true });
-        lyr.on("click", () => {
-          const c = root.querySelector(".mc-card"); c.style.display = "block";
-          c.querySelector(".mc-name").textContent = f.properties.name_ch;
-          c.querySelector(".mc-alt").textContent = DISP[f.properties.name_ch] ? `考据覆盖名：${DISP[f.properties.name_ch]}` : "";
-          c.querySelector(".mc-meta").textContent = `府级单位 ${f.properties.units} 个 · ${f.properties.year} 年切片`;
-        });
-      },
-    }).addTo(map);
-  });
-  root.querySelector(".mc-close")?.addEventListener("click", () => root.querySelector(".mc-card").style.display = "none");
-
-  fetch("/geojson/ming_garrisons.json").then(r=>r.json()).then(d => {
-    garrData = d.features;
-    garrLayer = L.geoJSON(d, {
-      pointToLayer: (f,ll) => L.circleMarker(ll, { radius:3.4, color:"#7A1F1F", weight:.6, fillColor:"#A02C2C", fillOpacity:.85 }),
-      onEachFeature: (f,lyr) => lyr.bindTooltip(`${f.properties.name_ch} · 建置 ${f.properties.beg_yr ?? "?"} 年`),
-    }).addTo(map);
-    apply(year.v);
-  });
-
-  function apply(y) {
-    year.v = y;
-    const g = garrData.filter(f => { const b=+f.properties.beg_yr||0, e=+f.properties.end_yr||1644; return b<=y && e>=y; });
-    garrLayer.clearLayers(); garrLayer.addData({ type:"FeatureCollection", features:g });
-    root.querySelector(".mc-count").textContent = g.length;
-    root.querySelector(".mc-era").firstChild.textContent = eraOf(y);
-    root.querySelector(".mc-era small").textContent = y;
-  }
-  root.querySelector(".mc-slider").addEventListener("input", e => apply(+e.target.value));
-
-  if (mode === "full") {
-    fetch("/geojson/ming_courier_stations.json").then(r=>r.json()).then(d => {
-      statLayer = L.geoJSON(d, { pointToLayer:(f,ll)=>L.circleMarker(ll,{radius:2.2,color:"#1E4066",weight:.5,fillColor:"#2E5A88",fillOpacity:.8}),
-        onEachFeature:(f,lyr)=>lyr.bindTooltip(`${f.properties.name_ch}<br><small>今：${f.properties.county_2010||"?"}</small>`) });
-    });
-    fetch("/geojson/ming_courier_routes.json").then(r=>r.json()).then(d => {
-      routeLayer = L.geoJSON(d, { style:f=>({color:"#6B4E2E",weight:f.properties.major?1.6:.8,opacity:f.properties.major?.85:.4}) });
-    });
-    fetch("https://geo.datav.aliyun.com/areas_v3/bound/100000_full.json").then(r=>r.json()).then(d => {
-      modernLayer = L.geoJSON(d, { style:{color:"#4A78B4",weight:1,dashArray:"4 3",fill:false} });
-    }).catch(()=>{});
-    root.querySelectorAll("[data-ly]").forEach(cb => cb.addEventListener("change", () => {
-      const z = map.getZoom();
-      const on = cb.checked;
-      if (cb.dataset.ly === "stat" && statLayer) on && z>=6 ? statLayer.addTo(map) : map.removeLayer(statLayer);
-      if (cb.dataset.ly === "route" && routeLayer) on && z>=5 ? routeLayer.addTo(map) : map.removeLayer(routeLayer);
-      if (cb.dataset.ly === "modern" && modernLayer) on ? modernLayer.addTo(map) : map.removeLayer(modernLayer);
-    }));
-  }
-</script> </main> <footer class="site-footer"> <div class="wrap cols"> <div> <strong>关于史料标注</strong><br> <span class="sb sb1">①</span>正史官修 · <span class="sb sb2">②</span>当时人著述 ·
+洪武元年<small style="display:block;font-size:11px;color:var(--c-ink-2);font-family:var(--font-body)">1368</small> </div> <input type="range" class="mc-slider" min="1368" max="1644" value="1391" style="flex:1;accent-color:var(--c-vermilion);height:44px;cursor:pointer" aria-label="年份滑杆"> <div style="font-size:12px;color:var(--c-ink-2)">卫所 <b class="mc-count" style="color:var(--c-vermilion);font-size:15px">0</b> 座</div> </div> </div> <script type="module" src="/_astro/MapHero.astro_astro_type_script_index_0_lang.Ba5-fTTW.js"></script> </main> <footer class="site-footer"> <div class="wrap cols"> <div> <strong>关于史料标注</strong><br> <span class="sb sb1">①</span>正史官修 · <span class="sb sb2">②</span>当时人著述 ·
 <span class="sb sb3">③</span>现代研究 · <span class="sb sb4">④</span>传闻野史<br>
 ④级内容只入「误区辨析」与「当代接受」框，不作正文叙述。
 </div> <div> <strong>数据与图像来源</strong><br>
