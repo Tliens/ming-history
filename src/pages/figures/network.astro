@@ -12,9 +12,9 @@ const known = figures.figures.length;
     </div>
 
     <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px" id="v14btns">
-      <button class="v14-btn" data-stage="" aria-pressed="true" class="btn btn-pill">全部</button>
+      <button class="btn btn-pill" data-stage="" aria-pressed="true">全部</button>
       {[["B1","创业"],["B2","削藩"],["B3","永乐"],["B4","仁宣"],["B5","危机"],["B6","中兴"],["B7","嘉靖"],["B8","万历"],["B9","覆亡"]].map(([id, name]) => (
-        <button class="v14-btn" data-stage={id} aria-pressed="false" class="btn btn-pill">{id} {name}</button>
+        <button class="btn btn-pill" data-stage={id} aria-pressed="false">{id} {name}</button>
       ))}
     </div>
 
@@ -108,9 +108,9 @@ const known = figures.figures.length;
   }
   render(); bind();
 
-  document.querySelectorAll(".v14-btn").forEach((b) => b.addEventListener("click", () => {
+  document.querySelectorAll("#v14btns .btn-pill").forEach((b) => b.addEventListener("click", () => {
     curStage = b.dataset.stage;
-    document.querySelectorAll(".v14-btn").forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
+    document.querySelectorAll("#v14btns .btn-pill").forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
     render();
   }));
 

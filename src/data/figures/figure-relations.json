@@ -23,7 +23,7 @@
     ["song-lian", "师承", "fang-xiaoru"], ["song-lian", "亲缘", "song-shen"],
     ["hongwu", "亲缘", "li-wenzhong"], ["tang-he", "同盟", "xu-da"], ["xu-da", "搭档", "chang-yuchun"], ["xu-da", "阵前", "kuokuotimu"], ["chang-yuchun", "阵前", "kuokuotimu"], ["chang-yuchun", "阵前", "chen-youliang"], ["xu-da", "阵前", "zhang-shicheng"], ["chang-yuchun", "阵前", "zhang-shicheng"], ["li-wenzhong", "阵前", "zhang-shicheng"], ["lan-yu", "阵前", "tianyuanbeidi"], ["lan-yu", "阵前", "kuokuotimu"], ["liu-ji", "同盟", "zhang-yu"], ["lan-yu", "亲缘", "chang-yuchun"],
     ["yongle", "信任", "xie-jin-fig"], ["yongle", "信任", "yang-rong-fig"], ["yongle", "信任", "yang-shiqi-fig"], ["yongle", "信任", "zheng-he"], ["yongle", "清洗", "xie-jin-fig"], ["zheng-he", "阵前", "chen-zuyi"],
-    ["yao-guangxiao", "同盟", "yongle"], ["yao-guangxiao", "师承", "zhu-di"], ["jie-jin", "搭档", "yao-guangxiao"], ["hu-guang", "同盟", "yang-rong-fig"],
+    ["yao-guangxiao", "同盟", "yongle"], ["yao-guangxiao", "师承", "zhu-di"], ["xie-jin-fig", "搭档", "yao-guangxiao"], ["hu-guang", "同盟", "yang-rong-fig"],
     ["hongxi", "信任", "yang-shiqi-fig"], ["xuande", "信任", "yang-shiqi-fig"], ["xuande", "信任", "yang-rong-fig"], ["xuande", "信任", "yang-pu-fig"], ["xuande", "信任", "zhou-chen"], ["xuande", "阵前", "zhu-gaosu"],
     ["yang-shiqi-fig", "同盟", "yang-rong-fig"], ["yang-shiqi-fig", "同盟", "yang-pu-fig"], ["yang-rong-fig", "同盟", "yang-pu-fig"], ["yang-shiqi-fig", "提携", "yu-qian"], ["yang-shiqi-fig", "敌对", "wang-zhen"],
     ["yingzong", "信任", "wang-zhen"], ["wang-zhen", "敌对", "san-yang"], ["wang-zhen", "构陷", "liu-qiu"], ["wang-zhen", "阵前", "ye-xian"], ["yingzong", "阵前", "ye-xian"], ["xu-da", "亲缘", "xu-huanghou"], ["yingzong", "亲缘", "xu-huanghou"], ["xu-huanghou", "亲缘", "yongle"],

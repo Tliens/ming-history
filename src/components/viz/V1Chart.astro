@@ -3,10 +3,9 @@
 import offices from "../../data/offices.json";
 const periods = offices.periods.map((p) => ({ id: p.id, label: p.label }));
 ---
-<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px" role="tablist" aria-label="时期切换">
+<div id="v1btns" style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px" role="tablist" aria-label="时期切换">
   {periods.map((p, i) => (
-    <button class="v1-btn" data-period={p.id} aria-pressed={i === periods.length - 1}
-      class="btn btn-pill">{p.label}</button>
+    <button class="btn btn-pill" data-period={p.id} aria-pressed={i === periods.length - 1}>{p.label}</button>
   ))}
 </div>
 <div style="display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:16px" class="v1-wrap">
@@ -63,14 +62,14 @@ const periods = offices.periods.map((p) => ({ id: p.id, label: p.label }));
     document.getElementById("v1p-base").textContent = "基准： " + period.base;
     document.getElementById("v1p-diffs").innerHTML = period.diffs
       .map((d) => `<li><b>${NODES[d.nodeId].name}</b>［${d.status}］—— ${d.note}</li>`).join("");
-    document.querySelectorAll(".v1-btn").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.period === pid)));
+    document.querySelectorAll("#v1btns .btn-pill").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.period === pid)));
   }
 
   chart.on("click", (p) => {
     const n = NODES[p.data?.id];
     if (n) document.getElementById("v1node").innerHTML = `<b>${n.name}</b>${n.rank ? "（" + n.rank + "）" : ""}<br/>${n.summary}${n.est ? `<br/><span style="color:#8A6D3B">设立：${n.est}</span>` : ""}`;
   });
-  document.querySelectorAll(".v1-btn").forEach((b) => b.addEventListener("click", () => setPeriod(b.dataset.period)));
+  document.querySelectorAll("#v1btns .btn-pill").forEach((b) => b.addEventListener("click", () => setPeriod(b.dataset.period)));
   setPeriod("wanli");
   el.querySelector('.chart-skel')?.remove();
   onThemeChange(() => { chart.dispose(); chart = echarts.init(el, chartTheme()); setPeriod(curPeriod); });

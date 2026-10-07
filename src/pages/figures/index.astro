@@ -2,12 +2,12 @@
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import EraStrip from "../../components/EraStrip.astro";
 import { figures } from "../../lib/data.js";
-const FATE_COLOR = { "善终": "var(--c-source-2)", "善终（军中病亡）": "var(--c-source-2)", "善终（存疑）": "var(--c-source-2)", "善终（清贫至死）": "var(--c-source-2)",
+const FATE_COLOR = { "谪戍而终": "#7B5AA6", "降敌": "#5C5346", "死于狱中": "#7B5AA6", "病逝（身后清算）": "#7B5AA6", "病逝于任（身后冷落→极尽哀荣）": "#C2A878", "善终": "var(--c-source-2)", "善终（军中病亡）": "var(--c-source-2)", "善终（存疑）": "var(--c-source-2)", "善终（清贫至死）": "var(--c-source-2)",
   "被害": "var(--c-source-1)", "被杀": "var(--c-source-1)", "存疑之死": "var(--c-source-3)", "牵连而死": "var(--c-source-1)",
   "殉国": "#8A2B2B", "卒于任务": "var(--c-source-3)", "病逝于任（身后冷落→极尽哀荣）": "var(--c-source-3)", "病逝": "var(--c-source-3)",
   "身后清算": "#7B5AA6", "身败": "#9E5B3C", "身败（身后萧条）": "#9E5B3C", "贬黜": "var(--c-link)", "罢黜": "var(--c-link)",
   "自尽（败亡）": "#6E5C4E", "败亡": "#6E5C4E", "潦倒而死": "#6E5C4E", "遗民而终": "#6E5C4E", "死于政变/战乱": "#A02C2C", "降清的样本": "#6E5C4E" };
-const CATS = ["文臣", "武将", "武将（文官出镇）", "思想·武将", "宦官", "文宗", "文士", "科学家", "科学家·文臣", "对立阵营"];
+const CATS = ["文臣", "武将", "武将（文官出镇）", "思想·武将", "宦官", "文宗", "文士", "科学家", "科学家·文臣", "宗室", "对立阵营", "域外"];
 const byCat = (c) => figures.figures.filter((f) => f.category === c);
 ---
 <BaseLayout title="名臣将领 · 人物" crumbs={[["/", "首页"], ["", "人物"]]}>
