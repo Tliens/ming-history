@@ -24,7 +24,10 @@ for (const ev of sorted) {
       <p class="lede">骨干大事 {events.events.length} 条，覆盖九个阶段至南明。每条含起因—经过—结果—影响四段与分级出处。</p>
     </div>
     <EraStrip />
-    <div class="card" style="padding:16px 12px 8px;margin:20px 0"><V6Chart /></div>
+    <div id="eraNotice" style="display:none;margin:14px 0 0;padding:8px 14px;border-radius:var(--r-s);background:var(--c-primary-weak);font-size:14px">
+        <span id="eraNoticeText"></span> <button id="eraClear" class="btn btn-pill" style="margin-left:8px;border:1px solid var(--c-line)">清除筛选</button>
+      </div>
+      <div class="card" style="padding:16px 12px 8px;margin:20px 0"><V6Chart /></div>
 
     {GROUPS.map((g) => (
       <section style="margin-top:26px">
@@ -37,7 +40,7 @@ for (const ev of sorted) {
           {g.items.map((ev) => {
             const { text } = eraOf(ev.year);
             return (
-              <a class="ev-row" href={`/events/${ev.id}`}>
+              <a class="ev-row" href={`/events/${ev.id}`} data-era={eraOf(ev.year).era.emperor}>
                 <strong style="font-family:var(--font-display);font-size:16px;min-width:52px">{ev.year}</strong>
                 <span style="font-size:12px;color:var(--c-ink-2);min-width:76px">{text}</span>
                 <strong style="font-weight:600">{ev.title}</strong>
@@ -49,6 +52,21 @@ for (const ev of sorted) {
       </section>
     ))}
   </div>
+  <script>
+    (function () {
+      var q = new URLSearchParams(location.search).get("era");
+      if (!q) return;
+      var names = { hongwu:"洪武",jianwen:"建文",yongle:"永乐",hongxi:"洪熙",xuande:"宣德",yingzong:"正统/天顺",jingtai:"景泰",chenghua:"成化",hongzhi:"弘治",zhengde:"正德",jiajing:"嘉靖",longqing:"隆庆",wanli:"万历",taichang:"泰昌",tianqi:"天启",chongzhen:"崇祯" };
+      var notice = document.getElementById("eraNotice");
+      document.getElementById("eraNoticeText").textContent = "已筛选朝代：" + (names[q] || q) + "（共 " + document.querySelectorAll('.ev-row[data-era="' + q + '"]').length + " 条）";
+      notice.style.display = "block";
+      var rows = document.querySelectorAll(".ev-row");
+      var hideSection = function (r) { var s = r.parentElement && r.parentElement.parentElement; if (s && s.tagName === "SECTION") { var any = s.querySelector('.ev-row[data-era="' + q + '"]'); s.style.display = any ? "" : "none"; } };
+      rows.forEach(function (r) { r.style.display = r.dataset.era === q ? "" : "none"; });
+      document.querySelectorAll("section").forEach(function (sec) { sec.style.display = sec.querySelector('.ev-row[data-era="' + q + '"]') ? "" : "none"; });
+      document.getElementById("eraClear").addEventListener("click", function () { location.href = location.pathname; });
+    })();
+  </script>
 </BaseLayout>
 <style>
   .era-dot { width: 10px; height: 10px; border-radius: 50%; flex: none; background-color: #8A6D3B; }
