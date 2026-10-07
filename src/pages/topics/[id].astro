@@ -2,12 +2,14 @@
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import SourceBadge from "../../components/SourceBadge.astro";
 import { TOPICS } from "../../data/topics.js";
+import { TOPIC_QUESTIONS } from "../../data/topic-questions.js";
 import { events, glossary } from "../../lib/data.js";
 
 export function getStaticPaths() {
   return TOPICS.map((t) => ({ params: { id: t.id }, props: { topic: t } }));
 }
 const { topic } = Astro.props;
+const qs = TOPIC_QUESTIONS[topic.id] ?? [];
 const evts = topic.related.events.map((id) => events.events.find((e) => e.id === id)).filter(Boolean);
 const terms = topic.related.terms.map((id) => glossary.terms.find((t) => t.id === id)).filter(Boolean);
 ---
@@ -19,6 +21,16 @@ const terms = topic.related.terms.map((id) => glossary.terms.find((t) => t.id ==
     {topic.sections.map(([h, p]) => (
       <section><h2 style="font-size:19px">{h}</h2><p>{p}</p></section>
     ))}
+
+    {qs && (
+      <section>
+        <h2 style="font-size:19px">课堂问题组（教师用）</h2>
+        <ol style="font-size:14px;line-height:1.9">
+          {qs.map((q) => <li>{q}</li>)}
+        </ol>
+        <p style="font-size:12px;color:var(--c-ink-2)">【讨论】课堂口头 ·【材料】结合本页材料作答 ·【辩论】分组 ·【写作】课后小论文。配套教材对照见 <a href="/learn/textbook">教材映射页</a>。</p>
+      </section>
+    )}
 
     <section>
       <h2 style="font-size:19px">延伸阅读</h2>

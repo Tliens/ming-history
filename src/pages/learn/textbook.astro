@@ -1,0 +1,77 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+const LESSONS = [
+  {
+    no: "第 14 课", title: "明朝的统治",
+    points: ["朱元璋建立明朝、强化皇权（废丞相、锦衣卫与东厂、八股取士）", "经济的发展（玉米等新作物此处未涉，重点在皇权制度）"],
+    resources: [
+      ["/emperors/hongwu", "太祖朱元璋（其人其政 + 史评）"],
+      ["/power/flow", "一份奏章的旅程（废相后的决策链）"],
+      ["/power/structure", "组织结构图：切到「洪武」期看「无内阁无东厂」"],
+      ["/events/hu-weiyong-case-1380", "胡惟庸案与废丞相"],
+      ["/creators/exams", "八股取士的完整流程（V17 科举之路）"],
+      ["/creators/mistakes", "误区清单：影视里的锦衣卫什么样"],
+    ],
+    teach: "课堂导入用「奏章旅程」动画（5 分钟）；「皇权强化的代价」可用消长长卷 B1 段；八股取士对比今日考试提「格式 vs 能力」的讨论题。",
+  },
+  {
+    no: "第 15 课", title: "明朝的对外关系",
+    points: ["郑和下西洋（条件、概况、意义）", "戚继光抗倭", "援朝战争", "葡萄牙攫取澳门居住权"],
+    resources: [
+      ["/events/zhenghe-voyages-1405", "郑和下西洋（含「寻建文说」考据框）"],
+      ["/events/jiajing-wokou", "嘉靖大倭乱与戚继光平倭（含「倭寇构成」辨析）"],
+      ["/events/korean-campaign", "万历朝鲜之役（1592–1598）"],
+      ["/figures/qi-jiguang", "戚继光（人物卡）"],
+      ["/topics/two-front-war", "延伸：两线作战的死局（高中衔接）"],
+    ],
+    teach: "「倭寇是谁」是最好的史料思辨题：页面误区框给了真倭/假倭比例的学术讨论，可让学生对比教科书表述与站内辨析。下西洋的意义讨论可结合「朝贡体系」术语（站内术语表有词条）。",
+  },
+  {
+    no: "第 16 课", title: "明朝的科技、建筑与文学",
+    points: ["李时珍《本草纲目》、宋应星《天工开物》、徐光启《农政全书》", "明长城", "北京城", "古典小说"],
+    resources: [
+      ["/figures/li-shizhen", "李时珍（27 年三易其稿）"],
+      ["/figures/song-yingxing", "宋应星（科举失意者的另一种不朽）"],
+      ["/figures/xu-guangqi", "徐光启（中西会通第一人）"],
+      ["/maps/empire", "地图看明长城的位置（九边防线）"],
+      ["/events/capital-beijing-1421", "迁都北京（北京城的由来）"],
+    ],
+    teach: "三位科学家的共同点值得板书：都是科举「失意者」或边缘身份——由此讨论「为什么巅峰科技著作出现在体制之外」。长城请强调「今天看到的砖石长城主要是明长城」（站内误区清单有此条）。",
+  },
+  {
+    no: "第 17 课", title: "明朝的灭亡",
+    points: ["政治腐败与社会动荡", "李自成起义推翻明朝（「均田免赋」）", "清军入关"],
+    resources: [
+      ["/topics/jiashen", "甲申之变倒计时（逐日叙事，课堂可直接选段）"],
+      ["/events/jiashen-1644", "甲申之变（四段式主条目）"],
+      ["/figures/li-zicheng", "李自成（人物卡）"],
+      ["/events/shaanxi-uprising-1627", "陕西民变起（含「裁驿站裁出李自成」）"],
+      ["/topics/two-front-war", "两线作战的死局（理解「为什么亡」的结构性原因）"],
+      ["/emperors/chongzhen", "崇祯帝（勤政与亡国并存）"],
+    ],
+    teach: "「传庭死而明亡矣」是极好的课堂金句——用孙传庭条目讲「催战误国」的决策链。甲申倒计时页的「三月十八夜」一段适合课堂朗读。深一层：为什么「均田免赋」的口号有号召力？回到三饷加派（站内术语「三饷」词条）。",
+  },
+];
+---
+<BaseLayout title="教材映射 · 部编本七下" crumbs={[["/", "首页"], ["/learn", "学习线"], ["", "教材映射"]]}>
+  <div class="wrap" style="max-width:860px">
+    <div class="page-head">
+      <h1>教材映射：部编本《中国历史》七年级下册</h1>
+      <p class="lede">明朝相关的四课 → 本站资源的备课对照。课次以现行部编本为参照，不同印次略有出入；「教学建议」供参考，欢迎一线老师指正。</p>
+    </div>
+
+    {LESSONS.map((l) => (
+      <section class="card" style="margin-bottom:18px;padding:18px 20px">
+        <h2 style="margin:0 0 4px;font-size:18px">{l.no} · {l.title}</h2>
+        <p style="font-size:13px;color:var(--c-ink-2);margin:0 0 10px">课标要点：{l.points.join("；")}</p>
+        <p style="font-size:14px;margin:0 0 6px"><strong>站内资源：</strong></p>
+        <p style="font-size:14px">
+          {l.resources.map(([href, label]) => label && <a class="card" href={href} style="display:inline-block;padding:3px 10px;margin:2px;font-size:13px">{label} ↗</a>)}
+        </p>
+        <p style="font-size:13px;border-left:3px solid var(--c-zhehuang);padding-left:12px;margin:10px 0 0"><strong>教学建议：</strong>{l.teach}</p>
+      </section>
+    ))}
+
+    <p style="font-size:13px;color:var(--c-ink-2)">高中衔接：两宋明清专题可另用本站 <a href="/topics">九篇机制专题</a>（大礼议/张居正/党争/两线作战），均附课堂问题组。</p>
+  </div>
+</BaseLayout>

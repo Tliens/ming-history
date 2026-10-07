@@ -1,10 +1,98 @@
 ---
+// T8 学习线页：十步自学路径（核心问题 + 导读 + 自测 + 进度）
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import { LEARN_STEPS } from "../../data/learn.js";
 ---
-<BaseLayout title="learn · 明史" crumbs={[["/", "首页"], ["", "learn"]]}>
-  <div class="wrap" style="padding-top:40px">
-    <h1>learn</h1>
-    <p style="color:var(--c-ink-2);max-width:640px">本模块内容建设中。内容大纲已定稿（docs/content/），将按 Phase 4–7 逐批上线；数据层已就绪。</p>
-    <p><a href="/">← 返回首页</a> · <a href="/maps/empire">先去地图逛逛</a></p>
+<BaseLayout title="十步学习线 · 从版图到史料" crumbs={[["/", "首页"], ["", "学习线"]]}>
+  <div class="wrap" style="max-width:820px">
+    <div class="page-head">
+      <h1>十步读懂明朝</h1>
+      <p class="lede">为第一次来的学生准备的自学路径：每步一个核心问题、一段导读、一处任务、一道自测。进度存在你自己的浏览器里。</p>
+    </div>
+
+    <div style="display:flex;align-items:center;gap:12px;margin:16px 0 8px">
+      <div style="flex:1;height:10px;border-radius:5px;background:var(--c-line-soft);overflow:hidden">
+        <div id="lbar" style="height:100%;width:0;background:var(--c-vermilion);border-radius:5px;transition:width .3s"></div>
+      </div>
+      <span id="ltext" style="font-size:13px;color:var(--c-ink-2);min-width:72px;text-align:right">0/10</span>
+      <button id="lreset" class="tbtn" style="font-size:12px;padding:4px 10px">重置进度</button>
+    </div>
+
+    <ol id="lsteps" style="list-style:none;margin:20px 0;padding:0">
+      {LEARN_STEPS.map((s, i) => (
+        <li class="lstep card" id={`step-${s.id}`} data-id={s.id} style="margin-bottom:16px;padding:18px 20px">
+          <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap">
+            <strong style="font-family:var(--font-display);font-size:18px">{i + 1}. {s.title}</strong>
+            <span style="font-size:12px;color:var(--c-ink-2)">约 {s.minutes} 分钟</span>
+          </div>
+          <p style="margin:10px 0 6px;font-size:15px;border-left:3px solid var(--c-zhehuang);padding-left:12px"><strong>核心问题：</strong>{s.question}</p>
+          <p style="font-size:14px">{s.intro}</p>
+          <p style="font-size:14px">
+            {s.links.map(([href, label]) => label && <a class="card" href={href} target="_blank" rel="noopener" style="display:inline-block;padding:4px 12px;margin:2px;font-size:13px">{label} ↗</a>)}
+          </p>
+
+          <div class="lquiz" style="margin-top:12px;border-top:1px dashed var(--c-line);padding-top:12px">
+            <p style="margin:0 0 8px;font-size:14px"><strong>自测：</strong>{s.quiz.q}</p>
+            <div class="lopts">
+              {s.quiz.options.map((opt, oi) => (
+                <button type="button" class="lopt" data-step={s.id} data-oi={oi}
+                  style="display:block;width:100%;text-align:left;border:1px solid var(--c-line);background:transparent;color:var(--c-ink);border-radius:8px;padding:8px 12px;font-size:14px;margin:6px 0;cursor:pointer">{opt}</button>
+              ))}
+            </div>
+            <p class="lexplain" style="display:none;font-size:13px;margin:8px 0 0;padding:8px 12px;border-radius:8px;background:rgba(138,109,59,.08)"></p>
+          </div>
+
+          <label style="display:flex;gap:8px;align-items:center;margin-top:14px;font-size:14px;cursor:pointer">
+            <input type="checkbox" class="ldone" data-id={s.id} style="width:18px;height:18px;accent-color:var(--c-vermilion)" />
+            我完成了这一步
+          </label>
+        </li>
+      ))}
+    </ol>
+
+    <div class="card" style="padding:16px 20px">
+      <strong>老师 / 自学者提示</strong>
+      <p style="font-size:14px;margin:8px 0 0">十步的顺序即认知顺序：空间感 → 时代骨架 → 制度机制 → 动态演变 → 人物与事件 → 方法与批判。老师可将任一步的核心问题直接用作课堂导入；配套教材对照见 <a href="/learn/textbook">教材映射页</a>。</p>
+    </div>
   </div>
 </BaseLayout>
+
+<script>
+  import { LEARN_STEPS } from "../../data/learn.js";
+  const KEY = "mh-learn-done";
+  const done = new Set(JSON.parse(localStorage.getItem(KEY) || "[]"));
+
+  function paintProgress() {
+    const n = done.size, total = LEARN_STEPS.length;
+    document.getElementById("lbar").style.width = (n / total * 100) + "%";
+    document.getElementById("ltext").textContent = `${n}/${total}`;
+    document.querySelectorAll(".lstep").forEach((el) => {
+      const ok = done.has(el.dataset.id);
+      el.style.borderColor = ok ? "var(--c-source-2)" : "";
+      el.querySelector(".ldone").checked = ok;
+    });
+  }
+  document.querySelectorAll(".ldone").forEach((cb) => cb.addEventListener("change", () => {
+    cb.checked ? done.add(cb.dataset.id) : done.delete(cb.dataset.id);
+    localStorage.setItem(KEY, JSON.stringify([...done]));
+    paintProgress();
+  }));
+  document.getElementById("lreset").addEventListener("click", () => {
+    done.clear(); localStorage.removeItem(KEY); paintProgress();
+  });
+
+  document.querySelectorAll(".lopt").forEach((btn) => btn.addEventListener("click", () => {
+    const step = LEARN_STEPS.find((s) => s.id === btn.dataset.step);
+    const box = btn.closest(".lquiz");
+    const ex = box.querySelector(".lexplain");
+    box.querySelectorAll(".lopt").forEach((b) => {
+      const right = +b.dataset.oi === step.quiz.answer;
+      b.style.borderColor = "";
+      if (+b.dataset.oi === step.quiz.answer) b.style.borderColor = "var(--c-source-2)";
+    });
+    if (+btn.dataset.oi !== step.quiz.answer) btn.style.borderColor = "var(--c-vermilion)";
+    ex.style.display = "block";
+    ex.textContent = (Number(btn.dataset.oi) === step.quiz.answer ? "✓ 正确。" : "✗ 再想想。") + step.quiz.explain;
+  }));
+  paintProgress();
+</script>
