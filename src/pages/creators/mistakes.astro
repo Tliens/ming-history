@@ -1,17 +1,29 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import SourceBadge from "../../components/SourceBadge.astro";
-import { MISTAKES } from "../../data/creators.js";
+import { MISTAKES, PLOT_CHECKS } from "../../data/creators.js";
 import { events } from "../../lib/data.js";
 const eventMyths = events.events.filter((e) => e.misconceptions?.length).flatMap((e) => e.misconceptions.map((m) => ({ t: e.title, fix: m, src: "①③" })));
 ---
 <BaseLayout title="误区清单 · 创作者" crumbs={[["/", "首页"], ["/creators", "创作者"], ["", "误区清单"]]}>
   <div class="wrap">
     <div class="page-head">
-      <h1>影视误区清单（{MISTAKES.length + eventMyths.length} 条）</h1>
+      <h1>误区清单（{MISTAKES.length + PLOT_CHECKS.length + eventMyths.length} 条）</h1>
       <p class="lede">历史剧与网文的常见硬伤逐条辨析。每条给「正确写法」与史料依据。</p>
     </div>
-    <div style="display:grid;gap:10px;margin-top:18px">
+        <h2 style="margin-top:28px;font-size:19px;border-bottom:1px solid var(--c-line);padding-bottom:6px">情节核查（史实边界 + 演绎空间）</h2>
+    <p style="font-size:13px;color:var(--c-ink-2)">不是「不能写」，而是告诉你在哪条边界内怎么写才好看。</p>
+    <div style="display:grid;gap:10px;margin-top:12px">
+      {PLOT_CHECKS.map((m) => (
+        <div class="card" style="padding:12px 16px">
+          <strong style="color:var(--c-vermilion)">🎬 {m.t}</strong>
+          <div style="font-size:14px;margin-top:4px">{m.fix}</div>
+        </div>
+      ))}
+    </div>
+
+    <h2 style="margin-top:28px;font-size:19px;border-bottom:1px solid var(--c-line);padding-bottom:6px">词汇与设定穿帮</h2>
+<div style="display:grid;gap:10px;margin-top:12px">
       {MISTAKES.map((m) => (
         <div class="card" style="padding:12px 16px">
           <strong style="color:var(--c-vermilion)">✗ {m.t}</strong>

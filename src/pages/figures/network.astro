@@ -1,0 +1,121 @@
+---
+// V14 人物关系网络图（305 边）· 分期切片 · 点击已知节点跳详情
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { figures, relations } from "../../lib/data.js";
+const known = figures.figures.length;
+---
+<BaseLayout title="人物关系网络（V14）· 人物" crumbs={[["/", "首页"], ["/figures", "人物"], ["", "关系网络"]]}>
+  <div class="wrap">
+    <div class="page-head">
+      <h1>人物关系网络</h1>
+      <p class="lede">{relations.edges.length} 条关系边、{relations.meta ? Object.keys(relations.meta.edgeTypes).length : 10} 类边型。按分期切片看「洪武功臣网」「嘉靖倒严网」「天启阉党—东林网」。金色＝皇帝，彩色＝建档人物，灰色＝待建档（二期）。点击彩色/金色节点进入详情。</p>
+    </div>
+
+    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px" id="v14btns">
+      <button class="v14-btn" data-stage="" aria-pressed="true" style="border:1px solid var(--c-line);background:none;color:var(--c-ink);border-radius:14px;padding:4px 14px;font-size:13px;cursor:pointer">全部</button>
+      {[["B1","创业"],["B2","削藩"],["B3","永乐"],["B4","仁宣"],["B5","危机"],["B6","中兴"],["B7","嘉靖"],["B8","万历"],["B9","覆亡"]].map(([id, name]) => (
+        <button class="v14-btn" data-stage={id} aria-pressed="false" style="border:1px solid var(--c-line);background:none;color:var(--c-ink);border-radius:14px;padding:4px 14px;font-size:13px;cursor:pointer">{id} {name}</button>
+      ))}
+    </div>
+
+    <div class="card" style="padding:8px"><div id="v14chart" style="height:760px"></div></div>
+
+    <div style="display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--c-ink-2);margin-top:8px" id="v14legend"></div>
+    <p style="font-size:12px;color:var(--c-ink-2);margin-top:6px">
+      切片逻辑：保留与该期人物（含该期在位皇帝）相连的边，其余淡化。数据源：figure-relations.json（边型语义见文件头注）；「阵前/构陷」为虚线。
+    </p>
+  </div>
+</BaseLayout>
+
+<script>
+  import * as echarts from "echarts";
+  import { chartTheme, onThemeChange } from "../../lib/echarts-theme.js";
+  import figuresData from "../../data/figures/figures.json";
+  import relationsData from "../../data/figures/figure-relations.json";
+  import emperorsData from "../../data/emperors/emperors.json";
+  import { PLACEHOLDER_NAMES } from "../../data/figure-names.js";
+
+  const FIGS = Object.fromEntries(figuresData.figures.map((f) => [f.id, f]));
+  const EMPS = Object.fromEntries(emperorsData.emperors.map((e) => [e.id, e]));
+  const EDGES = relationsData.edges;
+  const STAGE_EMP = { B1: "hongwu", B2: "jianwen", B3: "yongle", B4: "xuande", B5: "jingtai", B6: "chenghua", B7: "jiajing", B8: "wanli", B9: "chongzhen" };
+  const CAT_COLOR = { 文臣: "#2E5A88", 武将: "#A02C2C", "武将（文官出镇）": "#9E5B3C", "思想·武将": "#3E7C59", 宦官: "#8A6D3B", 文宗: "#5A4A6E", 文士: "#B08D57", 科学家: "#4E6E5D", "科学家·文臣": "#4E6E5D", 对立阵营: "#5C5346" };
+  const TYPE_STYLE = { 信任: "#C6A664", 提携: "#3E7C59", 师承: "#2E5A88", 同盟: "#6C93C4", 搭档: "#4E6E5D", 亲缘: "#B08D57", 清洗: "#A02C2C", 敌对: "#9E5B3C", 构陷: "#B3541E", 阵前: "#6E5C4E" };
+  const DASHED = new Set(["敌对", "构陷", "阵前", "清洗"]);
+  const nameOf = (id) => FIGS[id]?.name ?? EMPS[id]?.templeName ?? PLACEHOLDER_NAMES[id] ?? "待建档";
+
+  const degree = {};
+  EDGES.forEach(([a, , b]) => { degree[a] = (degree[a] ?? 0) + 1; degree[b] = (degree[b] ?? 0) + 1; });
+
+  const el = document.getElementById("v14chart");
+  let chart = echarts.init(el, chartTheme());
+  let curStage = "";
+
+  function buildGraph() {
+    const t = chartTheme();
+    const active = (id) => !curStage
+      || FIGS[id]?.stage === curStage
+      || id === STAGE_EMP[curStage];
+    const nodeIds = new Set();
+    EDGES.forEach(([a, , b]) => { if (active(a) || active(b)) { nodeIds.add(a); nodeIds.add(b); } });
+
+    const nodes = [...nodeIds].map((id) => {
+      const f = FIGS[id], e = EMPS[id];
+      const dim = !(active(id));
+      const base = {
+        id, name: nameOf(id),
+        symbolSize: f ? 12 + Math.min(degree[id] ?? 0, 14) : e ? 16 : 6,
+        itemStyle: e ? { color: "#C6A664", borderColor: t.dark ? "#1C1A17" : "#fff", borderWidth: 1.5 }
+          : f ? { color: CAT_COLOR[f.category] ?? "#2E5A88" }
+          : { color: t.dark ? "#4a443c" : "#B8AE9A" },
+        label: { show: f || e ? degree[id] >= 3 || e || curStage !== "" : degree[id] >= 6, color: dim ? t.sub : t.ink, fontSize: f || e ? 11 : 9, opacity: dim ? 0.25 : 1 },
+        itemStyleOpacity: dim ? 0.12 : 1,
+      };
+      return { ...base, itemStyle: { ...base.itemStyle, opacity: dim ? 0.12 : 1 } };
+    });
+
+    const links = EDGES.map(([a, type, b]) => {
+      const dim = !(active(a) || active(b));
+      return {
+        source: a, target: b,
+        lineStyle: { color: TYPE_STYLE[type] ?? "#999", width: dim ? 0.4 : (type === "清洗" || type === "构陷" ? 1.8 : 1.1), opacity: dim ? 0.06 : 0.75, type: DASHED.has(type) ? "dashed" : "solid", curveness: 0.12 },
+      };
+    });
+    return { nodes, links };
+  }
+
+  function render() {
+    const g = buildGraph();
+    chart.setOption({
+      series: [{
+        type: "graph", layout: "force", roam: true, data: g.nodes, links: g.links,
+        force: { repulsion: 160, edgeLength: [40, 110], gravity: 0.08 },
+        label: { position: "bottom" },
+        emphasis: { focus: "adjacency", label: { show: true } },
+        scaleLimit: { min: 0.4, max: 4 },
+      }],
+    }, { notMerge: true });
+  }
+  function bind() {
+    chart.on("click", (p) => {
+      const id = p.data?.id;
+      if (FIGS[id]) location.href = `/figures/${id}`;
+      else if (EMPS[id]) location.href = `/emperors/${id}`;
+    });
+  }
+  render(); bind();
+
+  document.querySelectorAll(".v14-btn").forEach((b) => b.addEventListener("click", () => {
+    curStage = b.dataset.stage;
+    document.querySelectorAll(".v14-btn").forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
+    render();
+  }));
+
+  // 图例（HTML）
+  const legend = document.getElementById("v14legend");
+  legend.innerHTML = Object.entries(TYPE_STYLE).map(([k, c]) =>
+    `<span style="display:inline-flex;align-items:center;gap:5px"><span style="width:18px;height:0;border-top:2px ${DASHED.has(k) ? "dashed" : "solid"} ${c};display:inline-block"></span>${k}</span>`).join("");
+
+  onThemeChange(() => { chart.dispose(); chart = echarts.init(el, chartTheme()); render(); bind(); });
+  window.addEventListener("resize", () => chart.resize());
+</script>

@@ -12,6 +12,7 @@ const byCat = (c) => figures.figures.filter((f) => f.category === c);
       <p class="lede">首批 {figures.figures.length} 人（正史立传者为主干）。结局分类可按「善终/被害/殉国/身后清算」筛选（Phase 3 加筛选器）。</p>
     </div>
     <EraStrip />
+    <p style="margin-top:10px"><a class="card" href="/figures/network" style="display:inline-block;padding:6px 16px;font-size:14px">🕸 人物关系网络图（V14）→</a></p>
     {CATS.filter((c) => byCat(c).length > 0).map((c) => (
       <section style="margin-top:28px">
         <h2 style="font-size:19px;border-bottom:1px solid var(--c-line);padding-bottom:6px">{c}（{byCat(c).length}）</h2>

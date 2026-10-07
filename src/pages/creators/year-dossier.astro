@@ -1,0 +1,88 @@
+---
+// T6 工具页：年份档案——写手/学生的「故事定位器」
+// 输入年份 → 纪年/干支 + 在位皇帝 + 当任首辅 + 当年与前后一年大事 + 在世人物
+import BaseLayout from "../../layouts/BaseLayout.astro";
+---
+<BaseLayout title="年份档案 · 创作者" crumbs={[["/", "首页"], ["/creators", "创作者"], ["", "年份档案"]]}>
+  <div class="wrap prose">
+    <div class="page-head">
+      <h1>年份档案：你的故事发生在哪一年？</h1>
+      <p class="lede">输入任意年份（1368–1644），一键生成该年档案：纪年、在位皇帝、当任首辅、当年与前后一年的大事、在世人物。写手的定位器，学生的复习器。</p>
+    </div>
+
+    <div class="card" style="display:flex;gap:10px;align-items:center;padding:14px 18px">
+      <input id="dYear" type="number" min="1368" max="1644" value="1584" style="width:120px;padding:9px 12px;font-size:16px;border-radius:6px" />
+      <button id="dGo" style="border:1px solid var(--c-vermilion);color:var(--c-vermilion);background:none;border-radius:6px;padding:9px 18px;font-size:15px;cursor:pointer">生成档案</button>
+      <span style="font-size:12px;color:var(--c-ink-2)">快捷：1644 · 1587 · 1449 · 1405</span>
+    </div>
+
+    <div id="dossier" style="display:none;margin-top:18px"></div>
+  </div>
+</BaseLayout>
+
+<script>
+  import emperorsData from "../../data/emperors/emperors.json";
+  import eventsData from "../../data/events/events.json";
+  import secretariesData from "../../data/first-secretaries.json";
+  import figuresData from "../../data/figures/figures.json";
+
+  const EMPERORS = emperorsData.emperors;
+  const EVENTS = eventsData.events;
+  const SECRETS = secretariesData.secretaries;
+  const FIGURES = figuresData.figures;
+  const ERAS = [["洪武",1368,1398],["建文",1399,1402],["永乐",1403,1424],["洪熙",1425,1425],["宣德",1426,1435],["正统",1436,1449],["景泰",1450,1457],["天顺",1457,1464],["成化",1465,1487],["弘治",1488,1505],["正德",1506,1521],["嘉靖",1522,1566],["隆庆",1567,1572],["万历",1573,1620],["泰昌",1620,1620],["天启",1621,1627],["崇祯",1628,1644]];
+  const GZ = "甲乙丙丁戊己庚辛壬癸", DZ = "子丑寅卯辰巳午未申酉戌亥";
+  const ganzhi = (y) => GZ[((y - 4) % 10 + 10) % 10] + DZ[((y - 4) % 12 + 12) % 12];
+
+  function dossierOf(y) {
+    const eraHit = ERAS.find((e) => y >= e[1] && y <= e[2]);
+    const eraText = eraHit ? `${eraHit[0]}${y - eraHit[1] + 1}年` : "南明纪年（简编）";
+    const emp = EMPERORS.find((e) => y >= e.reignStart && y <= e.reignEnd);
+    const empReignNo = emp ? y - emp.reignStart + 1 : 0;
+    const secs = SECRETS.filter((s) => s.terms.some((t) => t.start <= y && (t.end ?? t.start) >= y));
+    const sameYear = EVENTS.filter((e) => e.year === y);
+    const nearby = EVENTS.filter((e) => Math.abs(e.year - y) === 1);
+    const alive = FIGURES.filter((f) => f.birth && f.birth <= y && (f.death ?? 9999) >= y)
+      .sort((a, b) => (a.death ?? 1700) - (b.death ?? 1700));
+    return { y, eraText, ganzhi: ganzhi(y), emp, empReignNo, secs, sameYear, nearby, alive };
+  }
+
+  function render(d) {
+    const box = document.getElementById("dossier");
+    const li = (arr, f) => arr.length ? `<ul style="font-size:14px;line-height:1.9">${arr.map(f).join("")}</ul>` : `<p style="font-size:13px;color:var(--c-ink-2)">（本年无记录）</p>`;
+    box.innerHTML = `
+      <div class="card" style="padding:18px 22px">
+        <h2 style="margin:0;font-size:26px">${d.y} 年 <span style="font-size:18px;color:var(--c-ink-2)">· ${d.eraText} · ${d.ganzhi}年</span></h2>
+        ${d.emp ? `<p style="font-size:15px;margin:10px 0 0">在位：<a href="/emperors/${d.emp.id}"><strong>${d.emp.templeName} · ${d.emp.name}</strong></a>（${d.emp.era}${d.emp.eras ? "／" + d.emp.eras.map((x) => x.era).join("、") : ""}，在位第 ${d.empReignNo} 年）—— ${d.emp.brief}</p>` : `<p style="font-size:14px;color:var(--c-ink-2)">此年在明朝全国性政权之外（南明时期，见皇帝页南明简编）。</p>`}
+      </div>
+
+      <div class="card" style="padding:16px 22px;margin-top:14px">
+        <h3 style="margin:0 0 6px;font-size:16px">当任首辅 / 阁臣居首</h3>
+        ${li(d.secs, (s) => `<li><a href="/power/secretaries"><strong>${s.name}</strong></a>（${s.terms.map((t) => t.start + "–" + (t.end ?? t.start)).join("；")}）—— ${s.note ?? ""}</li>`)}
+      </div>
+
+      <div class="card" style="padding:16px 22px;margin-top:14px">
+        <h3 style="margin:0 0 6px;font-size:16px">大事（当年 ${d.sameYear.length} 条 · 前后一年 ${d.nearby.length} 条）</h3>
+        ${li(d.sameYear, (e) => `<li><a href="/events/${e.id}"><strong>${e.title}</strong></a>——${e.result.slice(0, 60)}…</li>`)}
+        ${d.nearby.length ? `<p style="font-size:13px;color:var(--c-ink-2);margin:8px 0 2px">前后一年：</p><ul style="font-size:13px;line-height:1.8">${d.nearby.map((e) => `<li>${e.year} · <a href="/events/${e.id}">${e.title}</a></li>`).join("")}</ul>` : ""}
+      </div>
+
+      <div class="card" style="padding:16px 22px;margin-top:14px">
+        <h3 style="margin:0 0 6px;font-size:16px">在世人物（生卒可考者 ${d.alive.length} 人）</h3>
+        ${d.alive.length ? `<p style="font-size:13px;margin:0">${d.alive.map((f) => `<a href="/figures/${f.id}" title="${f.birth}–${f.death} · ${f.career ?? ""}">${f.name}</a>`).join(" · ")}</p>` : `<p style="font-size:13px;color:var(--c-ink-2)">（无生卒可考的人物在世——数据库生卒覆盖率有限，写作请勿据此断言「某年无人」）</p>`}
+      </div>
+
+      <p style="font-size:12px;color:var(--c-ink-2);margin-top:10px">数据源：emperors.json / first-secretaries.json / events.json / figures.json（仓库内可见出处）。首辅年份精确到年、月份待校对轮；人物生卒缺载者未列入。</p>
+    `;
+    box.style.display = "block";
+  }
+
+  function go() {
+    const y = Math.round(+document.getElementById("dYear").value);
+    if (y >= 1368 && y <= 1644) render(dossierOf(y));
+    else document.getElementById("dossier").innerHTML = `<p class="mh-myth" style="display:block">请输入 1368–1644 之间的年份（南明 1644–1662 暂按简编处理，请用皇帝页）。</p>`, document.getElementById("dossier").style.display = "block";
+  }
+  document.getElementById("dGo").addEventListener("click", go);
+  document.getElementById("dYear").addEventListener("keydown", (e) => { if (e.key === "Enter") go(); });
+  go();
+</script>
