@@ -1,0 +1,53 @@
+---
+// V11 土木堡之变与北京保卫战：两阶段路线切换
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { TUMU_PHASES } from "../../data/tumu-route.js";
+---
+<BaseLayout title="土木堡与北京保卫战（V11）· 地图" crumbs={[["/", "首页"], ["/maps", "地图"], ["", "土木堡→保卫战"]]}>
+  <link rel="stylesheet" href="/vendor/leaflet.css" />
+  <script is:inline src="/vendor/leaflet.js"></script>
+  <div class="wrap" style="padding-top:20px">
+    <div class="page-head" style="padding-top:0">
+      <h1 style="margin:0">土木堡之变与北京保卫战（1449）</h1>
+      <p class="lede">同一年的两段路线：红＝亲征覆没（七月出师—八月土木堡），蓝＝背城一战（十月紫荆关—九门—北撤）。切阶段、点站点看经过。</p>
+    </div>
+    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px" id="v11btns">
+      {TUMU_PHASES.map((p, i) => <button class="btn btn-pill" data-p={String(i)} aria-pressed={i === 0 ? "true" : "false"}>{p.name}</button>)}
+    </div>
+    <div style="position:relative;height:640px;border-radius:var(--r-m);overflow:hidden;background:var(--c-paper);border:1px solid var(--c-line-soft)">
+      <div id="v11map" style="position:absolute;inset:0"></div>
+    </div>
+    <p style="font-size:12px;color:var(--c-ink-2);margin-top:8px">
+      依据：《明史·英宗前纪》《景帝本纪》《于谦传》①、《明史纪事本末》②。主条目：<a href="/events/tumu-crisis-1449">土木堡之变</a> · <a href="/events/beijing-defense-1449">北京保卫战</a>。
+    </p>
+  </div>
+</BaseLayout>
+
+<script>
+  const L = window.L;
+  import { TUMU_PHASES } from "../../data/tumu-route.js";
+
+  const map = L.map("v11map", { attributionControl: false }).setView([40.2, 115.6], 7);
+  L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", { maxZoom: 12, crossOrigin: true }).addTo(map);
+
+  let layer = L.layerGroup().addTo(map);
+  function draw(idx) {
+    map.removeLayer(layer);
+    layer = L.layerGroup().addTo(map);
+    const ph = TUMU_PHASES[idx];
+    L.polyline(ph.stops.map((s) => s.coord), { color: ph.color, weight: 2.5, opacity: 0.75, dashArray: "8 6" }).addTo(layer);
+    ph.stops.forEach((s, i) => {
+      const last = i === ph.stops.length - 1;
+      L.circleMarker(s.coord, { radius: last ? 10 : 7, color: ph.color, weight: 2, fillColor: ph.color, fillOpacity: last ? 0.95 : 0.7 })
+        .bindPopup(`<b>${s.y} · ${s.name}</b><br/><span style="font-size:13px">${s.note}</span>`)
+        .bindTooltip(`${s.y} ${s.name}`)
+        .addTo(layer);
+    });
+    map.fitBounds(ph.stops.map((s) => [s.coord[1], s.coord[0]]), { padding: [40, 40], maxZoom: 8 });
+  }
+  draw(0);
+  document.querySelectorAll("#v11btns .btn-pill").forEach((b) => b.addEventListener("click", () => {
+    document.querySelectorAll("#v11btns .btn-pill").forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
+    draw(+b.dataset.p);
+  }));
+</script>

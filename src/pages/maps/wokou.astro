@@ -1,0 +1,54 @@
+---
+// V12 嘉靖倭乱与海疆（1552–1567）：时间滑杆 + 阵营配色
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { WOKOU_EVENTS } from "../../data/wokou-route.js";
+---
+<BaseLayout title="嘉靖倭乱与海疆（V12）· 地图" crumbs={[["/", "首页"], ["/maps", "地图"], ["", "倭乱海疆"]]}>
+  <link rel="stylesheet" href="/vendor/leaflet.css" />
+  <script is:inline src="/vendor/leaflet.js"></script>
+  <div class="wrap" style="padding-top:20px">
+    <div class="page-head" style="padding-top:0">
+      <h1 style="margin:0">嘉靖倭乱与海疆（1552–1567）</h1>
+      <p class="lede">从双屿港平毁到隆庆开关：十五年「剿与开」的拉锯。拖动年份点亮事件——注意「倭寇」主体的颜色（海商线）与明军进剿线。</p>
+    </div>
+    <div style="position:relative;height:620px;border-radius:var(--r-m);overflow:hidden;background:var(--c-paper);border:1px solid var(--c-line-soft)">
+      <div id="v12map" style="position:absolute;inset:0"></div>
+      <div style="position:absolute;left:0;right:0;bottom:0;z-index:500;display:flex;align-items:center;gap:12px;padding:18px 16px 12px;background:linear-gradient(transparent,var(--c-surface-2) 45%)">
+        <strong id="v12y" style="font-family:var(--font-display);font-size:20px;min-width:64px">1552</strong>
+        <input id="v12slider" type="range" min="1552" max="1567" value="1552" style="flex:1;accent-color:var(--c-primary);height:44px;cursor:pointer" aria-label="年份滑杆" />
+        <span id="v12c" style="font-size:12px;color:var(--c-ink-2)"></span>
+      </div>
+    </div>
+    <p style="font-size:12px;color:var(--c-ink-2);margin-top:8px">
+      「倭寇即日本人」不确：主力为中国海商与流民（页内事件条目有辨析）。依据：《明史·朱纨传》《戚继光传》①、樊树志《晚明史》③。主条目：<a href="/events/jiajing-wokou">嘉靖大倭乱</a> · <a href="/events/longqing-open-1567">隆庆开关</a>。
+    </p>
+  </div>
+</BaseLayout>
+
+<script>
+  const L = window.L;
+  import { WOKOU_EVENTS } from "../../data/wokou-route.js";
+
+  const SIDE = { 明军: "#3E7C59", 海商: "#B5382F", 外力: "#C6A664", 明廷: "#2E5A88" };
+  const dark = document.documentElement.dataset.theme === "dark";
+  const map = L.map("v12map", { attributionControl: false }).setView([27.5, 122], 5);
+  L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", { maxZoom: 12, crossOrigin: true }).addTo(map);
+
+  const layer = L.layerGroup().addTo(map);
+  function apply(y) {
+    layer.clearLayers();
+    const shown = WOKOU_EVENTS.filter((e) => e.y <= y);
+    shown.forEach((e) => {
+      L.circleMarker(e.coord, { radius: 6.5, color: "#5A4630", weight: 1, fillColor: SIDE[e.side], fillOpacity: e.y === y ? 0.95 : 0.55 })
+        .bindPopup(`<b>${e.y} · ${e.name}</b><br/><span style="font-size:13px">${e.note}</span>`)
+        .bindTooltip(`<b>${e.y} · ${e.name}</b>　<span style="color:#8a8578">${e.side}</span>`)
+        .addTo(layer);
+    });
+    document.getElementById("v12y").textContent = y;
+    document.getElementById("v12c").innerHTML = `已累计 <b style="color:var(--c-primary);font-size:15px">${shown.length}</b> 桩`;
+  }
+  const slider = document.getElementById("v12slider");
+  slider.addEventListener("input", (e) => apply(+e.target.value));
+  apply(1552);
+  document.getElementById("v12legend")?.remove();
+</script>

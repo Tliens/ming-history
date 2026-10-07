@@ -1,0 +1,39 @@
+---
+// V9 靖难之役路线：十站编年 + 路线连线 + 站点弹窗
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { JINGNAN_STOPS } from "../../data/jingnan-route.js";
+---
+<BaseLayout title="靖难之役路线（V9）· 地图" crumbs={[["/", "首页"], ["/maps", "地图"], ["", "靖难路线"]]}>
+  <link rel="stylesheet" href="/vendor/leaflet.css" />
+  <script is:inline src="/vendor/leaflet.js"></script>
+  <div class="wrap" style="padding-top:20px">
+    <div class="page-head" style="padding-top:0">
+      <h1 style="margin:0">靖难之役路线（1399–1402）</h1>
+      <p class="lede">十站编年：从北平起兵到金川门。金点=燕军胜，红点=朝廷胜；点开看战况与后果。连线为战场转进示意。</p>
+    </div>
+    <div style="position:relative;height:640px;border-radius:var(--r-m);overflow:hidden;background:var(--c-paper);border:1px solid var(--c-line-soft)">
+      <div id="v9map" style="position:absolute;inset:0"></div>
+    </div>
+    <p style="font-size:12px;color:var(--c-ink-2);margin-top:8px">依据：《明史·成祖本纪》《恭闵帝本纪》①、《明史纪事本末》②。战场坐标为治所/战场今地约位；主事件条目见 <a href="/events/jingnan-1399">靖难之役</a>。</p>
+  </div>
+</BaseLayout>
+
+<script>
+  const L = window.L;
+  import { JINGNAN_STOPS } from "../../data/jingnan-route.js";
+
+  const map = L.map("v9map", { attributionControl: false }).setView([36.5, 117.5], 5);
+  L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", { maxZoom: 12, crossOrigin: true }).addTo(map);
+
+  L.polyline(JINGNAN_STOPS.map((s) => s.coord), { color: "#8A857B", weight: 2, dashArray: "6 6", opacity: 0.7 }).addTo(map);
+  JINGNAN_STOPS.forEach((s, i) => {
+    const win = s.side === "燕";
+    L.circleMarker(s.coord, { radius: 8, color: win ? "#6E4A12" : "#5A1B14", weight: 2, fillColor: win ? "#C6A664" : "#B5382F", fillOpacity: 0.92 })
+      .bindTooltip(`${i + 1}. ${s.name}（${s.y}）`)
+      .bindPopup(`<b>${i + 1}. ${s.name}</b>（${s.y}）<br/><span style="color:#8a8578;font-size:12px">${s.side === "燕" ? "燕军胜" : "朝廷胜"}</span><br/>${s.note}`)
+      .addTo(map);
+    L.tooltip({ permanent: true, direction: "top", offset: [0, -8], className: "num-tip" })
+      .setLatLng(s.coord).setContent(String(i + 1)).addTo(map);
+  });
+  map.fitBounds(JINGNAN_STOPS.map((s) => s.coord).map((c) => [c[1], c[0]]), { padding: [30, 30] });
+</script>

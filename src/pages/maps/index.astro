@@ -5,7 +5,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
   <div class="wrap">
     <div class="page-head">
       <h1>地图中心</h1>
-      <p class="lede">空间是理解明朝的第一入口：先看全貌，再进战局与航线。</p>
+      <p class="lede">空间是理解明朝的第一入口：全貌定盘，战局看大势，路线图讲故事。</p>
     </div>
     <div style="display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));margin-top:20px">
       <a class="card" href="/maps/empire" style="border-left:3px solid var(--c-gold)">
@@ -29,6 +29,20 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
         <span style="font-size:12px;color:var(--c-link)">海疆 · 航线 →</span>
       </a>
     </div>
-    <p style="font-size:12px;color:var(--c-ink-2);margin-top:16px">规划中：靖难之役路线（V9）、土木堡与北京保卫战（V11）、嘉靖倭乱海疆（V12）、卫所军事体系（V18）。</p>
+    <div style="display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));margin-top:14px">
+      <a class="card" href="/maps/jingnan" style="border-left:3px solid var(--c-gold)">
+        <h3 style="margin:0 0 6px">靖难之役路线（V9）</h3>
+        <p style="margin:0;font-size:13px;color:var(--c-ink-2)">十站编年：北平起兵→白沟河→济南→东昌→灵璧→金川门。</p>
+      </a>
+      <a class="card" href="/maps/tumu" style="border-left:3px solid var(--c-source-1)">
+        <h3 style="margin:0 0 6px">土木堡与北京保卫战（V11）</h3>
+        <p style="margin:0;font-size:13px;color:var(--c-ink-2)">同年两段路线：七月出师覆没（红）、十月背城一战（蓝）。</p>
+      </a>
+      <a class="card" href="/maps/wokou" style="border-left:3px solid var(--c-source-4)">
+        <h3 style="margin:0 0 6px">嘉靖倭乱与海疆（V12）</h3>
+        <p style="margin:0;font-size:13px;color:var(--c-ink-2)">双屿→台州→横屿→月港：剿与开的十五年拉锯。</p>
+      </a>
+    </div>
+    <p style="font-size:12px;color:var(--c-ink-2);margin-top:16px">规划中：卫所军事体系点云专图（V18）、长城墙体图层。</p>
   </div>
 </BaseLayout>
