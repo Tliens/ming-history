@@ -1,13 +1,34 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 ---
-<BaseLayout title="地图中心">
+<BaseLayout title="地图中心" crumbs={[["/", "首页"], ["", "地图"]]}>
   <div class="wrap">
-    <h1>地图中心</h1>
-    <p>专题地图陆续上线中。</p>
-    <a class="card" href="/maps/empire" style="display:block;max-width:420px">
-      <h3 style="margin:0 0 6px">疆域与卫所（V7）</h3>
-      <p style="margin:0;font-size:14px;color:var(--c-ink-2)">明初政区 + 卫所 375 座 + 驿站驿路 + 今省界对照，时间滑杆拖动 276 年。</p>
-    </a>
+    <div class="page-head">
+      <h1>地图中心</h1>
+      <p class="lede">空间是理解明朝的第一入口：先看全貌，再进战局与航线。</p>
+    </div>
+    <div style="display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));margin-top:20px">
+      <a class="card" href="/maps/empire" style="border-left:3px solid var(--c-gold)">
+        <h3 style="margin:0 0 6px">疆域与卫所（V7）</h3>
+        <p style="margin:0 0 8px;font-size:13px;color:var(--c-ink-2)">1391 政区 + 卫所 375 座 + 驿路 + 今省界对照。时间滑杆拖动 276 年。</p>
+        <span style="font-size:12px;color:var(--c-link)">全貌 · 总览 →</span>
+      </a>
+      <a class="card" href="/maps/late-ming" style="border-left:3px solid var(--c-primary)">
+        <h3 style="margin:0 0 6px">明末战局（V13）</h3>
+        <p style="margin:0 0 8px;font-size:13px;color:var(--c-ink-2)">1592–1644 军事事件随年份点亮：三大征 → 辽事 → 民变的收网过程。</p>
+        <span style="font-size:12px;color:var(--c-link)">战局 · 动态 →</span>
+      </a>
+      <a class="card" href="/maps/nine-garrisons" style="border-left:3px solid var(--c-source-2)">
+        <h3 style="margin:0 0 6px">九边重镇（V8）</h3>
+        <p style="margin:0 0 8px;font-size:13px;color:var(--c-ink-2)">九大军镇的镇城、职掌与相关战事；卫所点云铺底。</p>
+        <span style="font-size:12px;color:var(--c-link)">边防 · 静态 →</span>
+      </a>
+      <a class="card" href="/maps/zhenghe" style="border-left:3px solid var(--c-qinghua)">
+        <h3 style="margin:0 0 6px">郑和下西洋（V10）</h3>
+        <p style="margin:0 0 8px;font-size:13px;color:var(--c-ink-2)">七次航次分色可切换，航点古今对照；示意连线非复原航路。</p>
+        <span style="font-size:12px;color:var(--c-link)">海疆 · 航线 →</span>
+      </a>
+    </div>
+    <p style="font-size:12px;color:var(--c-ink-2);margin-top:16px">规划中：靖难之役路线（V9）、土木堡与北京保卫战（V11）、嘉靖倭乱海疆（V12）、卫所军事体系（V18）。</p>
   </div>
 </BaseLayout>

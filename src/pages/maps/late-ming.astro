@@ -1,0 +1,74 @@
+---
+// V13 明末战局图（1616–1644）：军事事件随年份点亮，按对手分类着色
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { events } from "../../lib/data.js";
+const WAR = events.events
+  .filter((e) => e.year >= 1592 && e.year <= 1644 && e.layers.includes("军事") && e.location?.coord)
+  .map((e) => ({
+    id: e.id, year: e.year, title: e.title, coord: e.location.coord, loc: e.location.name,
+    side: /后金|清|辽|宁远|宁锦|松锦|己巳|萨尔浒|浑河/.test(e.title + e.location.name) ? "辽事"
+      : /李自成|张献忠|民变|甲申|传庭|张网|陕西/.test(e.title) ? "民变"
+      : /朝鲜|倭|宁夏|播州/.test(e.title + e.location.name) ? "三大征与海疆" : "其他",
+  }));
+const COUNTS = WAR.reduce((m, e) => ((m[e.side] = (m[e.side] ?? 0) + 1), m), {});
+---
+<BaseLayout title="明末战局图（V13）· 地图" crumbs={[["/", "首页"], ["/maps", "地图"], ["", "明末战局"]]}>
+  <link rel="stylesheet" href="/vendor/leaflet.css" />
+  <script is:inline src="/vendor/leaflet.js"></script>
+  <div class="wrap" style="padding-top:20px">
+    <div class="page-head" style="padding-top:0">
+      <h1 style="margin:0">明末战局（1592–1644）</h1>
+      <p class="lede">拖动年份，看「三大征 → 辽事 → 民变」的战火如何从三面收紧。事件点来自本站大事库（{WAR.length} 条带坐标），点击直达详情。</p>
+    </div>
+    <div style="position:relative;height:620px;border-radius:var(--r-m);overflow:hidden;background:var(--c-paper);border:1px solid var(--c-line-soft)">
+      <div id="v13map" style="position:absolute;inset:0"></div>
+      <div style="position:absolute;left:0;right:0;bottom:0;z-index:500;display:flex;align-items:center;gap:12px;padding:18px 16px 12px;background:linear-gradient(transparent,var(--c-surface-2) 45%)">
+        <strong id="v13y" style="font-family:var(--font-display);font-size:20px;min-width:64px">1616</strong>
+        <input id="v13slider" type="range" min="1592" max="1644" value="1616" style="flex:1;accent-color:var(--c-primary);height:44px;cursor:pointer" aria-label="年份滑杆" />
+        <span id="v13c" style="font-size:12px;color:var(--c-ink-2)"></span>
+      </div>
+    </div>
+    <div style="display:flex;gap:14px;font-size:12px;color:var(--c-ink-2);margin-top:8px" id="v13legend"></div>
+  </div>
+</BaseLayout>
+
+<script>
+  const L = window.L;
+  import eventsData from "../../data/events/events.json";
+
+  const SIDE = { 辽事: "#7FA3D0", 民变: "#B5382F", "三大征与海疆": "#3E7C59", 其他: "#A89F8F" };
+  const byId = Object.fromEntries(eventsData.events.map((e) => [e.id, e]));
+  const WAR = Object.entries(byId)
+    .map(([id, e]) => ({ id, ...e }))
+    .filter((e) => e.year >= 1592 && e.year <= 1644 && e.layers.includes("军事") && e.location?.coord)
+    .map((e) => ({
+      id: e.id, year: e.year, title: e.title, coord: e.location.coord, loc: e.location.name,
+      side: /后金|清|辽|宁远|宁锦|松锦|己巳|萨尔浒/.test(e.title + e.location.name) ? "辽事"
+        : /李自成|张献忠|民变|甲申|传庭|张网|陕西/.test(e.title) ? "民变"
+        : /朝鲜|倭|宁夏|播州/.test(e.title + e.location.name) ? "三大征与海疆" : "其他",
+    }));
+
+  const dark = document.documentElement.dataset.theme === "dark";
+  const map = L.map("v13map", { preferCanvas: true, attributionControl: false }).setView([37, 114], 4);
+  L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", { maxZoom: 12, crossOrigin: true }).addTo(map);
+
+  const layer = L.layerGroup().addTo(map);
+  function apply(y) {
+    layer.clearLayers();
+    const shown = WAR.filter((e) => e.year <= y);
+    shown.forEach((e) => {
+      L.circleMarker(e.coord, { radius: 6, color: SIDE[e.side], weight: 1.5, fillColor: SIDE[e.side], fillOpacity: e.year === y ? 0.95 : 0.55 })
+        .bindTooltip(`<b>${e.year} · ${e.title}</b><br/><span style="color:#8a8578">${e.loc ?? ""} · ${e.side} · 点击进详情</span>`)
+        .on("click", () => location.href = `/events/${e.id}`)
+        .addTo(layer);
+    });
+    document.getElementById("v13y").textContent = y;
+    document.getElementById("v13c").innerHTML = `已累计 <b style="color:var(--c-primary);font-size:15px">${shown.length}</b> 场`;
+  }
+  const slider = document.getElementById("v13slider");
+  slider.addEventListener("input", (e) => apply(+e.target.value));
+  apply(1616);
+
+  document.getElementById("v13legend").innerHTML =
+    Object.entries(SIDE).map(([k, c]) => `<span style="display:inline-flex;align-items:center;gap:5px"><span style="width:10px;height:10px;border-radius:50%;background:${c};display:inline-block"></span>${k}</span>`).join("");
+</script>

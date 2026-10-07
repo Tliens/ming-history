@@ -1,0 +1,62 @@
+---
+// V10 郑和七下西洋航线（示意连线）· 航次选择器 + 航点卡
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { WAYPOINTS, VOYAGES } from "../../data/zhenghe-route.js";
+---
+<BaseLayout title="郑和下西洋航线（V10）· 地图" crumbs={[["/", "首页"], ["/maps", "地图"], ["", "下西洋航线"]]}>
+  <link rel="stylesheet" href="/vendor/leaflet.css" />
+  <script is:inline src="/vendor/leaflet.js"></script>
+  <div class="wrap" style="padding-top:20px">
+    <div class="page-head" style="padding-top:0">
+      <h1 style="margin:0">郑和七下西洋（1405–1433）</h1>
+      <p class="lede">选航次看骨干航段；点航点看古今对照。航线为<strong>示意连线</strong>（节点间直线），非复原航路——真实航路依季风与针路，见页脚说明。</p>
+    </div>
+    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px" id="v10btns">
+      <button class="btn btn-pill" data-v="-1" aria-pressed="true">全部七次</button>
+      {VOYAGES.map((v, i) => <button class="btn btn-pill" data-v={String(i)} aria-pressed="false">{v.n} · {v.years}</button>)}
+    </div>
+    <div style="position:relative;height:600px;border-radius:var(--r-m);overflow:hidden;background:var(--c-paper);border:1px solid var(--c-line-soft)">
+      <div id="v10map" style="position:absolute;inset:0"></div>
+    </div>
+    <p style="font-size:12px;color:var(--c-ink-2);margin-top:8px">
+      地名考订据《明史·郑和传》①与马欢《瀛涯胜览》、费信《星槎胜览》②；航点取今地约位。真实针路（罗盘航向与更数）见《郑和航海图》——本图是给普通读者的示意骨架，不是航海图。
+    </p>
+  </div>
+</BaseLayout>
+
+<script>
+  const L = window.L;
+  import { WAYPOINTS, VOYAGES } from "../../data/zhenghe-route.js";
+
+  const map = L.map("v10map", { attributionControl: false }).setView([15, 85], 3);
+  L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", { maxZoom: 12, crossOrigin: true }).addTo(map);
+
+  const W = WAYPOINTS;
+  const pts = Object.entries(W).map(([id, w]) => ({ id, ...w }));
+
+  function draw(sel) {
+    // 清旧层
+    map.eachLayer((ly) => { if (ly._isV10) map.removeLayer(ly); });
+    const legs = sel < 0 ? VOYAGES.flatMap((v) => v.legs) : VOYAGES[sel].legs;
+    legs.forEach(([a, b]) => {
+      if (!W[a] || !W[b]) return;
+      L.polyline([W[a].c, W[b].c], { color: "#B5382F", weight: 2, opacity: 0.75, dashArray: "1" })
+        .addTo(map)._isV10 = true;
+    });
+    pts.forEach((p) => {
+      const used = legs.some(([a, b]) => a === p.id || b === p.id);
+      L.circleMarker(p.c, {
+        radius: used ? 6 : 4, color: "#6E4A12", weight: 1.5,
+        fillColor: used ? "#C6A664" : "#B5AC98", fillOpacity: used ? 0.95 : 0.35,
+      }).addTo(map)
+        .bindTooltip(`<b>${p.n}</b>（今 ${p.now}）`)
+        .bindPopup(`<b>${p.n}</b><br/>今 ${p.now}<br/><span style="color:#8a8578;font-size:12px">${p.note}</span>`)
+        .addTo(map)._isV10 = true;
+    });
+  }
+  draw(-1);
+  document.querySelectorAll("#v10btns .btn-pill").forEach((b) => b.addEventListener("click", () => {
+    document.querySelectorAll("#v10btns .btn-pill").forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
+    draw(+b.dataset.v);
+  }));
+</script>

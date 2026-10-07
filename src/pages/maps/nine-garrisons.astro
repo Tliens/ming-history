@@ -1,0 +1,70 @@
+---
+// V8 九边重镇图：镇城标记 + 卫所点云 + 战事事件联动
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { GARRISON_TOWNS } from "../../data/nine-garrisons.js";
+import { events } from "../../lib/data.js";
+const linked = events.events.filter((e) => GARRISON_TOWNS.some((g) => g.events.includes(e.id)));
+---
+<BaseLayout title="九边重镇图（V8）· 地图" crumbs={[["/", "首页"], ["/maps", "地图"], ["", "九边重镇"]]}>
+  <link rel="stylesheet" href="/vendor/leaflet.css" />
+  <script is:inline src="/vendor/leaflet.js"></script>
+  <div class="wrap" style="padding-top:20px">
+    <div class="page-head" style="padding-top:0">
+      <h1 style="margin:0">九边重镇</h1>
+      <p class="lede">明代北边九大军镇：镇城为骨、卫所为肉。点镇城看职掌与相关战事；卫所红点来自 CHGIS 数据（可按你的年份开关）。③①</p>
+    </div>
+    <div style="position:relative;height:620px;border-radius:var(--r-m);overflow:hidden;background:var(--c-paper);border:1px solid var(--c-line-soft)">
+      <div id="v8map" style="position:absolute;inset:0"></div>
+      <aside id="v8card" style="display:none;position:absolute;top:12px;right:12px;z-index:500;width:280px;background:var(--c-surface);border:1px solid var(--c-line);border-left:3px solid var(--c-primary);border-radius:var(--r-m);padding:14px;font-size:13px;box-shadow:var(--shadow-2)">
+        <button id="v8close" style="position:absolute;top:6px;right:10px;border:0;background:none;cursor:pointer;color:var(--c-ink-2)">✕</button>
+        <h3 id="v8name" style="margin:0;font-size:17px;font-family:var(--font-display)"></h3>
+        <div id="v8seat" style="color:var(--c-ink-2);font-size:12px;margin:2px 0 8px"></div>
+        <p id="v8note" style="margin:0 0 8px;line-height:1.7"></p>
+        <div id="v8events"></div>
+      </aside>
+    </div>
+    <p style="font-size:12px;color:var(--c-ink-2);margin-top:8px">
+      卫所：CHGIS Ming Garrisons（DOI:10.7910/DVN/5RUXK8，学术使用）· 镇城概述：《明史·兵志》①、赵现海《明代九边长城军镇史》③。长城墙体未绘（沿用现有长城数据待二期）。
+    </p>
+  </div>
+</BaseLayout>
+
+<script>
+  const L = window.L;
+  import { GARRISON_TOWNS } from "../../data/nine-garrisons.js";
+  import eventsData from "../../data/events/events.json";
+
+  const dark = document.documentElement.dataset.theme === "dark";
+  const map = L.map("v8map", { preferCanvas: true, attributionControl: false }).setView([39.5, 108], 4);
+  L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", { maxZoom: 12, crossOrigin: true }).addTo(map);
+
+  // 卫所点云（北纬 34° 以北为视觉重点，其余淡化）
+  fetch("/geojson/ming_garrisons.json").then((r) => r.json()).then((d) => {
+    L.geoJSON(d, {
+      pointToLayer: (f, ll) => L.circleMarker(ll, {
+        radius: 2.4,
+        color: ll.lat >= 34 ? "#B5382F" : dark ? "#4a443c" : "#C9BFB0",
+        weight: 0.5, fillOpacity: ll.lat >= 34 ? 0.75 : 0.3,
+      }),
+      onEachFeature: (f, lyr) => lyr.bindTooltip(`${f.properties.name_ch}（建置 ${f.properties.beg_yr ?? "?"} 年）`),
+    }).addTo(map);
+  });
+
+  // 九镇城
+  const byId = Object.fromEntries(eventsData.events.map((e) => [e.id, e]));
+  GARRISON_TOWNS.forEach((g) => {
+    L.circleMarker(g.coord, { radius: 9, color: "#6E4A12", weight: 2, fillColor: "#C6A664", fillOpacity: 0.9 })
+      .addTo(map)
+      .bindTooltip(`${g.name} · ${g.seat}`, { permanent: false })
+      .on("click", () => {
+        document.getElementById("v8name").textContent = g.name;
+        document.getElementById("v8seat").textContent = `治所：${g.seat} · ${g.garrison}`;
+        document.getElementById("v8note").textContent = g.note;
+        document.getElementById("v8events").innerHTML = g.events.length
+          ? "相关战事：" + g.events.map((id) => { const e = byId[id]; return e ? `<a href="/events/${id}">${e.year} ${e.title}</a>` : ""; }).filter(Boolean).join(" · ")
+          : '<span style="color:var(--c-ink-2)">（本镇无骨干战事条目）</span>';
+        const c = document.getElementById("v8card"); c.style.display = "block";
+      });
+  });
+  document.getElementById("v8close").addEventListener("click", () => document.getElementById("v8card").style.display = "none");
+</script>
