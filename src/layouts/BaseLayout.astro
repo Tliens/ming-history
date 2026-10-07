@@ -40,7 +40,7 @@ const current = (href) => path === href || (href !== "/" && path.startsWith(href
       ))}
       <a href="/glossary">术语</a>
       <a href="/sources">资料库</a>
-      <a class="kuige-entry" href="https://kuige.me/" target="_blank" rel="noopener" title="kuige.me" style="text-decoration:none">魁歌 · 独立开发者</a>
+      <a class="kuige-entry" href="https://kuige.me/" target="_blank" rel="noopener" title="kuige.me" style="text-decoration:none"><img src="https://kuige.me/logo.png" alt="" width="16" height="16" style="width:16px;height:16px;border-radius:50%;vertical-align:-3px;margin-right:6px">魁歌</a>
     </nav>
     <button id="themeToggle" class="tbtn" type="button" aria-label="切换主题">🌓</button>
     <button id="mnavBtn" class="tbtn mnav-toggle" type="button" aria-label="菜单" aria-expanded="false">☰</button>
@@ -49,7 +49,7 @@ const current = (href) => path === href || (href !== "/" && path.startsWith(href
     {NAV.concat([["/glossary", "术语"], ["/sources", "资料库"], ["/learn", "学习线"]]).map(([href, label]) => (
       <a href={href}>{label}</a>
     ))}
-    <a href="https://kuige.me/" target="_blank" rel="noopener">魁歌 · 独立开发者 ↗</a>
+    <a href="https://kuige.me/" target="_blank" rel="noopener"><img src="https://kuige.me/logo.png" alt="" width="16" height="16" style="width:16px;height:16px;border-radius:50%;vertical-align:-3px;margin-right:6px">魁歌 ↗</a>
   </div>
 
   {crumbs.length > 0 && (
