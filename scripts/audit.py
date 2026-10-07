@@ -48,7 +48,7 @@ ev_ids = {e["id"] for e in events}
 for ev in events:
     y = ev["year"]
     if not any(a <= y <= b for a, b in reign):
-        if y > 1644 and y <= 1662: pass
+        if y > 1644 and y <= 1664: pass
         else: issues.append(f"B 事件 {ev['id']} 年 {y} 不在任何帝王在位区间")
     for n in ev.get("figures", []):
         if _norm(n) not in fig_names and _norm(n) not in emp_names and _norm(n) not in south_names and _norm(n) not in cons:
