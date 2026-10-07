@@ -8,6 +8,10 @@ issues, warns = [], []
 
 def J(p): return json.load(open(p, encoding="utf-8"))
 
+def _norm_name(n):
+    import re as _r
+    return _r.sub(r"（[^）]*）", "", n).strip()
+
 emps = J("src/data/emperors/emperors.json")
 events = J("src/data/events/events.json")["events"]
 secs = J("src/data/first-secretaries.json")["secretaries"]
@@ -32,7 +36,9 @@ for e in emps["emperors"]:
                 issues.append(f"A 帝王 {e['id']} 段年号 {x} 超出在位")
 
 # B. 事件引用完整性 + 年代合法性
-fig_names = {f["name"] for f in figs}
+import re as _re
+def _norm(n): return _re.sub(r"（[^）]*）", "", n).strip()
+fig_names = {_norm(f["name"]) for f in figs}
 emp_names = {e["name"]: e["id"] for e in emps["emperors"]}
 south_names = {r["name"] for r in emps["southernMing"]["rulers"]}
 reign = {}
@@ -45,7 +51,7 @@ for ev in events:
         if y > 1644 and y <= 1662: pass
         else: issues.append(f"B 事件 {ev['id']} 年 {y} 不在任何帝王在位区间")
     for n in ev.get("figures", []):
-        if n not in fig_names and n not in emp_names and n not in south_names:
+        if _norm(n) not in fig_names and _norm(n) not in emp_names and _norm(n) not in south_names and _norm(n) not in cons:
             warns.append(f"B 事件 {ev['id']} 人物「{n}」未建档（显示为纯文本）")
     c = ev.get("location", {}).get("coord")
     if c and not (15 <= c[1] <= 55 and 73 <= c[0] <= 145):

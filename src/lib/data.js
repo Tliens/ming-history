@@ -67,6 +67,19 @@ export const secretariesOf = (emp) => {
 
 export const figuresById = Object.fromEntries(figures.figures.map((f) => [f.id, f]));
 
+const normName = (n) => n.replace(/（[^）]*）/g, "").trim();
+export const figuresByNameNorm = Object.fromEntries(
+  figures.figures.filter((f) => f.name).map((f) => [normName(f.name), f])
+);
+export const figureByAnyName = (n) => figuresByNameNorm[normName(n)] || null;
+
+// 后妃名归一化（events 人物联动到 /harem/consorts）
+import consortsRaw from "../data/consorts/consorts.json";
+export const consortsByNameNorm = Object.fromEntries(
+  consortsRaw.consorts.filter((c) => c.name).map((c) => [normName(c.name), c])
+);
+export const consortByAnyName = (n) => consortsByNameNorm[normName(n)] || null;
+
 export const relationsOf = (figId) =>
   relations.edges
     .filter((e) => e[0] === figId || e[2] === figId)

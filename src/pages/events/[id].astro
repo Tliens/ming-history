@@ -2,13 +2,21 @@
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import InfoBox from "../../components/InfoBox.astro";
 import SourceBadge from "../../components/SourceBadge.astro";
-import { events, figuresById, emperorById } from "../../lib/data.js";
+import { events, figureByAnyName, consortByAnyName } from "../../lib/data.js";
 
 export function getStaticPaths() {
   return events.events.map((ev) => ({ params: { id: ev.id }, props: { ev } }));
 }
 const { ev } = Astro.props;
-const figs = (ev.figures || []).map((n) => Object.values(figuresById).find((f) => f.name === n)).filter(Boolean);
+const figs = (ev.figures || [])
+  .map((n) => {
+    const f = figureByAnyName(n);
+    if (f) return { href: `/figures/${f.id}`, label: n };
+    const c = consortByAnyName(n);
+    if (c) return { href: `/harem/consorts/${c.id}`, label: c.name };
+    return null;
+  })
+  .filter(Boolean);
 const sections = [["起因", ev.cause], ["经过", ev.process], ["结果", ev.result], ["影响", ev.impact]];
 ---
 <BaseLayout title={`${ev.title}（${ev.year}）· 大事`} crumbs={[["/", "首页"], ["/events", "大事"], ["", ev.title]]}>
@@ -25,7 +33,7 @@ const sections = [["起因", ev.cause], ["经过", ev.process], ["结果", ev.re
     {figs.length > 0 && (
       <section>
         <h2 style="font-size:19px">相关人物</h2>
-        <p>{figs.map((f) => <a href={`/figures/${f.id}`} style="margin-right:12px">{f.name}</a>)}</p>
+        <p>{figs.map((f) => <a href={f.href} style="margin-right:12px">{f.label}</a>)}</p>
       </section>
     )}
 
