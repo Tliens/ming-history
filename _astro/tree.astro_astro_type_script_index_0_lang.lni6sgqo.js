@@ -1,4 +1,4 @@
-import{i as s,c as o,E as A,o as b}from"./echarts-theme.DecrLJU5.js";import{e as w}from"./emperors.pffwcHaj.js";const g={hongwu:{n:`太祖
+import{i as s,c as o,E as A,o as b}from"./echarts-theme.iSo3VWhq.js";import{e as w}from"./emperors.pffwcHaj.js";const g={hongwu:{n:`太祖
 洪武`,c:"#A02C2C"},jianwen:{n:`惠宗
 建文`,c:"#8A6D3B"},yongle:{n:`成祖
 永乐`,c:"#8A6D3B"},hongxi:{n:`仁宗
