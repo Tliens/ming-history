@@ -1,0 +1,55 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+const FLOW = [
+  ["放告", "州县有「放告日」（受理期，多在每月特定日期），状纸有格式与字数限制，不合式即「不准」。讼师与代书在幕后操刀——「状纸怎么递进去」本身就是戏。", "①②"],
+  ["受理与理刑", "州县官自理「词讼」（户婚田土钱债等民事与轻案），命盗重案必须申报上司；刑名师爷与佐贰官在流程里各有位置。", "①②"],
+  ["勘验与拘传", "命案需验尸（仵作）、验伤；拘传有牌票——差役持票拿人，「白牌拿人」即滥权。", "①②"],
+  ["审级", "州县→府→按察司→督抚→刑部/三法司；徒罪以上逐级审转，人犯一路解递——「上控」与「拦舆喊冤」的真实成本极高。", "①③"],
+];
+const PENALTIES = [
+  ["笞", "一至五十，以小荆杖击臀腿；赎铜可折", "五刑之末轻"],
+  ["杖", "六十至一百，大荆杖击背臀腿", "常用于轻罪与廷杖异化"],
+  ["徒", "一至三年，附劳役（送盐场/煎铁）", "就近编管"],
+  ["流", "二千/二千五百/三千里，附杖一百", "家属从轻处理"],
+  ["死", "斩/绞二等；凌迟为重罪极刑", "监候与立决之分，见下"],
+];
+const FACTS = [
+  ["死刑复核", "死刑须三法司定谳；京师死囚霜降后「朝审」，外省重案具题待皇帝勾决——「秋后处决」是常态，立决是特旨。写劫法场前先想清楚监刑兵力。", "①③"],
+  ["诏狱与州县监", "州县监羁押待审人犯；锦衣卫北镇抚司诏狱不经三法司——两条平行司法体系，权珰时代前者碾压后者。", "①③"],
+  ["《大明律》与条例", "律为正文，弘治后「问刑条例」渐增，嘉靖万历间条例膨胀——引律还是引例，是刑名幕友的专业饭碗。", "①③"],
+  ["赎刑与优待", "「赎铜」「纳米赎罪」广泛存在，官绅有议、贡、赎之优——有钱有功名真的可以花钱消灾（法定通道，不算黑幕）。", "①③"],
+  ["刑具规格", "笞杖长短粗细、行刑部位皆有定制，违规用刑可参官——「滥刑」是被纠参的罪名，不是默认权力。", "①②"],
+];
+---
+<BaseLayout title="法律刑名 · 创作者" crumbs={[["/", "首页"], ["/creators", "创作者"], ["", "法律刑名"]]}>
+  <div class="wrap prose" style="max-width:800px">
+    <div class="page-head">
+      <h1>法律刑名</h1>
+      <p class="lede">写诉讼、冤案、劫狱之前先看这张流程图：明代的司法走的是「程序极重、复核极严」的路线——限制越多，冲突设计越高级。</p>
+    </div>
+
+    <h2 style="font-size:19px;margin-top:10px">一桩案子怎么走</h2>
+    <ol style="list-style:none;padding:0">
+      {FLOW.map(([t, d, src], i) => (
+        <li class="card" style="margin-top:10px;padding:12px 16px;border-left:3px solid var(--c-zhehuang)">
+          <strong style="font-family:var(--font-display)">{i + 1}. {t}</strong>
+          <div style="font-size:14px;margin-top:4px">{d} <span class={`sb sb${src}`}>{src}</span></div>
+        </li>
+      ))}
+    </ol>
+
+    <h2 style="font-size:19px;margin-top:28px">五刑体系</h2>
+    <table class="data">
+      <tr><th style="width:60px">刑</th><th>等第与执行</th><th>备注</th></tr>
+      {PENALTIES.map(([t, d, n]) => <tr><td><strong>{t}</strong></td><td style="font-size:13px">{d}</td><td style="font-size:12px;color:var(--c-ink-2)">{n}</td></tr>)}
+    </table>
+
+    <h2 style="font-size:19px;margin-top:28px">写刑名戏的五条硬知识</h2>
+    <div style="display:grid;gap:10px">
+      {FACTS.map(([t, d]) => (
+        <div class="card" style="padding:12px 16px"><strong style="color:var(--c-primary)">{t}</strong><div style="font-size:14px;margin-top:4px">{d}</div></div>
+      ))}
+    </div>
+    <p style="font-size:12px;color:var(--c-ink-2);margin-top:12px">依据：《大明律》①、《明史·刑法志》①、孙承泽《春明梦余录》②；清代「秋审」术语勿用于明代（明代为朝审）。主条目联动：<a href="/glossary#zhaoyu">诏狱</a> · <a href="/glossary#sanfasi">三法司</a>。</p>
+  </div>
+</BaseLayout>

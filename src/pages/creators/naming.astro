@@ -1,0 +1,65 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+const IMPERIAL_LINE = [
+  ["元璋（重八）", "朱元璋本人即「重八」式数字名——元末平民不读书者多以行第/父母年龄合计为名，入军后另起正名"], 
+  ["棣（木）", "成祖；子孙自朱元璋定下双字辈分+五行偏旁相生之制"],
+  ["高炽（火）→瞻基（土）→祁镇（金）→见深（水）→祐樘（木）", "木生火、火生土、土生金、金生水——五行轮转严格落偏旁"],
+  ["厚照/厚熜（火）→载坖（土）→翊钧（金）→常洛（水）→由校/由检（木）", "「由」字辈同轮回到木——宗室数万人的名字是一部可推算的编码系统"],
+];
+const SECTIONS = [
+  {
+    h: "帝王家的五行编码", items: IMPERIAL_LINE.map(([t, d]) => [t, d, "①"]),
+  },
+  {
+    h: "民间取名", items: [
+      ["数字名", "「朱重八」「张九四」（张士诚本名）——元末底层通例：行第式或父母年龄合计式。主角若是农家出身，早年有个数字名反而考究。", "②③"],
+      ["蒙古风名", "元末明初下层亦有蒙古化名（脱脱、保保、买驴之类），明初渐消——洪武朝背景可作色彩细节。", "②③"],
+      ["贱名好养活", "狗儿、六斤、和尚（行童）等小名终身沿用者常见——明初功臣里一堆「狗儿」「观音奴」。", "③"],
+    ],
+  },
+  {
+    h: "士人的名—字—号", items: [
+      ["名与字相应", "字是对名的解释与互补：于谦字廷益（谦受益）、张居正字叔大号太岳、徐渭字文长号青藤。给人物取字时先定名，字从名生（同义/反义/典故三路）。", "③"],
+      ["称谓规则", "自称用名、尊长称名，平辈与晚辈尊称用字；号可自取，且不限一个（居士/山人/斋名皆可）。直呼其名≈翻脸。", "②③"],
+      ["避家讳", "写文对话避父祖名讳；应举避庙讳御名——但明代避讳整体宽松（见称谓指南），不必满纸缺笔。", "①③"],
+    ],
+  },
+  {
+    h: "明代语感：怎么说话", items: [
+      ["范本优先", "对话语感直接读《金瓶梅》《三言二拍》《型世言》——明代白话的活体样本；官面文书读《万历起居注》与题奏本章。", "②"],
+      ["现代词黑名单", "经济/社会/问题/主义/干部/单位/同志/心理/逻辑——一出口就出戏。可用替代：钱粮/世道/事体/路数/营生/心意/道理。", "③④"],
+      ["语气习惯", "明代白话多「恁」「却才」「干系」「作速」「体面」「计较（商量义）」；骂人「泼才」「夯货」「歪剌骨」。语气词用「哩」「罢了」而非「啦」「哦」。", "②④"],
+    ],
+  },
+];
+---
+<BaseLayout title="取名指南与语感 · 创作者" crumbs={[["/", "首页"], ["/creators", "创作者"], ["", "取名指南"]]}>
+  <div class="wrap" style="max-width:820px">
+    <div class="page-head">
+      <h1>取名指南与明代语感</h1>
+      <p class="lede">名字是人物的第一件戏服。帝王五行编码、民间数字名、士人名字号，外加一份说话的黑名单。</p>
+    </div>
+
+    {SECTIONS.map((sec) => (
+      <section style="margin-top:24px">
+        <h2 style="font-size:19px;border-bottom:1px solid var(--c-line-soft);padding-bottom:8px">{sec.h}</h2>
+        {sec.h.includes("五行") ? (
+          <table class="data" style="margin-top:10px">
+            {sec.items.map(([t, d]) => <tr><td style="width:270px"><strong style="font-family:var(--font-display)">{t}</strong></td><td style="font-size:13px">{d}</td></tr>)}
+          </table>
+        ) : sec.items.map(([t, d, src]) => (
+          <div class="card" style="margin-top:10px;padding:12px 16px">
+            <strong style="font-family:var(--font-display)">{t}</strong>
+            <div style="font-size:14px;margin-top:4px">{d} <span class={`sb sb${src}`}>{src}</span></div>
+          </div>
+        ))}
+      </section>
+    ))}
+
+    <aside class="mh-myth" style="margin-top:20px">
+      <h4>⚠ 一票否决</h4>
+      让朱元璋的孙子叫「朱棣式单名」——宗室命名法是硬编码：辈分字+五行偏旁，写错会被明史读者当场抓获。
+    </aside>
+    <p style="font-size:12px;color:var(--c-ink-2);margin-top:12px">依据：《明史·诸王世表》①、《三言二拍》等明人白话②、陈宝良《明代社会生活史》③。</p>
+  </div>
+</BaseLayout>
