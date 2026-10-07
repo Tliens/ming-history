@@ -17,7 +17,7 @@ events = J("src/data/events/events.json")["events"]
 secs = J("src/data/first-secretaries.json")["secretaries"]
 figs = J("src/data/figures/figures.json")["figures"]
 rels = J("src/data/figures/figure-relations.json")
-cons = J("src/data/consorts/consorts.json")
+cons = {_norm_name(c["name"]) for c in J("src/data/consorts/consorts.json")["consorts"]}
 gloss = J("src/data/glossary.json")["terms"]
 man = J("assets/images/manifest.json")
 
