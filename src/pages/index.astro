@@ -1,27 +1,56 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import MapHero from "../components/MapHero.astro";
-import { emperors, events, figures, glossary, portraitOf } from "../lib/data.js";
+import { emperors, events, figures, glossary, secretaries, relations, portraitOf } from "../lib/data.js";
+const recent = [...events.events].sort((a, b) => b.year - a.year).slice(0, 8);
+const STATS = [
+  [emperors.emperors.length + 5, "位帝王（含南明）"],
+  [events.events.length, "条骨干大事"],
+  [`${figures.figures.length} / ${relations.edges.length}`, "人物 / 关系边"],
+  [secretaries.secretaries.length, "位首辅"],
+  [glossary.terms.length, "条术语"],
+  ["375", "座卫所点位"],
+];
 ---
 <BaseLayout title="明史 · 1368–1644 — 一张地图读懂大明王朝">
   <MapHero mode="hero" />
 
   <div class="wrap">
-    <section style="display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));margin:32px 0">
-      <a class="card" href="/learn"><h3 style="margin:0 0 6px">第一次来？</h3><p style="margin:0;font-size:14px;color:var(--c-ink-2)">十步学习线：从版图到权力结构，循序渐进读懂明朝。</p></a>
-      <a class="card" href="/power"><h3 style="margin:0 0 6px">按主题深挖</h3><p style="margin:0;font-size:14px;color:var(--c-ink-2)">权力结构与演变是主线：皇帝、内阁、司礼监如何博弈 276 年。</p></a>
-      <a class="card" href="/creators"><h3 style="margin:0 0 6px">写小说？直取素材</h3><p style="margin:0;font-size:14px;color:var(--c-ink-2)">称谓、官品、科举、物价速查与常见误区清单。</p></a>
+    <section style="display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));margin:36px 0 8px">
+      <a class="card entry" href="/learn">
+        <span class="entry-ico" style="background:var(--c-primary-weak)">🧭</span>
+        <span><strong>第一次来？</strong><small>十步学习线：核心问题 + 自测，循序渐进读懂明朝。</small></span>
+        <span class="entry-go">→</span>
+      </a>
+      <a class="card entry" href="/power">
+        <span class="entry-ico" style="background:rgba(46,90,136,.1)">🏛</span>
+        <span><strong>按主题深挖</strong><small>权力结构与演变是主线：皇帝、内阁、司礼监如何博弈 276 年。</small></span>
+        <span class="entry-go">→</span>
+      </a>
+      <a class="card entry" href="/creators">
+        <span class="entry-ico" style="background:rgba(198,166,100,.18)">✍</span>
+        <span><strong>写小说？直取素材</strong><small>年份档案、关系网络、称谓官品科举、误区清单。</small></span>
+        <span class="entry-go">→</span>
+      </a>
     </section>
 
-    <h2 style="font-size:22px;border-bottom:1px solid var(--c-line);padding-bottom:8px">十六帝快览</h2>
-    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:14px;margin:16px 0">
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin:22px 0 0">
+      {STATS.map(([n, label]) => (
+        <span style="display:inline-flex;align-items:baseline;gap:6px;border:1px solid var(--c-line-soft);border-radius:999px;padding:4px 14px;font-size:12px;color:var(--c-ink-2);background:var(--c-surface)">
+          <strong style="font-family:var(--font-display);font-size:16px;color:var(--c-ink)">{n}</strong>{label}
+        </span>
+      ))}
+    </div>
+
+    <h2 style="font-size:22px;margin:40px 0 4px;border-bottom:1px solid var(--c-line-soft);padding-bottom:10px">十六帝快览</h2>
+    <div class="emp-scroll">
       {emperors.emperors.map((e) => {
         const p = portraitOf(e.id);
         return (
-          <a class="card" href={`/emperors/${e.id}`} style="text-align:center;padding:12px">
+          <a class="card emp-card" href={`/emperors/${e.id}`}>
             {p
-              ? <img src={`/images/${p.file}`} alt={e.name} loading="lazy" style="width:84px;height:112px;object-fit:cover;object-position:top;border-radius:4px" />
-              : <div style="width:84px;height:112px;margin:0 auto;display:flex;align-items:center;justify-content:center;background:rgba(138,109,59,.1);border-radius:4px;color:var(--c-ink-2);font-size:12px">无存世像</div>}
+              ? <img src={`/images/${p.file}`} alt={e.name} loading="lazy" style="width:84px;height:112px;object-fit:cover;object-position:top;border-radius:6px" />
+              : <div style="width:84px;height:112px;display:flex;align-items:center;justify-content:center;background:var(--c-th-bg);border-radius:6px;color:var(--c-ink-2);font-size:12px">无存世像</div>}
             <div style="font-family:var(--font-display);font-size:16px;margin-top:8px">{e.templeName}·{e.era}</div>
             <div style="font-size:12px;color:var(--c-ink-2)">{e.name} {e.reignStart}–{e.reignEnd}</div>
           </a>
@@ -29,13 +58,27 @@ import { emperors, events, figures, glossary, portraitOf } from "../lib/data.js"
       })}
     </div>
 
-    <h2 style="font-size:22px;border-bottom:1px solid var(--c-line);padding-bottom:8px">大事纵览</h2>
-    <p style="color:var(--c-ink-2);font-size:14px">已收录 {events.events.length} 条骨干大事 · 人物 {figures.figures.length} 位 · 术语 {glossary.terms.length} 条。</p>
-    <ol style="line-height:2;columns:2;column-gap:48px;font-size:14px">
-      {events.events.slice(0, 14).map((ev) => (
-        <li><a href={`/events/${ev.id}`}>{ev.year} · {ev.title}</a></li>
+    <h2 style="font-size:22px;margin:40px 0 14px;border-bottom:1px solid var(--c-line-soft);padding-bottom:10px">晚明风云 <span style="font-size:13px;color:var(--c-ink-2);font-weight:400">· 离我们最近的四十年</span></h2>
+    <div style="display:grid;gap:8px;max-width:760px">
+      {recent.map((ev) => (
+        <a class="ev-row" href={`/events/${ev.id}`}>
+          <strong style="font-family:var(--font-display);font-size:16px;min-width:52px">{ev.year}</strong>
+          <strong style="font-weight:600">{ev.title}</strong>
+          <span style="margin-left:auto;font-size:11px;color:var(--c-ink-2)">{ev.layers[0]}</span>
+        </a>
       ))}
-    </ol>
-    <p><a href="/events">查看全部大事 →</a></p>
+    </div>
+    <p style="margin-top:14px"><a class="btn btn-ghost" href="/events">查看全部 {events.events.length} 条大事 →</a></p>
   </div>
 </BaseLayout>
+<style>
+  .entry { display: flex; gap: 14px; align-items: flex-start; }
+  .entry strong { font-family: var(--font-display); font-size: 17px; display: block; margin-bottom: 4px; }
+  .entry small { font-size: 13px; color: var(--c-ink-2); line-height: 1.6; }
+  .entry-ico { width: 42px; height: 42px; flex: none; display: inline-flex; align-items: center; justify-content: center; border-radius: 10px; font-size: 20px; }
+  .entry-go { margin-left: auto; color: var(--c-ink-2); font-size: 18px; align-self: center; transition: transform 0.15s; }
+  .entry:hover .entry-go { transform: translateX(3px); color: var(--c-primary); }
+  .emp-scroll { display: flex; gap: 14px; overflow-x: auto; padding: 16px 4px 18px; scroll-snap-type: x mandatory; }
+  .emp-card { flex: 0 0 auto; scroll-snap-align: start; text-align: center; padding: 12px; width: 128px; }
+  .emp-card:hover { text-decoration: none; }
+</style>

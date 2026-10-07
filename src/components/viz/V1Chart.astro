@@ -10,7 +10,7 @@ const periods = offices.periods.map((p) => ({ id: p.id, label: p.label }));
   ))}
 </div>
 <div style="display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:16px" class="v1-wrap">
-  <div id="v1chart" style="height:620px;border:1px solid var(--c-line);border-radius:8px" aria-label="权力结构组织图"></div>
+  <div id="v1chart" style="height:620px;border:1px solid var(--c-line);border-radius:8px" aria-label="权力结构组织图" class="chart-wrap"><div class="chart-skel"></div></div>
   <aside class="card" id="v1panel" style="font-size:13px;align-self:start">
     <h3 id="v1p-title" style="margin:0 0 6px;font-size:15px"></h3>
     <p id="v1p-base" style="color:var(--c-ink-2);margin:0 0 8px"></p>
@@ -72,6 +72,7 @@ const periods = offices.periods.map((p) => ({ id: p.id, label: p.label }));
   });
   document.querySelectorAll(".v1-btn").forEach((b) => b.addEventListener("click", () => setPeriod(b.dataset.period)));
   setPeriod("wanli");
+  el.querySelector('.chart-skel')?.remove();
   onThemeChange(() => { chart.dispose(); chart = echarts.init(el, chartTheme()); setPeriod(curPeriod); });
   window.addEventListener("resize", () => chart.resize());
 </script>

@@ -160,6 +160,11 @@ table.data th { color: var(--c-ink-2); font-weight: 600; background: var(--c-th-
 .btn-pill:hover { background: var(--c-th-bg); }
 .btn-pill[aria-pressed="true"] { background: var(--c-primary); color: #fff; border-color: transparent; }
 
+/* 事件行（大事/首页共用） */
+.ev-row { display: flex; gap: 14px; align-items: baseline; padding: 10px 14px; border-radius: var(--r-s);
+  background: var(--c-surface); border: 1px solid var(--c-line-soft); color: var(--c-ink); transition: all 0.13s; }
+.ev-row:hover { background: var(--c-th-bg); border-color: var(--c-line); text-decoration: none; }
+
 /* ===== 页面头 ===== */
 .page-head { padding: var(--sp-6) 0 var(--sp-3); }
 .page-head h1 { font-size: clamp(26px, 4vw, 34px); margin: 6px 0 8px; letter-spacing: 0.02em; }
@@ -179,8 +184,35 @@ table.data th { color: var(--c-ink-2); font-weight: 600; background: var(--c-th-
 .leaflet-tooltip-right:before { border-right-color: var(--c-surface); }
 .leaflet-bar a { background: var(--c-surface); color: var(--c-ink); border-color: var(--c-line); }
 
+/* 移动端导航抽屉 */
+.mnav-toggle { display: none; }
+.mnav {
+  position: fixed; top: 64px; left: 0; right: 0; z-index: 899;
+  background: var(--c-surface); border-bottom: 1px solid var(--c-line);
+  box-shadow: var(--shadow-2); padding: 8px 0 14px;
+  transform: translateY(-115%); transition: transform 0.22s ease;
+}
+.mnav.open { transform: none; }
+.mnav a { display: block; padding: 11px 24px; color: var(--c-ink); font-size: 15px; }
+.mnav a:hover { background: var(--c-th-bg); text-decoration: none; }
+
+/* 地图 Hero 标题可读性 */
+.mc-heroT { text-shadow: 0 1px 8px rgba(250, 248, 243, 0.95), 0 0 16px rgba(250, 248, 243, 0.85); }
+:root[data-theme="dark"] .mc-heroT { text-shadow: 0 1px 8px rgba(0, 0, 0, 0.85), 0 0 18px rgba(0, 0, 0, 0.7); }
+
+/* 图表加载骨架 */
+.chart-wrap { position: relative; }
+.chart-skel {
+  position: absolute; inset: 0; border-radius: var(--r-s);
+  background: linear-gradient(100deg, transparent 30%, var(--c-th-bg) 50%, transparent 70%);
+  background-size: 200% 100%; animation: shimmer 1.2s infinite;
+}
+.chart-wrap.ready .chart-skel { display: none; }
+@keyframes shimmer { from { background-position: 180% 0; } to { background-position: -80% 0; } }
+
 /* 移动端 */
 @media (max-width: 720px) {
   .topnav nav { display: none; }
+  .mnav-toggle { display: inline-flex; }
   .wrap { padding: 0 var(--sp-4); }
 }

@@ -4,7 +4,8 @@ import { JIASHEN_DAYS } from "../../data/jiashen-days.js";
 const FIRST = JIASHEN_DAYS[0], LAST = JIASHEN_DAYS[JIASHEN_DAYS.length - 1];
 ---
 <BaseLayout title="甲申之变倒计时 · 专题" crumbs={[["/", "首页"], ["/topics", "专题"], ["", "甲申倒计时"]]}>
-  <div class="wrap" style="max-width:820px">
+  <div class="wrap" style="display:grid;grid-template-columns:minmax(0,1fr) 210px;gap:32px;align-items:start;padding-top:8px">
+  <div style="max-width:760px">
     <div class="page-head">
       <h1>甲申之变倒计时</h1>
       <p class="lede">崇祯十七年正月到五月（1644.2–6），从一个王朝的两面开场，到两个政权的各自收场——逐日看一座城、一个皇帝、一个时代怎么走到尽头。</p>
@@ -56,4 +57,11 @@ const FIRST = JIASHEN_DAYS[0], LAST = JIASHEN_DAYS[JIASHEN_DAYS.length - 1];
 
     <p><a href="/events/jiashen-1644">事件主条目：甲申之变 →</a> · <a href="/topics">← 回专题目录</a></p>
   </div>
+  <aside style="position:sticky;top:84px;font-size:13px">
+    <div style="font-size:12px;letter-spacing:.1em;color:var(--c-ink-2);margin-bottom:8px">倒计时</div>
+    {JIASHEN_DAYS.map((day) => (
+      <a href={`#d-${day.d}`} style="display:block;padding:4px 0;border-left:2px solid var(--c-line-soft);padding-left:10px;color:var(--c-ink-2)">{day.d} · {day.t.slice(0, 8)}</a>
+    ))}
+  </aside>
+</div>
 </BaseLayout>

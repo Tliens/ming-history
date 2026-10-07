@@ -3,7 +3,7 @@
 import events from "../../data/events/events.json";
 const eventCount = events.events.length;
 ---
-<div id="v3chart" style="height:560px" aria-label="权力消长时间轴图表"></div>
+<div id="v3chart" style="height:560px" class="chart-wrap" aria-label="权力消长时间轴图表"><div class="chart-skel"></div></div>
 <p style="font-size:12px;color:var(--c-ink-2);margin-top:8px">
   ⚠ 四条曲线为<strong>叙事示意</strong>（依学界共识定性判断的相对强弱，0–10），非量化数据——方法与出处见下节。
   顶部色带＝十六帝在位（点击跳皇帝页）；散点＝本站 {eventCount} 条骨干大事（点击跳事件页）。①③
@@ -88,6 +88,7 @@ const eventCount = events.events.length;
     });
   }
   chart.setOption(buildOption()); bind();
+  el.querySelector('.chart-skel')?.remove();
   onThemeChange(() => { chart.dispose(); chart = echarts.init(el, chartTheme()); chart.setOption(buildOption()); bind(); });
   window.addEventListener("resize", () => chart.resize());
 </script>

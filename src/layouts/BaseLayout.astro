@@ -41,9 +41,16 @@ const current = (href) => path === href || (href !== "/" && path.startsWith(href
       <a href="/glossary">术语</a>
       <a href="/sources">资料库</a>
       <a class="kuige-entry" href="https://kuige.me/" target="_blank" rel="noopener" title="kuige.me" style="text-decoration:none">魁歌 · 独立开发者</a>
-      <button id="themeToggle" class="tbtn" type="button" aria-label="切换主题">🌓</button>
     </nav>
+    <button id="themeToggle" class="tbtn" type="button" aria-label="切换主题">🌓</button>
+    <button id="mnavBtn" class="tbtn mnav-toggle" type="button" aria-label="菜单" aria-expanded="false">☰</button>
   </header>
+  <div class="mnav" id="mnav" aria-hidden="true">
+    {NAV.concat([["/glossary", "术语"], ["/sources", "资料库"], ["/learn", "学习线"]]).map(([href, label]) => (
+      <a href={href}>{label}</a>
+    ))}
+    <a href="https://kuige.me/" target="_blank" rel="noopener">魁歌 · 独立开发者 ↗</a>
+  </div>
 
   {crumbs.length > 0 && (
     <div class="wrap">
@@ -106,6 +113,18 @@ const current = (href) => path === href || (href !== "/" && path.startsWith(href
       matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => {
         if (cur() === "auto") { apply("auto"); dispatchEvent(new CustomEvent("themechange")); }
       });
+      /* 移动抽屉 */
+      const mb = document.getElementById("mnavBtn"), mn = document.getElementById("mnav");
+      if (mb && mn) {
+        const close = () => { mn.classList.remove("open"); mb.setAttribute("aria-expanded", "false"); mn.setAttribute("aria-hidden", "true"); };
+        mb.addEventListener("click", () => {
+          const open = mn.classList.toggle("open");
+          mb.setAttribute("aria-expanded", String(open));
+          mn.setAttribute("aria-hidden", String(!open));
+        });
+        mn.addEventListener("click", (e) => { if (e.target.tagName === "A") close(); });
+        addEventListener("keydown", (e) => { if (e.key === "Escape") close(); });
+      }
     })();
   </script>
   <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "948f2535a9dd4775a436c677b3c950e4"}'></script>

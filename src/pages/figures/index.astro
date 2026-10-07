@@ -2,6 +2,11 @@
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import EraStrip from "../../components/EraStrip.astro";
 import { figures } from "../../lib/data.js";
+const FATE_COLOR = { "善终": "var(--c-source-2)", "善终（军中病亡）": "var(--c-source-2)", "善终（存疑）": "var(--c-source-2)", "善终（清贫至死）": "var(--c-source-2)",
+  "被害": "var(--c-source-1)", "被杀": "var(--c-source-1)", "存疑之死": "var(--c-source-3)", "牵连而死": "var(--c-source-1)",
+  "殉国": "#8A2B2B", "卒于任务": "var(--c-source-3)", "病逝于任（身后冷落→极尽哀荣）": "var(--c-source-3)", "病逝": "var(--c-source-3)",
+  "身后清算": "#7B5AA6", "身败": "#9E5B3C", "身败（身后萧条）": "#9E5B3C", "贬黜": "var(--c-link)", "罢黜": "var(--c-link)",
+  "自尽（败亡）": "#6E5C4E", "败亡": "#6E5C4E", "潦倒而死": "#6E5C4E", "遗民而终": "#6E5C4E", "死于政变/战乱": "#A02C2C", "降清的样本": "#6E5C4E" };
 const CATS = ["文臣", "武将", "武将（文官出镇）", "思想·武将", "宦官", "文宗", "文士", "科学家", "科学家·文臣", "对立阵营"];
 const byCat = (c) => figures.figures.filter((f) => f.category === c);
 ---
@@ -23,7 +28,9 @@ const byCat = (c) => figures.figures.filter((f) => f.category === c);
               {f.zi && <span style="font-size:12px;color:var(--c-ink-2)">（{f.zi}）</span>}
               <div style="font-size:12px;color:var(--c-ink-2)">{f.birth ?? "?"}–{f.death ?? "?"} · {f.career?.split("→").at(-1)}</div>
               <div style="font-size:13px;margin-top:6px">{f.deeds?.slice(0, 42)}…</div>
-              <div style="font-size:11px;margin-top:6px;color:var(--c-ink-2)">结局：{f.fateType}</div>
+              <div style="font-size:11px;margin-top:6px;color:var(--c-ink-2);display:flex;align-items:center;gap:5px">
+                <span style={`width:8px;height:8px;border-radius:50%;background:${FATE_COLOR[f.fateType] ?? "var(--c-line)"};flex:none`}></span>结局：{f.fateType}
+              </div>
             </a>
           ))}
         </div>

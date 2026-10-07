@@ -3,7 +3,7 @@
 import events from "../../data/events/events.json";
 const layers = [...new Set(events.events.flatMap((e) => e.layers))];
 ---
-<div id="v6chart" style="height:480px" aria-label="大事时间轴图表"></div>
+<div id="v6chart" style="height:480px" class="chart-wrap" aria-label="大事时间轴图表"><div class="chart-skel"></div></div>
 <p style="font-size:12px;color:var(--c-ink-2);margin-top:8px">
   纵轴为事件分层（点图例可隐藏/显示轨道），横轴为年份；<strong>点击散点直达事件详情页</strong>。共 {events.events.length} 条。
 </p>
@@ -35,6 +35,7 @@ const layers = [...new Set(events.events.flatMap((e) => e.layers))];
   function render() { chart.setOption(buildOption()); }
   function bind() { chart.on("click", (p) => { if (p.data?.id) location.href = `/events/${p.data.id}`; }); }
   render(); bind();
+  el.querySelector('.chart-skel')?.remove();
   onThemeChange(() => { chart.dispose(); chart = echarts.init(el, chartTheme()); render(); bind(); });
   window.addEventListener("resize", () => chart.resize());
 </script>

@@ -9,8 +9,8 @@ import { emperors, ERAS } from "../../lib/data.js";
       <h1>世系树与在位时间轴</h1>
       <p class="lede">帝位传承的血脉主线（仅列帝系，非完整皇族谱）：红色虚线标记四次非正常传位。点击节点进入皇帝页。</p>
     </div>
-    <div class="card" style="padding:12px"><div id="v5tree" style="height:760px"></div></div>
-    <div class="card" style="padding:12px;margin-top:16px"><div id="v5gantt" style="height:420px"></div></div>
+    <div class="card" style="padding:12px"><div id="v5tree" style="height:760px" class="chart-wrap"><div class="chart-skel"></div></div></div>
+    <div class="card" style="padding:12px;margin-top:16px"><div id="v5gantt" style="height:420px" class="chart-wrap"><div class="chart-skel"></div></div></div>
     <p style="font-size:12px;color:var(--c-ink-2);margin-top:8px">
       非正常传位四例：靖难（太祖系内夺位）· 夺门（兄弟复辟）· 兄终弟及（熹宗→思宗）· 外藩入继（兴献王系）。数据源：emperors.json + 《明史·诸王世表》①。
     </p>
@@ -70,6 +70,7 @@ import { emperors, ERAS } from "../../lib/data.js";
   }
   function bindTree() { tree.on("click", (p) => { if (p.data?.link) location.href = p.data.link; }); }
   tree.setOption(treeOption()); bindTree();
+  treeEl.querySelector('.chart-skel')?.remove();
 
   // 在位甘特：单列 x=年份
   import emperorsData from "../../data/emperors/emperors.json";
@@ -97,9 +98,12 @@ import { emperors, ERAS } from "../../lib/data.js";
   }
   function bindGantt() { gantt.on("click", (p) => { location.href = `/emperors/${EMPERORS[p.dataIndex].id}`; }); }
   gantt.setOption(ganttOption()); bindGantt();
+  ganttEl.querySelector('.chart-skel')?.remove();
   function rerender() {
     tree.dispose(); tree = echarts.init(treeEl, chartTheme()); tree.setOption(treeOption()); bindTree();
+  treeEl.querySelector('.chart-skel')?.remove();
     gantt.dispose(); gantt = echarts.init(ganttEl, chartTheme()); gantt.setOption(ganttOption()); bindGantt();
+  ganttEl.querySelector('.chart-skel')?.remove();
   }
   onThemeChange(rerender);
   window.addEventListener("resize", () => { tree.resize(); gantt.resize(); });
