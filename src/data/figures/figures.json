@@ -1,7 +1,7 @@
 {
   "$schema": "https://ming-history.example/schemas/figures.json",
   "meta": {
-    "task": "人物库（累计 237 人）",
+    "task": "人物库（累计 238 人）",
     "sources": [
       "《明史》本传（等级①）",
       "《国朝献征录》（等级②，生卒校核）",
@@ -3745,6 +3745,22 @@
       "fateType": "善终",
       "evaluation": "定逆案的另一位操盘手——崇祯初政的「 clean? 清洗」设计师",
       "stage": "B9"
+    },
+    {
+      "id": "zhu-zaiyu",
+      "name": "朱载堉",
+      "zi": "伯勤（号句曲山人）",
+      "origin": "怀庆（郑恭王世子）",
+      "birth": 1536,
+      "death": 1611,
+      "category": "宗室",
+      "path": "郑藩世子（七疏让国）",
+      "career": "世子→让爵自号道人",
+      "deeds": "《律学新说》《律吕精义》创立十二平均律（新法密率）；算盘开高次方",
+      "fate": "万历三十九年卒，谥端清",
+      "fateType": "善终",
+      "evaluation": "让掉一个王爵，留给世界一套平均律——明代宗室里最伟大的「不务正业」",
+      "stage": "B8"
     }
   ]
 }
