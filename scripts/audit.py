@@ -67,7 +67,7 @@ for f in figs:
     if f.get("birth") and f.get("death") and (f["death"]-f["birth"]) > 105: warns.append(f"D 人物 {f['id']} 寿命 >105 岁，请复核")
 
 # E. 关系边
-known = {f["id"] for f in figs} | emp_ids
+known = {f["id"] for f in figs} | emp_ids | {c["id"] for c in cons["consorts"]}
 ph_map_src = open("src/data/figure-names.js", encoding="utf-8").read()
 ph_map = set(re.findall(r'"([a-z][a-z0-9-]*)":', ph_map_src))
 for a, ty, b in rels["edges"]:
