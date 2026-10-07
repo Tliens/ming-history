@@ -1,0 +1,59 @@
+<!DOCTYPE html><html lang="zh-CN"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>土木堡与北京保卫战（V11）· 地图</title><script>
+    /* 主题预读：localStorage(mh-theme: auto|light|dark) → 系统偏好；在首帧前设置 data-theme 防闪烁 */
+    (() => {
+      const t = localStorage.getItem("mh-theme") || "auto";
+      const dark = t === "dark" || (t === "auto" && matchMedia("(prefers-color-scheme: dark)").matches);
+      document.documentElement.dataset.theme = dark ? "dark" : "light";
+    })();
+  </script><meta name="description" content="面向学生、明史爱好者与小说创作者的明代历史知识网站：交互地图、权力结构、十六帝、大事年表与人物库。"><link rel="canonical" href="https://ming-history.kuige.me/maps/tumu/"><meta property="og:type" content="website"><meta property="og:site_name" content="明史"><meta property="og:title" content="土木堡与北京保卫战（V11）· 地图"><meta property="og:url" content="https://ming-history.kuige.me/maps/tumu/"><meta name="twitter:card" content="summary"><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%23A02C2C'/%3E%3Ctext x='16' y='23' font-size='20' text-anchor='middle' fill='%23F7F3E8' font-family='serif'%3E明%3C/text%3E%3C/svg%3E"><link rel="stylesheet" href="/_astro/index.C9nF_af3.css"></head> <body> <header class="topnav"> <a class="brand" href="/"><span class="mh-seal">明</span><span>明史</span></a> <nav aria-label="主导航"> <a href="/maps" aria-current="page">地图</a><a href="/power">权力</a><a href="/emperors">皇帝</a><a href="/harem">后宫</a><a href="/events">大事</a><a href="/figures">人物</a><a href="/topics">专题</a><a href="/creators">创作者</a> <a href="/glossary">术语</a> <a href="/sources">资料库</a> <a class="kuige-entry" href="https://kuige.me/" target="_blank" rel="noopener" title="kuige.me" style="text-decoration:none">魁歌 · 独立开发者</a> </nav> <button id="themeToggle" class="tbtn" type="button" aria-label="切换主题">🌓</button> <button id="mnavBtn" class="tbtn mnav-toggle" type="button" aria-label="菜单" aria-expanded="false">☰</button> </header> <div class="mnav" id="mnav" aria-hidden="true"> <a href="/maps">地图</a><a href="/power">权力</a><a href="/emperors">皇帝</a><a href="/harem">后宫</a><a href="/events">大事</a><a href="/figures">人物</a><a href="/topics">专题</a><a href="/creators">创作者</a><a href="/glossary">术语</a><a href="/sources">资料库</a><a href="/learn">学习线</a> <a href="https://kuige.me/" target="_blank" rel="noopener">魁歌 · 独立开发者 ↗</a> </div> <div class="wrap"> <nav class="crumbs" aria-label="面包屑"> <a href="/">首页</a> › <a href="/maps">地图</a> › <span aria-current="page">土木堡→保卫战</span> </nav> </div> <main> <link rel="stylesheet" href="/vendor/leaflet.css"> <script src="/vendor/leaflet.js"></script> <div class="wrap" style="padding-top:20px"> <div class="page-head" style="padding-top:0"> <h1 style="margin:0">土木堡之变与北京保卫战（1449）</h1> <p class="lede">同一年的两段路线：红＝亲征覆没（七月出师—八月土木堡），蓝＝背城一战（十月紫荆关—九门—北撤）。切阶段、点站点看经过。</p> </div> <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px" id="v11btns"> <button class="btn btn-pill" data-p="0" aria-pressed="true">亲征与覆没（1449.7–8）</button><button class="btn btn-pill" data-p="1" aria-pressed="false">北京保卫战（1449.10）</button> </div> <div style="position:relative;height:640px;border-radius:var(--r-m);overflow:hidden;background:var(--c-paper);border:1px solid var(--c-line-soft)"> <div id="v11map" style="position:absolute;inset:0"></div> </div> <p style="font-size:12px;color:var(--c-ink-2);margin-top:8px">
+依据：《明史·英宗前纪》《景帝本纪》《于谦传》①、《明史纪事本末》②。主条目：<a href="/events/tumu-crisis-1449">土木堡之变</a> · <a href="/events/beijing-defense-1449">北京保卫战</a>。
+</p> </div> </main> <footer class="site-footer"> <div class="wrap cols"> <div> <strong>关于史料标注</strong><br> <span class="sb sb1">①</span>正史官修 · <span class="sb sb2">②</span>当时人著述 ·
+<span class="sb sb3">③</span>现代研究 · <span class="sb sb4">④</span>传闻野史<br>
+④级内容只入「误区辨析」与「当代接受」框，不作正文叙述。
+</div> <div> <strong>数据与图像来源</strong><br>
+政区/卫所/驿路：<a href="https://doi.org/10.7910/DVN/29302">CHGIS · Hartwell</a>、
+<a href="https://doi.org/10.7910/DVN/5RUXK8">Ming Garrisons</a>（学术使用）<br>
+帝后画像等：Wikimedia Commons（公有领域/CC，逐图署名）
+</div> <div> <strong>反馈</strong><br>
+发现史实或链接错误？<a href="mailto:feedback@ming-history.example">写信告知</a><br>
+本站为非商业教育项目 · © 2026 明史
+</div> </div> </footer> <script>
+    /* 主题三态切换：auto → light → dark；广播 themechange 供图表重渲染 */
+    (() => {
+      const KEY = "mh-theme";
+      const sys = () => matchMedia("(prefers-color-scheme: dark)").matches;
+      const apply = (t) => {
+        const dark = t === "dark" || (t === "auto" && sys());
+        document.documentElement.dataset.theme = dark ? "dark" : "light";
+        const b = document.getElementById("themeToggle");
+        if (b) {
+          b.textContent = t === "auto" ? "🌓" : dark ? "🌙" : "☀️";
+          b.title = "主题：" + (t === "auto" ? "跟随系统" : dark ? "深色" : "浅色") + "（点击切换）";
+        }
+      };
+      const cur = () => localStorage.getItem(KEY) || "auto";
+      apply(cur());
+      const b = document.getElementById("themeToggle");
+      b?.addEventListener("click", () => {
+        const t = { auto: "light", light: "dark", dark: "auto" }[cur()];
+        localStorage.setItem(KEY, t);
+        apply(t);
+        dispatchEvent(new CustomEvent("themechange"));
+      });
+      matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => {
+        if (cur() === "auto") { apply("auto"); dispatchEvent(new CustomEvent("themechange")); }
+      });
+      /* 移动抽屉 */
+      const mb = document.getElementById("mnavBtn"), mn = document.getElementById("mnav");
+      if (mb && mn) {
+        const close = () => { mn.classList.remove("open"); mb.setAttribute("aria-expanded", "false"); mn.setAttribute("aria-hidden", "true"); };
+        mb.addEventListener("click", () => {
+          const open = mn.classList.toggle("open");
+          mb.setAttribute("aria-expanded", String(open));
+          mn.setAttribute("aria-hidden", String(!open));
+        });
+        mn.addEventListener("click", (e) => { if (e.target.tagName === "A") close(); });
+        addEventListener("keydown", (e) => { if (e.key === "Escape") close(); });
+      }
+    })();
+  </script> <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon="{&quot;token&quot;: &quot;948f2535a9dd4775a436c677b3c950e4&quot;}"></script> </body> </html> <script type="module">const i=[{id:"field",name:"亲征与覆没（1449.7–8）",color:"#B5382F",stops:[{y:"7.16",name:"北京出师",coord:[116.4,39.9],note:"王振挟英宗仓促亲征，号称五十万（学界估二十余万）"},{y:"7.23",name:"过居庸关",coord:[116.07,40.29],note:"群臣请止不听，雨潦粮匮随行"},{y:"7.27",name:"宣府",coord:[115.05,40.61],note:"边报日急，西宁侯宋瑛、武进伯朱冕已败于阳和"},{y:"8.1",name:"阳和/大同",coord:[113.3,40.08],note:"见前锋覆没之惨，王振始惧而议退"},{y:"8.13",name:"回程·宣府",coord:[115.05,40.61],note:"绕道蔚州（王振欲邀帝幸其宅）复折回，行军紊乱"},{y:"8.15",name:"土木堡覆没",coord:[115.5,40.3],note:"水源被断、瓦剌合围——张辅、邝埜等五十余从臣死，英宗被俘"}]},{id:"defense",name:"北京保卫战（1449.10）",color:"#2E5A88",stops:[{y:"10.4",name:"紫荆关破",coord:[115.18,39.68],note:"也先挟英宗破关入塞，京师震动"},{y:"10.11",name:"兵临城下",coord:[116.39,39.91],note:"于谦列阵九门之外背城而战， 「南迁者可斩」已成定议"},{y:"10.13",name:"德胜门伏击",coord:[116.39,39.95],note:"石亨设伏，也先弟孛罗、平章卯那孩中炮死"},{y:"10.13",name:"西直门鏖战",coord:[116.35,39.94],note:"孙镗力战，居民升屋掷砖石助战"},{y:"10.15",name:"彰义门之战",coord:[116.3,39.87],note:"武兴部败而瓦剌亦不能克；相持五日"},{y:"10.17",name:"也先拔营北撤",coord:[115.2,39.7],note:"恐断归路，由紫荆关出塞——京师保全"}]}],t=window.L,r=t.map("v11map",{attributionControl:!1}).setView([40.2,115.6],7);t.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:12,crossOrigin:!0}).addTo(r);let a=t.layerGroup().addTo(r);function c(n){r.removeLayer(a),a=t.layerGroup().addTo(r);const e=i[n];t.polyline(e.stops.map(o=>o.coord),{color:e.color,weight:2.5,opacity:.75,dashArray:"8 6"}).addTo(a),e.stops.forEach((o,l)=>{const d=l===e.stops.length-1;t.circleMarker(o.coord,{radius:d?10:7,color:e.color,weight:2,fillColor:e.color,fillOpacity:d?.95:.7}).bindPopup(`<b>${o.y} · ${o.name}</b><br/><span style="font-size:13px">${o.note}</span>`).bindTooltip(`${o.y} ${o.name}`).addTo(a)}),r.fitBounds(e.stops.map(o=>[o.coord[1],o.coord[0]]),{padding:[40,40],maxZoom:8})}c(0);document.querySelectorAll("#v11btns .btn-pill").forEach(n=>n.addEventListener("click",()=>{document.querySelectorAll("#v11btns .btn-pill").forEach(e=>e.setAttribute("aria-pressed",String(e===n))),c(+n.dataset.p)}));</script>
