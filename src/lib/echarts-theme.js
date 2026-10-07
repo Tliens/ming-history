@@ -4,9 +4,9 @@ export const chartTheme = () => {
   if (dark) {
     return {
       dark: true,
-      color: ["#C8564F", "#6C93C4", "#7FB894", "#D4B578", "#C2A878", "#D08A64", "#9B8BB5", "#86A992", "#C9B085", "#A3927F"],
+      color: ["#D4574C", "#7FA3D0", "#7FB894", "#C6A664", "#A48BC9", "#E09554", "#6FB3C4", "#C2A878", "#C77BA4", "#A89F8F"],
       ink: "#E8E2D0", sub: "#B5AC98",
-      split: "rgba(181,172,152,0.14)", axis: "#8A7F6B",
+      split: "rgba(237,231,218,0.10)", axis: "#7d766a",
       tooltip: {
         backgroundColor: "rgba(38,35,32,0.97)", borderColor: "rgba(181,172,152,0.35)", borderWidth: 1,
         textStyle: { color: "#E8E2D0", fontSize: 13 },
@@ -20,9 +20,9 @@ export const chartTheme = () => {
   }
   return {
     dark: false,
-    color: ["#A02C2C", "#2E5A88", "#3E7C59", "#C6A664", "#8A6D3B", "#9E5B3C", "#5A4A6E", "#4E6E5D", "#B08D57", "#6E5C4E"],
+    color: ["#B5382F", "#2E5A88", "#3E7C59", "#C0934C", "#7B5AA6", "#D0782F", "#4E9BB0", "#8A6D3B", "#A3477E", "#5C5346"],
     ink: "#2B2620", sub: "#5C5346",
-    split: "rgba(138,109,59,0.15)", axis: "#8A6D3B",
+    split: "rgba(42,39,35,0.08)", axis: "#8A857B",
     tooltip: {
       backgroundColor: "rgba(247,243,232,0.97)", borderColor: "rgba(138,109,59,0.4)", borderWidth: 1,
       textStyle: { color: "#2B2620", fontSize: 13 },

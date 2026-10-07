@@ -12,9 +12,9 @@ const known = figures.figures.length;
     </div>
 
     <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px" id="v14btns">
-      <button class="v14-btn" data-stage="" aria-pressed="true" style="border:1px solid var(--c-line);background:none;color:var(--c-ink);border-radius:14px;padding:4px 14px;font-size:13px;cursor:pointer">全部</button>
+      <button class="v14-btn" data-stage="" aria-pressed="true" class="btn btn-pill">全部</button>
       {[["B1","创业"],["B2","削藩"],["B3","永乐"],["B4","仁宣"],["B5","危机"],["B6","中兴"],["B7","嘉靖"],["B8","万历"],["B9","覆亡"]].map(([id, name]) => (
-        <button class="v14-btn" data-stage={id} aria-pressed="false" style="border:1px solid var(--c-line);background:none;color:var(--c-ink);border-radius:14px;padding:4px 14px;font-size:13px;cursor:pointer">{id} {name}</button>
+        <button class="v14-btn" data-stage={id} aria-pressed="false" class="btn btn-pill">{id} {name}</button>
       ))}
     </div>
 

@@ -6,7 +6,7 @@ const periods = offices.periods.map((p) => ({ id: p.id, label: p.label }));
 <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px" role="tablist" aria-label="时期切换">
   {periods.map((p, i) => (
     <button class="v1-btn" data-period={p.id} aria-pressed={i === periods.length - 1}
-      style="border:1px solid var(--c-line);background:none;border-radius:14px;padding:4px 14px;font-size:13px;cursor:pointer">{p.label}</button>
+      class="btn btn-pill">{p.label}</button>
   ))}
 </div>
 <div style="display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:16px" class="v1-wrap">
