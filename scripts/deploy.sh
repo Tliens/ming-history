@@ -10,7 +10,7 @@ echo "▶ 构建..."
 npx astro build
 
 echo "▶ 同步 gh-pages worktree..."
-git fetch -q origin gh-pages
+git fetch -q origin "+refs/heads/gh-pages:refs/remotes/origin/gh-pages"  # single-branch 克隆下普通 fetch 不更新 gh-pages 跟踪引用
 git worktree remove --force "$WORK" 2>/dev/null || rm -rf "$WORK"
 git worktree add -B gh-pages "$WORK" origin/gh-pages
 # dist 覆盖，但保留 Pages 的 CNAME 与 .nojekyll
